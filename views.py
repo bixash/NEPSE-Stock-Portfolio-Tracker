@@ -9,6 +9,7 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def dashboard():
+   
    cur.execute("SELECT DISTINCT scrip FROM `Transaction`")
    stock_symbols = cur.fetchall()
 
