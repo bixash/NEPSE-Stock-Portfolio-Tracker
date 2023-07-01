@@ -30,7 +30,8 @@
         <th>History Description</th>
       </tr>
       {% for row in transaction%}
-      {% if row[0][5] != '0' %}
+
+      <!-- {% if row[0][5] != '0' %} -->
       <tr>
         <td>{{ row[0][0] }}</td>
         <td>{{ row[0][1] }}</td>
@@ -40,7 +41,7 @@
         <td>{{ row[0][5] }}</td>
         <td>{{ row[0][6] }}</td>
       </tr>
-      {% endif %}
+      <!-- {% endif %} -->
       {% endfor %}
     </table>
 

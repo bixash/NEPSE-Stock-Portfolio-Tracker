@@ -25,3 +25,12 @@ def stringToInt(quantity):
     else:
         quantity = int(quantity)
     return quantity
+
+def shorten_history(history):
+    history = (history.strip()).split()
+
+    if history[0] == 'INITIAL':
+        history = history[4]
+    else:
+        history = history[0]
+    return history

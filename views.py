@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
-from methods import date_format, stringToInt
+from methods import date_format, stringToInt, shorten_history
 import csv
 import sqlite3 as sql
 
@@ -41,16 +41,20 @@ def dashboard():
    if 'user_id' in session:
       user_id = session['user_id']
 
-   # cur.execute("SELECT DISTINCT scrip FROM `Transaction` where uid = ?", user_id)
-   # stock_symbols = cur.fetchall()
+   cur.execute("SELECT DISTINCT scrip FROM transactions where uid = ?", (user_id,))
+   stock_symbols = cur.fetchall()
 
    # result = []
-   # for stock in stock_symbols:
-   #    cur.execute("SELECT * from `transaction` where scrip = ? and uid = ? ORDER BY sn ASC limit 1", stock)
-   #    result.append(cur.fetchall())
+   for stock in stock_symbols:
+      stock = str(stock)
+      # print(type(stock))
+      cur.execute("SELECT * from transactions where scrip = ? and uid = 1", (stock, ))
+
+      result = cur.fetchall()
+      print(result)
    
-   # print(result)
-   return render_template("dashboard.html", transaction="")
+   
+   return render_template("dashboard.html")
 
 
 @views.route('/upload', methods=['GET','POST'])
@@ -62,8 +66,8 @@ def upload():
       f = request.files['file']
       f.save(secure_filename(f.filename))
 
-
       # print(secure_filename(f.filename))
+
       # reading uploaded file
       with open('Transaction_History.csv', newline='') as csvfile:
          reader = csv.DictReader(csvfile)
@@ -75,9 +79,12 @@ def upload():
             credit_quantity = stringToInt(row['Credit Quantity'])
             debit_quantity = stringToInt(row['Debit Quantity'])
             balance_after_transaction = stringToInt(row['Balance After Transaction'])
-            history_description = row['History Description']
-            
-            cur.execute("INSERT INTO `transaction`(id, scrip, transaction_date, credit_quantity, debit quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?,?)", sn, scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, credit_quantity, history_description, user_id)
+            history_description = shorten_history(row['History Description'])
 
-   return render_template("dashboard.html", msg = "Sucessfully uploaded!")
+            print(sn,scrip,transaction_date,credit_quantity,debit_quantity,balance_after_transaction,history_description, user_id)
+            
+            cur.execute("INSERT INTO transactions (id, scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?,?)", (sn, scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
+
+            con.commit()
+         return render_template("dashboard.html", msg = "Sucessfully uploaded!")
                 
