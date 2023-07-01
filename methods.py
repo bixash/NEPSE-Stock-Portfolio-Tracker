@@ -17,3 +17,11 @@ def date_format(date):
     newDate = "-".join(newDate)
 
     return newDate
+
+def stringToInt(quantity):
+    
+    if quantity == '-':
+        quantity = 0
+    else:
+        quantity = int(quantity)
+    return quantity

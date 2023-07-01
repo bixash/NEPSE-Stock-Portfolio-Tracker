@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
-from methods import date_format
+from methods import date_format, stringToInt
 import csv
 import sqlite3 as sql
 
@@ -58,9 +58,10 @@ def upload():
    if 'user_id' in session:
       user_id = session['user_id']
    
-   # if request.method == 'POST':
-   #    f = request.files['file']
-   #    f.save(secure_filename(f.filename))
+   if request.method == 'POST':
+      f = request.files['file']
+      f.save(secure_filename(f.filename))
+
 
       # print(secure_filename(f.filename))
       # reading uploaded file
@@ -68,17 +69,15 @@ def upload():
          reader = csv.DictReader(csvfile)
 
          for row in reader:
-            # sn = row['S.N']
+            sn = row['S.N']
             scrip= row['Scrip']
-            date = row['Transaction Date']
-            transaction_date = date_format(date)
-            print(transaction_date)
-            # credit_quantity = row['Credit Quantity']
-            # debit_quantity = row['Debit Quantity']
-            # balance_after_transaction = row['Balance After Transaction']
-            # history_description = row['History Description']
-
+            transaction_date = date_format(row['Transaction Date'])
+            credit_quantity = stringToInt(row['Credit Quantity'])
+            debit_quantity = stringToInt(row['Debit Quantity'])
+            balance_after_transaction = stringToInt(row['Balance After Transaction'])
+            history_description = row['History Description']
             
-            # cur.execute("INSERT INTO `transaction`(id, sn, scrip, transaction_date, credit_quantity, debit quantity, balance_after_transaction, history_description, uid)", user_id)
+            cur.execute("INSERT INTO `transaction`(id, scrip, transaction_date, credit_quantity, debit quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?,?)", sn, scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, credit_quantity, history_description, user_id)
+
    return render_template("dashboard.html", msg = "Sucessfully uploaded!")
                 
