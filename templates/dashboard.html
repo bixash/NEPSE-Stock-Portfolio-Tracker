@@ -7,8 +7,19 @@
 </head>
 <body>
     <h1 align="center">Transaction</h1>
+
+    {% if not transaction%}
+    {{ msg }}
+    <h3>Oops, No transaction available!!</h3>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" />
+      <button type="submit">Upload</button>
+    </form>
+
+    {% else %}
     <table border="1">
-     
+      {{ msg }}
       <tr>
         <th>S.N </th>
         <th>Scrip</th>
@@ -32,5 +43,8 @@
       {% endif %}
       {% endfor %}
     </table>
+
+    {% endif %}
+   
 </body>
 </html>
