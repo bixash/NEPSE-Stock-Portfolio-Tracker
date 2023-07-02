@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
-from methods import date_format, stringToInt, shorten_history
+from methods import date_format, stringToInt, shorten_history, tupleToStr
 import csv
 import sqlite3 as sql
 
@@ -40,21 +40,19 @@ def signup():
 def dashboard():
    if 'user_id' in session:
       user_id = session['user_id']
+      
 
    cur.execute("SELECT DISTINCT scrip FROM transactions where uid = ?", (user_id,))
    stock_symbols = cur.fetchall()
 
-   # result = []
+   result = []
+   
    for stock in stock_symbols:
-      stock = str(stock)
-      # print(type(stock))
-      cur.execute("SELECT * from transactions where scrip = ? and uid = 1", (stock, ))
-
-      result = cur.fetchall()
-      print(result)
-   
-   
-   return render_template("dashboard.html")
+      stock = tupleToStr(stock)
+      cur.execute("SELECT * from transactions where uid = ? and  scrip = ?", (user_id, stock))
+      result.append(cur.fetchall())
+   # print(result)
+   return render_template("dashboard.html", transaction = result)
 
 
 @views.route('/upload', methods=['GET','POST'])

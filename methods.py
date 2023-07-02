@@ -34,3 +34,8 @@ def shorten_history(history):
     else:
         history = history[0]
     return history
+
+
+def tupleToStr(tup):
+    st = ''.join(map(str, tup))
+    return st
