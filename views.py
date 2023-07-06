@@ -46,12 +46,12 @@ def dashboard():
    stock_symbols = cur.fetchall()
 
    result = []
-   
+
    for stock in stock_symbols:
       stock = tupleToStr(stock)
-      cur.execute("SELECT * from transactions where uid = ? and  scrip = ?", (user_id, stock))
+      cur.execute("SELECT * from transactions where scrip = ? and uid = ? order by transaction_date desc limit 1", (stock, user_id, ))
       result.append(cur.fetchall())
-   # print(result)
+   # print(result)  
    return render_template("dashboard.html", transaction = result)
 
 
@@ -84,5 +84,5 @@ def upload():
             cur.execute("INSERT INTO transactions (id, scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?,?)", (sn, scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
 
             con.commit()
-         return render_template("dashboard.html", msg = "Sucessfully uploaded!")
-                
+            return render_template("upload.html", msg = "Sucessfully uploaded!")
+   return render_template("upload.html")             

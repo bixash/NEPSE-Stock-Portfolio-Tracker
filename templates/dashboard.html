@@ -1,24 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-<body>
+{% extends "base.html" %}
+ {% block title %} Dashboard {% endblock %}
+ {% block content %}
+
     <h1 align="center">Transaction</h1>
 
     {% if not transaction%}
     {{ msg }}
     <h3>Oops, No transaction available!!</h3>
 
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-      <input type="file" name="file" />
-      <button type="submit">Upload</button>
-    </form>
 
     {% else %}
-    <table border="1">
+    <table>
       {{ msg }}
       <tr>
         <th>S.N </th>
@@ -26,12 +18,12 @@
         <th>Transaction Date</th>
         <!-- <th>Credit Quantity</th> -->
         <!-- <th>Debit Quantity</th> -->
-        <th>Balance After Transaction</th>
+        <th>Balance</th>
         <th>History Description</th>
       </tr>
       {% for row in transaction%}
-
-      <!-- {% if row[0][5] != '0' %} -->
+  
+      {% if row[0][5] != 0 %}
       <tr>
         <td>{{ row[0][0] }}</td>
         <td>{{ row[0][1] }}</td>
@@ -41,11 +33,12 @@
         <td>{{ row[0][5] }}</td>
         <td>{{ row[0][6] }}</td>
       </tr>
-      <!-- {% endif %} -->
+      {% endif %}
       {% endfor %}
     </table>
-
+    
     {% endif %}
-   
-</body>
-</html>
+    <p>
+      <a href="{{ url_for('views.upload')}}">Upload transaction file</a>
+    </p>
+{% endblock %}   
