@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from methods import date_format, stringToInt, shorten_history, tupleToStr
 import csv
 import sqlite3 as sql
+from kitta import getTodayPrice
 
 con = sql.connect("database.db", check_same_thread=False)
 cur = con.cursor()
@@ -44,14 +45,17 @@ def dashboard():
 
    cur.execute("SELECT DISTINCT scrip FROM transactions where uid = ?", (user_id,))
    stock_symbols = cur.fetchall()
+   
 
    result = []
 
    for stock in stock_symbols:
       stock = tupleToStr(stock)
+      
       cur.execute("SELECT * from transactions where scrip = ? and uid = ? order by transaction_date desc limit 1", (stock, user_id, ))
       result.append(cur.fetchall())
-   # print(result)  
+      # result.append(today_price)
+
    return render_template("dashboard.html", transaction = result)
 
 

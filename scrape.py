@@ -28,10 +28,9 @@ headers.update(
 )
 
 json = {'id':'352987'}
-response = requests.get(url, headers=headers)
-
-# post_response = requests.post(url, headers=headers, json= json)
-print(response)
+# response = requests.get(url, headers=headers)
+response = requests.post(url, headers=headers, json= json)
+print(response.text)
 
 # soup = BeautifulSoup(response.text, 'html.parser')
 # print(soup.title)
