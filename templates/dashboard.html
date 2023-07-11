@@ -13,33 +13,24 @@
     <table>
       {{ msg }}
       <tr>
-        <!-- <th>S.N </th> -->
         <th>Scrip</th>
-        <!-- <th>Transaction Date</th> -->
-        <!-- <th>Credit Quantity</th> -->
-        <!-- <th>Debit Quantity</th> -->
         <th>Balance</th>
         <th>Last Price</th>
-        <!-- <th>History Description</th> -->
       </tr>
-      {% for row in transaction%}
-     
-      <!-- {% if row[0][5] != 0 %} -->
+      
+      {% for item in transaction%}
       <tr>
-        <!-- <td>{{ row[0][0] }}</td> -->
-        <td>{{ row[0][1] }}</td>
-        <!-- <td>{{ row[0][2] }}</td> -->
-        <!-- <td>{{ row[0][3] }}</td> -->
-        <!-- <td>{{ row[0][4] }}</td> -->
-        <td>{{ row[0][5] }}</td>
-        <!-- <td>{{ row[0][6] }}</td> -->
-    
-      </tr>
-      <!-- {% endif %} -->
-      {% for price in stock_prices%}
-        {{ price  }}
-        {% endfor %}
+          {% for scrip, balance, price in item %}
+          
+          <td>{{ scrip }}</td>
+          <td>{{ balance }}</td>
+          <td>{{ price }}</td>
+          
       {% endfor %}
+    </tr>
+      {% endfor %}
+      
+      
     </table>
     
     {% endif %}

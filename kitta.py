@@ -1,5 +1,6 @@
 import requests
 # import json
+from schema import cur, con
 
 
 
@@ -10,15 +11,12 @@ response = requests.get('https://api.kitta.dev/stocks/live', headers={
 result = response.json()
 
 
+for item in result:
+    scrip = item['stockSymbol']
+    closing_price = item['closingPrice']
+    cur.execute("UPDATE stock SET closing_price = ? WHERE scrip = ?",(closing_price, scrip,))
+    con.commit()
 
-def getTodayPrice(stocks):
-    stock_prices =[]
-    for item in result:
-        for stock in stocks:
-            if stock == item['stockSymbol']:
-                stock_prices.append(item['closingPrice'])
-                # print(stock_prices)
-    return (stock_prices)
 
 # stocks= ["NABIL", "PLI", "NICA"]
 # getTodayPrice(stocks)
