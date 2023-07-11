@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
-from methods import date_format, stringToInt, shorten_history, tupleToStr
+from methods import date_format, stringToInt, shorten_history, tupleToStr, ZeroBalancetoEmpty
 import csv
 import sqlite3 as sql
 import os.path
@@ -57,30 +57,18 @@ def dashboard():
       
       # cur.execute("SELECT  stock.scrip, balance_after_transaction, closing_price from stock where stock.scrip in( SELECT s FROM) FROM stock INNER JOIN transactions ON transactions.scrip = stock.scrip")
 
-      cur.execute("SELECT stock.scrip, balance_after_transaction, closing_price FROM stock INNER JOIN transactions ON transactions.scrip = stock.scrip where transactions.scrip = ? and uid = ? order by transaction_date desc limit 1", (stock, user_id, ))
-
       # cur.execute("SELECT stock.scrip, balance_after_transaction from transactions where scrip = ? and uid = ? order by transaction_date desc limit 1", (stock, user_id, ))
 
+      cur.execute("SELECT stock.scrip, balance_after_transaction, closing_price FROM stock INNER JOIN transactions ON transactions.scrip = stock.scrip where transactions.scrip = ? and uid = ? order by transaction_date desc limit 1", (stock, user_id, ))
+
       transactions.append(cur.fetchall())
+
+   '''
+    changing zero balance scrip to empty list and removing empty list 
+   '''   
+   result = list(filter(None, ZeroBalancetoEmpty(transactions)))
    
-
-      # cur.execute("SELECT scrip, closing_price from stock where scrip = ?", (stock, ))
-      # prices.append(cur.fetchall())
-      
-   # print(transactions)
-   # for item in transactions:
-   #    if not item:
-   #       transactions.remove(item)
-   #    for data in item:
-   #       print(type(data))
-   #       if data[1] == 0:
-   #          transactions.remove(item)
-         
-         
-
-   print(transactions)
-
-   return render_template("dashboard.html", transaction = transactions) #, price = prices
+   return render_template("dashboard.html", transaction = result)
 
 
 @views.route('/upload', methods=['GET','POST'])
