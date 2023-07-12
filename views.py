@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect
 from werkzeug.utils import secure_filename
 from methods import date_format, stringToInt, shorten_history, tupleToStr, ZeroBalancetoEmpty
+from kittapi import UpdateStockPrices
 import csv
 import sqlite3 as sql
 import os.path
@@ -43,18 +44,17 @@ def dashboard():
    if 'user_id' in session:
       user_id = session['user_id']
       
-   prices = []
-   transactions =[]
-
-   cur.execute("SELECT DISTINCT scrip FROM transactions where uid = ?", (user_id,))
+   UpdateStockPrices('https://api.kitta.dev/stocks/live') 
    
+   # https://www.nepalipaisa.com/api/GetTodaySharePrice
+   cur.execute("SELECT DISTINCT scrip FROM transactions where uid = ?", (user_id,))
    stock_symbols = cur.fetchall()
-   # print(stock_symbols)
+
+   transactions = []
 
    for stock in stock_symbols:
       stock = tupleToStr(stock)
 
-      
       # cur.execute("SELECT  stock.scrip, balance_after_transaction, closing_price from stock where stock.scrip in( SELECT s FROM) FROM stock INNER JOIN transactions ON transactions.scrip = stock.scrip")
 
       # cur.execute("SELECT stock.scrip, balance_after_transaction from transactions where scrip = ? and uid = ? order by transaction_date desc limit 1", (stock, user_id, ))
