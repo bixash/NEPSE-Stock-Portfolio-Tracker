@@ -4,13 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Home{% endblock %}</title>
-    <link src="{{ url_for('static', filename='style.css') }}"  rel="stylesheet" />
+    <link href="{{ url_for('static', filename='style.css') }}"  rel="stylesheet" />
   </head>
   <body>
-    <nav>---navbar----</nav>
+      <h1 class="main-head">Nepal Stock Exchange Portfoilo Tracker</h1>
+
     <div>
       {% block content %} 
-      <h1> Welcome to Stock Portfolio tracker</h1>
+      <h2> Welcome to Stock Portfolio tracker</h2>
       <h3>Track all your stock at one place!</h3>
       
       <a href="{{ url_for('views.login')}}"> Login </a>

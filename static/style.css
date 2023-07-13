@@ -1,0 +1,13 @@
+.main-head{
+    text-align: center;
+    color: blue;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+td, th {
+    border: 1px solid black;
+}

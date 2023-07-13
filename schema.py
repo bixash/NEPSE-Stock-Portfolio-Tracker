@@ -5,7 +5,7 @@ cur = con.cursor()
 
 # Schema for User table
 def create_user_table():
-    cur.execute("CREATE TABLE user ( id INTEGER NOT NULL, email VARCHAR(150), password VARCHAR(150), PRIMARY KEY (id), UNIQUE (email))")
+    cur.execute("CREATE TABLE user ( id INTEGER NOT NULL, username VARCHAR(50), email VARCHAR(150), password VARCHAR(150), PRIMARY KEY (id), UNIQUE (email))")
 
 # Schema for transaction table
 def create_transaction_table():

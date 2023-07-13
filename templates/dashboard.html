@@ -2,7 +2,7 @@
  {% block title %} Dashboard {% endblock %}
  {% block content %}
 
-    <h1 align="center">Transaction</h1>
+    <h2>{{ username }}'s Portfolio</h2>
 
     {% if not transaction%}
     {{ msg }}
@@ -13,20 +13,27 @@
     <table>
       {{ msg }}
       <tr>
+        <th>SN</th>
         <th>Scrip</th>
         <th>Balance</th>
         <th>Last Price</th>
+        <th>Value as of LTP</th>
       </tr>
       
+
+      
       {% for item in transaction%}
-      <tr>
-          {% for scrip, balance, price in item %}
-          
+      <tr> 
+          <td>{{ loop.index }}</td>
+        {% for scrip, balance, price in item %}
           <td>{{ scrip }}</td>
           <td>{{ balance }}</td>
           <td>{{ price }}</td>
+          {% set value =  price * balance %}
+          <td>{{ '%0.2f'| format(value|float)}}</td>
           
-      {% endfor %}
+        {% endfor %}
+      
     </tr>
       {% endfor %}
       

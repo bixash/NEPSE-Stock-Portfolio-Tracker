@@ -3,11 +3,11 @@ from werkzeug.utils import secure_filename
 from methods import date_format, stringToInt, shorten_history, tupleToStr, ZeroBalancetoEmpty
 from kittapi import UpdateStockPrices
 import csv
-import sqlite3 as sql
+import sqlite3
 import os.path
 # from kitta import getTodayPrice
 
-con = sql.connect("database.db", check_same_thread=False)
+con = sqlite3.connect("database.db", check_same_thread=False)
 cur = con.cursor()
 
 views = Blueprint('views', __name__)
@@ -24,13 +24,20 @@ def login():
       email = request.form['email']
       password = request.form['password']
 
-      cur.execute("SELECT id, email, password FROM `User` where email= ? and password = ?", (email, password))
+      cur.execute("SELECT id, username FROM `User` where email= ? and password = ?", (email, password))
       result = cur.fetchone()
+
       user_id = result[0]
-      if email == result[1] and password == result[2]:
+      username = result[1]
+
+      if result:
          session['user_id'] = user_id
+         session['username'] = username
          return redirect(url_for('views.dashboard'))
-      
+      else:
+         err_msg = "Username or password invalid!!"
+         return render_template("login.html", msg = err_msg)
+
    return render_template("login.html")
 
 
@@ -43,6 +50,9 @@ def signup():
 def dashboard():
    if 'user_id' in session:
       user_id = session['user_id']
+
+   if 'username' in session:
+      user_name = session['username']
       
    UpdateStockPrices('https://api.kitta.dev/stocks/live') 
    
@@ -68,7 +78,7 @@ def dashboard():
    '''   
    result = list(filter(None, ZeroBalancetoEmpty(transactions)))
    
-   return render_template("dashboard.html", transaction = result)
+   return render_template("dashboard.html", transaction = result, username=user_name)
 
 
 @views.route('/upload', methods=['GET','POST'])
@@ -96,7 +106,11 @@ def upload():
 
             print(sn,scrip,transaction_date,credit_quantity,debit_quantity,balance_after_transaction,history_description, user_id)
             
-            cur.execute("INSERT INTO transactions (id, scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?,?)", (sn, scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
+            try:
+               cur.execute("INSERT INTO transactions (id, scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?,?)", (sn, scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
+            except sqlite3.IntegrityError as e:
+               print("Error occurred: ", e)
+            
 
             con.commit()
       return redirect(url_for('views.dashboard'))
