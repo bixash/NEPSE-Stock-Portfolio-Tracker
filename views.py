@@ -5,7 +5,7 @@ from kittapi import UpdateStockPrices
 import csv
 import sqlite3
 import os.path
-# from kitta import getTodayPrice
+from kittapi import url
 
 con = sqlite3.connect("database.db", check_same_thread=False)
 cur = con.cursor()
@@ -43,6 +43,36 @@ def login():
 
 @views.route('/signup', methods=['GET', 'POST'])
 def signup():
+   if request.method == 'GET':
+      err_msg = []
+      return render_template("signup.html", err = err_msg)
+
+   if request.method == 'POST':
+      email = request.form['email']
+      password = request.form['password']
+      username = request.form['username']
+
+      err_msg = []
+      if not email:
+         err_msg.append("Email shouldn't be empty!") 
+      
+      if not password:
+         err_msg.append("Password shouldn't be empty!")
+      
+      if not username:
+        err_msg.append("Username shouldn't be empty!")
+         
+      if not err_msg:
+         try:
+            cur.execute("INSERT INTO user(username, email, password) values(?,?,?)",(username, email, password, ))
+            con.commit()
+            return render_template("login.html", msg = "Account created!")
+         except Exception as e:
+            err_msg.append(e)
+            return render_template("signup.html", err = err_msg)
+      else: 
+         return render_template("signup.html", err = err_msg)
+
    return render_template("signup.html")
 
 
@@ -54,9 +84,8 @@ def dashboard():
    if 'username' in session:
       user_name = session['username']
       
-   UpdateStockPrices('https://api.kitta.dev/stocks/live') 
+   UpdateStockPrices(url) 
    
-   # https://www.nepalipaisa.com/api/GetTodaySharePrice
    cur.execute("SELECT DISTINCT scrip FROM transactions where uid = ?", (user_id,))
    stock_symbols = cur.fetchall()
 
@@ -85,40 +114,35 @@ def dashboard():
 def upload():
    if 'user_id' in session:
       user_id = session['user_id']
-   
-   path = './Transaction_History.csv'
-   check_file = os.path.isfile(path)
 
-   print(check_file)
-   if check_file:
-      # reading uploaded file
-      with open('Transaction_History.csv', newline='') as csvfile:
-         reader = csv.DictReader(csvfile)
-
-         for row in reader:
-            sn = row['S.N']
-            scrip= row['Scrip']
-            transaction_date = date_format(row['Transaction Date'])
-            credit_quantity = stringToInt(row['Credit Quantity'])
-            debit_quantity = stringToInt(row['Debit Quantity'])
-            balance_after_transaction = stringToInt(row['Balance After Transaction'])
-            history_description = shorten_history(row['History Description'])
-
-            print(sn,scrip,transaction_date,credit_quantity,debit_quantity,balance_after_transaction,history_description, user_id)
-            
-            try:
-               cur.execute("INSERT INTO transactions (id, scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?,?)", (sn, scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
-            except sqlite3.IntegrityError as e:
-               print("Error occurred: ", e)
-            
-
-            con.commit()
-      return redirect(url_for('views.dashboard'))
    if request.method == 'POST':
       f = request.files['file']
       f.save(secure_filename(f.filename))
-      print(secure_filename(f.filename))
 
-      return render_template(url_for('views.upload'))
-   
+      path = './Transaction_History.csv'
+      check_file = os.path.isfile(path)
+
+      if check_file:
+         with open('Transaction_History.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+
+            for row in reader:
+               scrip= row['Scrip']
+               transaction_date = date_format(row['Transaction Date'])
+               credit_quantity = stringToInt(row['Credit Quantity'])
+               debit_quantity = stringToInt(row['Debit Quantity'])
+               balance_after_transaction = stringToInt(row['Balance After Transaction'])
+               history_description = shorten_history(row['History Description'])
+               
+               try:
+                  cur.execute("INSERT INTO transactions (scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?)", (scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
+
+                  con.commit()
+                  return render_template(url_for("views.dashboard"))
+               
+               except sqlite3.IntegrityError as e:
+                  print("Error occurred: ", e)
+      else:
+         return render_template("upload.html", msg="Can't find the csv file, re-upload it!") 
+               
    return render_template("upload.html")             
