@@ -3,6 +3,11 @@
     color: blue;
 }
 
+.base-content {
+    width: fit-content;
+    margin: auto;
+    text-align: center;
+}
 table {
     border-collapse: collapse;
     border: 1px solid black;

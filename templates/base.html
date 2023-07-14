@@ -11,10 +11,10 @@
 
     <div>
       {% block content %} 
-      <h2> Welcome to Stock Portfolio tracker</h2>
-      <h3>Track all your stock at one place!</h3>
-      
-      <a href="{{ url_for('views.login')}}"> Login </a>
+      <h2> Track all your stock at one place!</h2>
+    
+      <a href="{{ url_for('views.login')}}"> Login </a> 
+      or
       <a href="{{ url_for('views.signup')}}"> Sign Up </a>
 
       {% endblock %}
