@@ -2,8 +2,8 @@
 {% block title %} Signup {% endblock %}
 {% block content %}
 <ul>
-{% for msg in err %}
-  <li>{{ msg }}</li>
+{% for err in msg %}
+  <li>{{ err }}</li>
 {% endfor %}
 </ul>
 <form action="{{ request.path }}" method="POST">

@@ -13,16 +13,16 @@ def login():
       password = request.form['password']
       err_msg = []
 
-      if not email:
+      if email == '':
          err_msg.append("Email shouldn't be empty!") 
 
-      if not password:
+      if password == "":
          err_msg.append("Password shouldn't be empty!")
 
 
       if not err_msg:
          try:
-            cur.execute("SELECT id, username FROM `User` where email= ? and password = ?", (email, password))
+            cur.execute("SELECT id, username FROM `User` where email= ? and password = ?", (email.strip(), password))
             result = cur.fetchone()
 
 
@@ -34,11 +34,11 @@ def login():
                session['username'] = username
          
             return redirect(url_for('views.dashboard'))
-         except Exception as e:
-            err_msg.append(e)
+         except Exception:
+            err_msg.append("Username or password invalid!") 
             return render_template("login.html", msg = err_msg)
       else: 
-         err_msg = "Username or password invalid!!"
+         
          return render_template("login.html", msg = err_msg)
    return render_template("login.html")
 
@@ -65,12 +65,13 @@ def signup():
          try:
             cur.execute("INSERT INTO user(username, email, password) values(?,?,?)",(username, email, password, ))
             con.commit()
-            return render_template("login.html", msg = "Account created!")
+            err_msg.append("Account created!")
+            return render_template("login.html", msg = err_msg )
          except Exception as e:
             err_msg.append(e)
-            return render_template("signup.html", err = err_msg)
+            return render_template("signup.html", msg = err_msg)
       else: 
-         return render_template("signup.html", err = err_msg)
+         return render_template("signup.html", msg = err_msg)
 
    return render_template("signup.html")
 

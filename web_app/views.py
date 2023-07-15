@@ -2,8 +2,9 @@ from flask import Blueprint, render_template, request, url_for, session, redirec
 from werkzeug.utils import secure_filename
 from .methods import date_format, stringToInt, shorten_history, tupleToStr, ZeroBalancetoEmpty, allowed_file
 from .kittapi import getStockPrices
-import csv, sqlite3, os.path
-from .db import cur
+import csv, sqlite3, os
+from .db import cur, con
+
 
 
 
@@ -59,10 +60,11 @@ def dashboard():
 def upload():
    if 'user_id' and 'username' in session:
       user_id = session['user_id']
-      user_name = session['username']
+      username = session['username']
    
 
    if request.method == 'POST':
+
       if 'file' not in request.files:
          flash('No file part')
          return redirect(request.url)
@@ -74,16 +76,33 @@ def upload():
          return redirect(request.url)
       
       if file and allowed_file(file.filename):
-         old_filename = secure_filename(file.filename)
-        
-         
 
-         # renaming the file
-         path = user_id + '_'+ user_name + '_transaction' + '.csv'
-         # new_filename = os.path.join(app.config['UPLOAD_FOLDER'], path)
+         filename = secure_filename(file.filename)
 
-         # file.save(os.path.join(new_filename, old_filename))
+         if filename.endswith('.csv'):
 
+            path = os.path.join('web_app', 'static', 'uploads')
+            # file.save(os.path.join(path, filename))
+            # file.save(filename)
+            save_filename =  f"{user_id}_{username}_transactions.csv"
+            
+            file.save(os.path.join(path, save_filename))
+
+         return 'File uploaded successfully!'
+      else:
+         return 'No file selected!'
+      
+      #    old_filename = secure_filename(file.filename)
+
+      #    # renaming the file
+      #    path = user_id + '_'+ user_name + '_transaction' + '.csv'
+      #    new_filename = os.path.join(UPLOAD_FOLDER, path)
+      #    print(new_filename)
+
+      #    file.save(os.path.join(new_filename, old_filename))
+
+
+      
          # os.rename(old_filename, new_filename)
 
          

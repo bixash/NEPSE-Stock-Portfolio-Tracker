@@ -47,7 +47,6 @@ def ZeroBalancetoEmpty(trans):
     return trans
 
 def allowed_file(filename):
-    from .. import ALLOWED_EXTENSIONS
     return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        filename.rsplit('.', 1)[1].lower() in {'csv'}
 
