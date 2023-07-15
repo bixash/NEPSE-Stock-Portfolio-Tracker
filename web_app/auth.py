@@ -11,22 +11,35 @@ def login():
    if request.method == 'POST':
       email = request.form['email']
       password = request.form['password']
+      err_msg = []
 
-      cur.execute("SELECT id, username FROM `User` where email= ? and password = ?", (email, password))
-      result = cur.fetchone()
+      if not email:
+         err_msg.append("Email shouldn't be empty!") 
 
-      user_id = result[0]
-      username = result[1]
+      if not password:
+         err_msg.append("Password shouldn't be empty!")
 
-      if result:
-         session['user_id'] = user_id
-         session['username'] = username
+
+      if not err_msg:
+         try:
+            cur.execute("SELECT id, username FROM `User` where email= ? and password = ?", (email, password))
+            result = cur.fetchone()
+
+
+            user_id = result[0]
+            username = result[1]
+
+            if result:
+               session['user_id'] = user_id
+               session['username'] = username
          
-         return redirect(url_for('views.dashboard'))
-      else:
+            return redirect(url_for('views.dashboard'))
+         except Exception as e:
+            err_msg.append(e)
+            return render_template("login.html", msg = err_msg)
+      else: 
          err_msg = "Username or password invalid!!"
          return render_template("login.html", msg = err_msg)
-
    return render_template("login.html")
 
 
