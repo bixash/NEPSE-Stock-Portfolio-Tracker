@@ -1,6 +1,6 @@
 kittapi.py
 __pycache__/
 database.db
-scrape.py
+nepse.py
 Transaction_History.csv
 todo.md
