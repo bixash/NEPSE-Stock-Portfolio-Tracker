@@ -62,7 +62,6 @@ def upload():
       user_id = session['user_id']
       username = session['username']
    
-
    if request.method == 'POST':
 
       if 'file' not in request.files:
@@ -78,61 +77,34 @@ def upload():
       if file and allowed_file(file.filename):
 
          filename = secure_filename(file.filename)
-
          if filename.endswith('.csv'):
 
             path = os.path.join('web_app', 'static', 'uploads')
-            # file.save(os.path.join(path, filename))
-            # file.save(filename)
             save_filename =  f"{user_id}_{username}_transactions.csv"
             
             file.save(os.path.join(path, save_filename))
 
-         return 'File uploaded successfully!'
+         with open(os.path.join(path, save_filename), newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+
+            for row in reader:
+               scrip= row['Scrip']
+               transaction_date = date_format(row['Transaction Date'])
+               credit_quantity = stringToInt(row['Credit Quantity'])
+               debit_quantity = stringToInt(row['Debit Quantity'])
+               balance_after_transaction = stringToInt(row['Balance After Transaction'])
+               history_description = shorten_history(row['History Description'])
+               
+               try:
+                  cur.execute("INSERT INTO transactions (scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?)", (scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
+
+                  con.commit()
+               
+               except sqlite3.IntegrityError as e:
+                  return render_template("upload.html", msg=e) 
+               
+            return redirect(url_for("views.dashboard"))
       else:
          return 'No file selected!'
       
-      #    old_filename = secure_filename(file.filename)
-
-      #    # renaming the file
-      #    path = user_id + '_'+ user_name + '_transaction' + '.csv'
-      #    new_filename = os.path.join(UPLOAD_FOLDER, path)
-      #    print(new_filename)
-
-      #    file.save(os.path.join(new_filename, old_filename))
-
-
-      
-         # os.rename(old_filename, new_filename)
-
-         
-         # session['uploaded_data_file_path'] = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
-      
-
-      # path = './Transaction_History.csv'
-      # check_file = os.path.isfile(path)
-
-      # if check_file:
-      #    with open('Transaction_History.csv', newline='') as csvfile:
-      #       reader = csv.DictReader(csvfile)
-
-      #       for row in reader:
-      #          scrip= row['Scrip']
-      #          transaction_date = date_format(row['Transaction Date'])
-      #          credit_quantity = stringToInt(row['Credit Quantity'])
-      #          debit_quantity = stringToInt(row['Debit Quantity'])
-      #          balance_after_transaction = stringToInt(row['Balance After Transaction'])
-      #          history_description = shorten_history(row['History Description'])
-               
-      #          try:
-      #             cur.execute("INSERT INTO transactions (scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?)", (scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
-
-      #             con.commit()
-      #             return redirect(url_for("views.dashboard"))
-               
-      #          except sqlite3.IntegrityError as e:
-      #             print("Error occurred: ", e)
-      # else:
-      #    return render_template("upload.html", msg="Can't find the csv file, re-upload it!") 
-               
    return render_template("upload.html")             
