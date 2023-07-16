@@ -27,7 +27,7 @@ stock_schema = """ CREATE TABLE stock(
     scrip VARCHAR(255) NOT NULL, 
     company_name VARCHAR(255) NOT NULL,
     previous_closing INTEGER NOT NULL, 
-    trade_date date NOT NULL,
+    trade_date DATE NOT NULL,
     closing_price INTEGER NOT NULL, 
     PRIMARY KEY (scrip)
     );
@@ -36,18 +36,26 @@ stock_schema = """ CREATE TABLE stock(
 insert_history = """ INSERT INTO transactions(
     scrip, transaction_date, 
     credit_quantity, 
-    debit_quantity, balance_after_transaction, h
-    istory_description, uid)
-    values(?,?,?,?,?,?,?)
+    debit_quantity, balance_after_transaction, history_description, uid)
+    values(?,?,?,?,?,?,?);
 """
 
 fetch_scrip_balance_price = """ SELECT stock.scrip, balance_after_transaction, closing_price 
     FROM stock INNER JOIN transactions ON transactions.scrip = stock.scrip 
-    WHERE transactions.scrip = ? and uid = ? ORDER BY transaction_date desc limit 1
+    WHERE transactions.scrip = ? and uid = ? ORDER BY transaction_date desc limit 1;
 """
 
 fetch_history = """ SELECT 
     scrip, transaction_date, 
     credit_quantity, debit_quantity, balance_after_transaction, 
-    history_description from transactions where uid = ?
+    history_description from transactions where uid = ?;
+"""
+
+insert_stockPrices = """ INSERT INTO stock (scrip, company_name, previous_closing,
+    trade_date, closing_price) values(?,?,?,?,?);
+
+"""
+
+update_stockPrices = """ UPDATE stock 
+    SET previous_closing = ?, trade_date = ?, closing_price = ? WHERE scrip = ?
 """

@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect, flash
 from werkzeug.utils import secure_filename
 from .methods import date_format, stringToInt, shorten_history, tupleToStr, ZeroBalancetoEmpty, allowed_file
-from .kittapi import getStockPrices, getStockInfo
+from .kittapi import getStockPrices
 import csv, sqlite3, os
 from .db import cur, con
-import pandas as pd
 from .models import fetch_scrip_balance_price, insert_history, fetch_history
 
 
@@ -24,8 +23,7 @@ def dashboard():
       user_name = session['username']
       
       try:
-         # getStockPrices() 
-         getStockInfo()
+         getStockPrices() 
       except Exception as err:
          print(err)
       finally:
@@ -98,7 +96,7 @@ def upload():
                history_description = shorten_history(row['History Description'])
                
                try:
-                  cur.execute(insert_history, (scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
+                  cur.execute(insert_history, (scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
 
                   con.commit()
                
