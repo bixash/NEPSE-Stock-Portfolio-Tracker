@@ -1,10 +1,6 @@
 from flask import Flask
 from .views import views
 from .auth import auth
-import os
-
-
-
 
 
 def create_app():

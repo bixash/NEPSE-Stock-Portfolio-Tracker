@@ -5,7 +5,7 @@ from .kittapi import getStockPrices, getStockInfo
 import csv, sqlite3, os
 from .db import cur, con
 import pandas as pd
-
+from .models import fetch_scrip_balance_price, insert_history, fetch_history
 
 
 
@@ -37,13 +37,7 @@ def dashboard():
 
          for stock in stock_symbols:
             stock = tupleToStr(stock)
-
-            # cur.execute("SELECT  stock.scrip, balance_after_transaction, closing_price from stock where stock.scrip in( SELECT s FROM) FROM stock INNER JOIN transactions ON transactions.scrip = stock.scrip")
-
-            # cur.execute("SELECT stock.scrip, balance_after_transaction from transactions where scrip = ? and uid = ? order by transaction_date desc limit 1", (stock, user_id, ))
-
-            cur.execute("SELECT stock.scrip, balance_after_transaction, closing_price FROM stock INNER JOIN transactions ON transactions.scrip = stock.scrip where transactions.scrip = ? and uid = ? order by transaction_date desc limit 1", (stock, user_id, ))
-
+            cur.execute(fetch_scrip_balance_price, (stock, user_id, ))
             transactions.append(cur.fetchall())
         
          '''
@@ -52,6 +46,7 @@ def dashboard():
          result = list(filter(None, ZeroBalancetoEmpty(transactions)))
 
          total = 0
+         
          for item in transactions:
             for scrip, balance, price in item:
                value =  price * balance 
@@ -103,7 +98,7 @@ def upload():
                history_description = shorten_history(row['History Description'])
                
                try:
-                  cur.execute("INSERT INTO transactions (scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, uid)values(?,?,?,?,?,?,?)", (scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
+                  cur.execute(insert_history, (scrip,transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, user_id))
 
                   con.commit()
                
@@ -140,7 +135,7 @@ def show_data():
 def show_history():
    user_id = session.get('user_id')
 
-   cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description from transactions where uid = ?" ,(user_id,))
+   cur.execute(fetch_history ,(user_id,))
 
    result = cur.fetchall()
    return render_template('show_history.html', data=result)
