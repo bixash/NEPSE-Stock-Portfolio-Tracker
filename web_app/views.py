@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect, flash
 from werkzeug.utils import secure_filename
 from .methods import date_format, stringToInt, shorten_history, tupleToStr, ZeroBalancetoEmpty, allowed_file
-from .kittapi import getStockPrices
+from .kittapi import getStockPrices, getStockInfo
 import csv, sqlite3, os
 from .db import cur, con
 
@@ -24,7 +24,8 @@ def dashboard():
       user_name = session['username']
       
       try:
-         getStockPrices() 
+         # getStockPrices() 
+         getStockInfo()
       except Exception as err:
          print(err)
       finally:
