@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %} Show CSV {% endblock %}
+{% block content %}
+    <table>
+
+        <tr>
+            <th>SN</th>
+            <th>Scrip</th>
+            <th>Transaction Date</th>
+            <th>Credit Quantity</th>
+            <th>Debit Quantity</th>
+            <th>Balance After Transaction</th>
+            <th>History Description</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{row['S.N']}}</td>
+            <td>{{row['Scrip']}}</td>
+            <td>{{row['Transaction Date']}}</td>
+            <td>{{row['Credit Quantity']}}</td>
+            <td>{{row['Debit Quantity']}}</td>
+            <td>{{row['Balance After Transaction']}}</td>
+            <td>{{row['History Description']}}</td>
+        </tr>
+        {% endfor%}
+
+
+    </table>
+
+   
+
+
+
+    
+ 
+{% endblock%}

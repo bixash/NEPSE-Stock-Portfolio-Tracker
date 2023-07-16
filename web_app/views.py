@@ -4,7 +4,7 @@ from .methods import date_format, stringToInt, shorten_history, tupleToStr, Zero
 from .kittapi import getStockPrices, getStockInfo
 import csv, sqlite3, os
 from .db import cur, con
-
+import pandas as pd
 
 
 
@@ -45,13 +45,19 @@ def dashboard():
             cur.execute("SELECT stock.scrip, balance_after_transaction, closing_price FROM stock INNER JOIN transactions ON transactions.scrip = stock.scrip where transactions.scrip = ? and uid = ? order by transaction_date desc limit 1", (stock, user_id, ))
 
             transactions.append(cur.fetchall())
-
+        
          '''
          changing zero balance scrip to empty list and removing empty list 
          '''   
          result = list(filter(None, ZeroBalancetoEmpty(transactions)))
-      
-         return render_template("dashboard.html", transaction = result, username=user_name)
+
+         total = 0
+         for item in transactions:
+            for scrip, balance, price in item:
+               value =  price * balance 
+               total = total + value
+         
+         return render_template("dashboard.html", transaction = result, username=user_name, total = total)
    else:
       err_msg = "Please login to goto dashboard!"
       return render_template("base.html", msg= err_msg)
@@ -109,3 +115,32 @@ def upload():
          return 'No file selected!'
       
    return render_template("upload.html")             
+
+
+@views.route('/show_csv')
+def show_data():
+
+   user_id = session.get('user_id')
+   username = session.get('username')
+
+   path = os.path.join('web_app', 'static', 'uploads')
+   save_filename =  f"{user_id}_{username}_transactions.csv"
+
+   with open(os.path.join(path, save_filename), newline='') as csvfile:
+      reader = csv.DictReader(csvfile)
+
+      result = []
+      for row in reader:
+         result.append(row)
+
+   return render_template('show_csv.html', data=result)
+
+
+@views.route('/show_history')
+def show_history():
+   user_id = session.get('user_id')
+
+   cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description from transactions where uid = ?" ,(user_id,))
+
+   result = cur.fetchall()
+   return render_template('show_history.html', data=result)

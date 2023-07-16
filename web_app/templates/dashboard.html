@@ -23,9 +23,10 @@
         <th>Value as of LTP</th>
       </tr>
       
-
+      
       
       {% for item in transaction%}
+      
       <tr> 
           <td>{{ loop.index }}</td>
         {% for scrip, balance, price in item %}
@@ -39,12 +40,17 @@
       
     </tr>
       {% endfor %}
+      <tr>
+        <td colspan="4">Total</td>
+        <td>{{total}}</td>
+      </tr>
       
       
     </table>
     
     {% endif %}
-    <p>
-      <a href="{{ url_for('views.upload')}}">Upload transaction file</a>
-    </p>
+    
+    <a href="{{ url_for('views.upload')}}">Upload transaction file</a>
+    <a href="{{ url_for('views.show_data')}}">Show CSV</a>
+    
 {% endblock %}   
