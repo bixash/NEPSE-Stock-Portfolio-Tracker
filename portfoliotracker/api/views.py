@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect, flash
 from werkzeug.utils import secure_filename
-from .methods import date_format, stringToInt, shorten_history, tupleToStr, ZeroBalancetoEmpty, allowed_file
-from .kittapi import getStockPrices
+from portfoliotracker.utils.methods import date_format, stringToInt, shorten_history, tupleToStr, ZeroBalancetoEmpty, allowed_file
+from portfoliotracker.service.kittapi import getStockPrices
 import csv, sqlite3, os
-from .db import cur, con
-from .models import fetch_scrip_balance_price, insert_history, fetch_history
+from portfoliotracker.repo.db import cur, con
+from portfoliotracker.repo.models import fetch_scrip_balance_price, insert_history, fetch_history
 
 
 
@@ -79,7 +79,7 @@ def upload():
          filename = secure_filename(file.filename)
          if filename.endswith('.csv'):
 
-            path = os.path.join('web_app', 'static', 'uploads')
+            path = os.path.join('web_app', '../../resources/static', 'uploads')
             save_filename =  f"{user_id}_{username}_transactions.csv"
             
             file.save(os.path.join(path, save_filename))
@@ -116,7 +116,7 @@ def show_data():
    user_id = session.get('user_id')
    username = session.get('username')
 
-   path = os.path.join('web_app', 'static', 'uploads')
+   path = os.path.join('web_app', '../../resources/static', 'uploads')
    save_filename =  f"{user_id}_{username}_transactions.csv"
 
    with open(os.path.join(path, save_filename), newline='') as csvfile:
