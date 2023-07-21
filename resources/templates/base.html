@@ -4,19 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Home{% endblock %}</title>
-    <link href="{{ url_for('static', filename='style.css') }}"  rel="stylesheet" />
+    <link href="/static/style.css"  rel="stylesheet" />
   </head>
   <body>
       <h1 class="main-head">Nepal Stock Exchange Portfoilo Tracker</h1>
 
     <div>
       {% block content %} 
-      <span>{{msg}}</span>
+      <span>{{name}}</span>
       <h2> Track all your stock at one place!</h2>
     
-      <a href="{{ url_for('auth.login')}}"> Login </a> 
+      <a href="/login"> Login </a> 
       or
-      <a href="{{ url_for('auth.signup')}}"> Sign Up </a>
+      <a href="/signup"> Sign Up </a>
 
       {% endblock %}
     
