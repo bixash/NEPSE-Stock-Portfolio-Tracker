@@ -16,9 +16,9 @@ class AuthService:
     def login(self, email: str, password: str) -> BaseResponse:
         try:
             if email == '':
-                return BaseResponse(error=True, success=False, message="Email shouldn't be empty!")
+                return BaseResponse(error=True, success=False, msg="Email shouldn't be empty!")
             if password == '':
-                return BaseResponse(error=True, success=False, message="Password shouldn't be empty!")
+                return BaseResponse(error=True, success=False, msg="Password shouldn't be empty!")
 
             auth_response = self._login(email, password)
             return BaseResponse(error=False, success=True, result=auth_response)
