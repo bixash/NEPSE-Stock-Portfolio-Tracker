@@ -12,7 +12,7 @@ class AuthRepo:
 
     def get_user_by_email(self, email: str) -> User:
         cur = self.db.get_connection()
-        cur.execute("SELECT id, username, email FROM `user` where email= ?", email.strip())
+        cur.execute("SELECT id, username, email FROM `user` where email= ?", (email, ))
         result = cur.fetchone()
         if result:
             return User(user_id=result[0], username=result[1], email=result[2])
@@ -20,8 +20,7 @@ class AuthRepo:
 
     def login(self, email: str, password: str) -> bool:
         cur = self.db.get_connection()
-        cur.execute("SELECT id, username FROM `user` where email= ? and password = ?",
-                    (email.strip(), password))
+        cur.execute("SELECT id, username FROM `user` where email= ? and password = ?", (email, password, ))
         result = cur.fetchone()
         if result:
             return True
@@ -29,7 +28,6 @@ class AuthRepo:
 
     def save_user(self, user) -> bool:
         cur = self.db.get_connection()
-        cur.execute("INSERT INTO `user` (username, email, password) VALUES (?, ?, ?)",
-                    (user.username, user.email, user.password))
+        cur.execute("INSERT INTO `user` (username, email, password) VALUES (?, ?, ?)", (user.username, user.email, user.password, ))
         cur.commit()
         return True
