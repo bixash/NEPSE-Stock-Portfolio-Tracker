@@ -3,12 +3,14 @@ import logging
 import uvicorn, os
 from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
 from portfoliotracker.api import auth_router
 from portfoliotracker.entities import BaseResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+
 app = FastAPI(title="Stock Portfolio Tracker")
 
 logger = logging.getLogger(__name__)
@@ -19,6 +21,11 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key="some-random-string"
 )
 
 # Mount the static files (css, js, etc.) from the resources/static directory
