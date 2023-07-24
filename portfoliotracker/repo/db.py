@@ -14,7 +14,10 @@ class DBConnection(abc.ABC):
     def get_connection(self):
         return self.cur
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def _commit(self):
+        return self.con
+
+    def __exit__(self):
         self.con.commit()
         self.con.close()
 

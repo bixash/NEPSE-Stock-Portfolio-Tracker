@@ -28,6 +28,7 @@ class AuthRepo:
 
     def save_user(self, user) -> bool:
         cur = self.db.get_connection()
+        con = self.db._commit()
         cur.execute("INSERT INTO `user` (username, email, password) VALUES (?, ?, ?)", (user.username, user.email, user.password, ))
-        cur.commit()
+        con.commit()
         return True
