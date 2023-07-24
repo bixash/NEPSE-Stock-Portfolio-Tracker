@@ -1,6 +1,7 @@
 {% extends "base.html" %}
  {% block title %} Dashboard {% endblock %}
  {% block content %}
+  <div class="portofio-section">
 
     <h2>{{ username }}'s Portfolio</h2>
 
@@ -11,7 +12,7 @@
 
     {% else %}
 
-      <a href="{{ url_for('auth.logout')}}">Logout</a>
+      <a href="auth/logout">Logout</a>
   
     <table>
       {{ msg }}
@@ -49,8 +50,19 @@
     </table>
     
     {% endif %}
-    
-    <a href="{{ url_for('views.upload')}}">Upload transaction file</a>
-    <a href="{{ url_for('views.show_data')}}">Show CSV</a>
+
+  </div>
+
+  <div class="history-section">
+
+    <h2>{{ username }}'s recent history</h2>
+    <table>
+      
+    </table>
+
+    <a href="/show_history/">Show all history</a>
+  </div>
+    <a href="">Upload transaction file</a>
+    <a href="">Show CSV</a>
     
 {% endblock %}   
