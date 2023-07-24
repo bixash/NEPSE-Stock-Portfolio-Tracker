@@ -47,7 +47,7 @@ def post_login(login_request: LoginRequest, request: Request):
     request.session["token"] = response.result.token
     request.session["username"] = response.result.user.username
 
-    return templates.TemplateResponse("dashboard.html",{ "request": request})
+    return templates.TemplateResponse("dashboard.html",{ "request": request, "username": request.session["username"]})
 
 @router.post('/auth/signup')
 def signup(user: User) -> BaseResponse:
@@ -55,6 +55,6 @@ def signup(user: User) -> BaseResponse:
 
 
 @router.post('/auth/logout')
-def logout():
-    token = None
+def logout(request: Request):
+    token = request.session["token"]
     auth_service.logout(token)
