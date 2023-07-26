@@ -9,7 +9,7 @@ from fastapi.responses import RedirectResponse
 
 
 from portfoliotracker.entities import BaseResponse, User
-from portfoliotracker.entities.auth import LoginRequest
+from portfoliotracker.entities.auth import LoginRequest, SignupRequest
 from portfoliotracker.repo.auth_repo import AuthRepo
 from portfoliotracker.repo.db import get_db_connection
 from portfoliotracker.service.auth_service import AuthService
@@ -33,11 +33,13 @@ templates = Jinja2Templates(directory=templates_directory)
 
 
 @router.get('/auth/login')
-def get_login(request: Request):
+def login(request: Request):
     return templates.TemplateResponse("login.html",{ "request": request})
 
 @router.post('/auth/login')
-def post_login(login_request: LoginRequest, request: Request):
+def login(request: Request, email: str = Form(), password: str = Form()):
+
+    login_request = LoginRequest(email=email, password=password)
    
     response = auth_service.login(login_request.email, login_request.password)
         
@@ -49,10 +51,19 @@ def post_login(login_request: LoginRequest, request: Request):
 
     return templates.TemplateResponse("dashboard.html",{ "request": request, "username": request.session["username"]})
 
-@router.post('/auth/signup')
-def signup(user: User) -> BaseResponse:
-    return auth_service.signup(user)
+@router.get('/auth/signup')
+def signup(request: Request):
+    return templates.TemplateResponse("signup.html",{ "request": request})
 
+@router.post('/auth/signup')
+def signup(request: Request, username: str = Form(), email: str = Form(), password: str = Form()):
+
+    signup_request = SignupRequest(username=username, email=email, password=password)
+
+    response = auth_service.signup(signup_request)
+    if response.error:
+        return templates.TemplateResponse("signup.html",{ "request": request, "msg": response.msg})
+    return templates.TemplateResponse("login.html",{ "request": request, "msg": "Registered successful! Login to continue."})
 
 @router.post('/auth/logout')
 def logout(request: Request):
