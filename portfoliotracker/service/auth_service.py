@@ -5,6 +5,7 @@
 from portfoliotracker.entities import AuthResponse, BaseResponse, User
 from portfoliotracker.repo.auth_repo import AuthRepo
 from portfoliotracker.utils import utils
+from portfoliotracker.entities.auth import SignupRequest
 
 
 class AuthService:
@@ -43,18 +44,18 @@ class AuthService:
         else:
             raise Exception("Invalid token")
 
-    def signup(self, user: User) -> BaseResponse:
+    def signup(self, signup_request: SignupRequest) -> BaseResponse:
         try:
-            auth_response = self._signup(user)
+            auth_response = self._signup(signup_request)
             return BaseResponse(error=False, success=True, result=auth_response)
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
 
-    def _signup(self, user: User) -> User:
-        existing_user = self.auth_repo.get_user_by_email(user.email)
+    def _signup(self, signup_request: SignupRequest) -> User:
+        existing_user = self.auth_repo.get_user_by_email(signup_request.email)
         if existing_user is not None:
             raise Exception("User already exists")
-        success = self.auth_repo.save_user(user)
+        success = self.auth_repo.save_user(signup_request)
         if not success:
             raise Exception("Could not save user")
-        return user
+        return signup_request
