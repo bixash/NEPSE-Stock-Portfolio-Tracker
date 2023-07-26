@@ -15,3 +15,8 @@ class LoginRequest(BaseModel):
 class AuthResponse(BaseModel):
     token: str = None
     user: User = None
+
+class SignupRequest(BaseModel):
+    username: str = None
+    email: str = None
+    password: str = None
