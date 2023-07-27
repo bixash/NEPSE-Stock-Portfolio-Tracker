@@ -1,12 +1,13 @@
 
 import logging
 import os
+from fastapi.responses import RedirectResponse
 
-from fastapi import APIRouter, Request, UploadFile
+from fastapi import APIRouter, Request, UploadFile, status
 from portfoliotracker.repo.db import get_db_connection
 from fastapi.templating import Jinja2Templates
 from portfoliotracker.entities import Transaction, User
-from portfoliotracker.utils import Settings
+from portfoliotracker.utils import Settings, get_templates_directory
 from portfoliotracker.service.transaction_service import TransactionService
 from portfoliotracker.repo.transaction_repo import TransactionRepo
 
@@ -20,13 +21,13 @@ db = get_db_connection()
 trans_repo = TransactionRepo(db)
 trans_service = TransactionService(trans_repo=trans_repo)
 
-templates_directory = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), "..", "..", "resources", "templates")
-templates = Jinja2Templates(directory=templates_directory)
+templates = Jinja2Templates(directory=get_templates_directory())
 
 
 @router.get("/upload")
 def upload(request: Request):
+    if not request.session["token"]:
+        return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     return templates.TemplateResponse("upload.html", {"request": request})
 
 
@@ -57,4 +58,4 @@ def upload(request: Request, file: UploadFile):
     response = trans_service.upload_transactions(user, file_location)
     if response.error:
         return templates.TemplateResponse("upload.html",{ "request": request, "msg": response.msg})
-    return router.url_path_for("portfolio")
+    return RedirectResponse(url=request.url_for("portfolio"), status_code=status.HTTP_303_SEE_OTHER)

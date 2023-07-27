@@ -4,7 +4,7 @@
 """
 import logging
 
-from fastapi import APIRouter, Request, Form
+from fastapi import APIRouter, Request, Form, status
 from fastapi.responses import RedirectResponse
 
 
@@ -50,7 +50,7 @@ def login(request: Request, email: str = Form(), password: str = Form()):
     request.session["username"] = response.result.user.username
     request.session['user_id'] = response.result.user.user_id
 
-    return templates.TemplateResponse("dashboard.html",{ "request": request, "username": request.session["username"]})
+    return RedirectResponse(url=request.url_for("portfolio"), status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get('/auth/signup')
 def signup(request: Request):
@@ -64,9 +64,11 @@ def signup(request: Request, username: str = Form(), email: str = Form(), passwo
     response = auth_service.signup(signup_request)
     if response.error:
         return templates.TemplateResponse("signup.html",{ "request": request, "msg": response.msg})
-    return templates.TemplateResponse("login.html",{ "request": request, "msg": "Registered successful! Login to continue."})
+    return templates.TemplateResponse("login.html",{ "request": request, "msg": "Registered successful!"})
 
-@router.post('/auth/logout')
+@router.get('/auth/logout')
 def logout(request: Request):
     token = request.session["token"]
     auth_service.logout(token)
+    request.session["token"] = None
+    return RedirectResponse(url=request.url_for("root"), status_code=status.HTTP_303_SEE_OTHER)
