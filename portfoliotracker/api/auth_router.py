@@ -48,6 +48,7 @@ def login(request: Request, email: str = Form(), password: str = Form()):
     
     request.session["token"] = response.result.token
     request.session["username"] = response.result.user.username
+    request.session['user_id'] = response.result.user.user_id
 
     return templates.TemplateResponse("dashboard.html",{ "request": request, "username": request.session["username"]})
 
