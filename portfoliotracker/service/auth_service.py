@@ -12,7 +12,7 @@ class AuthService:
 
     def __init__(self, auth_repo: AuthRepo):
         self.auth_repo = auth_repo
-        self.auth_session: dict[str, AuthResponse] = {}
+        self.auth_session: dict[str, AuthResponse] = {} # don't understand this, why colon
 
     def login(self, email: str, password: str) -> BaseResponse:
         try:
