@@ -25,3 +25,9 @@ class TransactionService:
             return BaseResponse(error=False, success=True)
         except Exception as e:
             return BaseResponse(error=True, success=False, msg = str(e))
+        
+    def check_transaction(self, user: User) -> bool:
+        result = self.trans_repo.retrieve_all_transaction(user)
+        if result is None:
+            return False
+        return True

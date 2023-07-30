@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 {% block title %} Signup {% endblock %}
 {% block content %}
-<ul>
-{% for err in msg %}
-  <li>{{ err }}</li>
-{% endfor %}
-</ul>
-<form action="{{ request.path }}" method="POST">
+
+  <span>{{ msg }} </span>
+
+<form action="/auth/signup" method="POST">
     <h2>Sign Up</h2>
     <div class="form-group">
       <label for="email">Email</label>

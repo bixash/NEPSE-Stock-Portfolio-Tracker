@@ -8,15 +8,27 @@
   </head>
   <body>
       <h1 class="main-head">Nepal Stock Exchange Portfoilo Tracker</h1>
+      <nav class="navbar">
+        <ul>
+        {% if request.session["token"]%}
+           <li class="navbar-list"><a href="/portfolio"> Home </a> </li>
+            <li class="navbar-list"><a href="/auth/logout"> Logout </a> </li>
+            <li class="navbar-list"><a href="/all_transactions"> History </a> </li>
+        {% else %}
+          <li class="navbar-list"><a href="/auth/login"> Login </a> </li>
+          <li class="navbar-list"><a href="/auth/signup"> Signup </a> </li>
+        {% endif %}
+        </ul>
 
+      </nav>
     <div>
       {% block content %} 
       <span>{{name}}</span>
       <h2> Track all your stock at one place!</h2>
     
-      <a href="/login"> Login </a> 
+      <a href="/auth/login"> Login </a> 
       or
-      <a href="/signup"> Sign Up </a>
+      <a href="/auth/signup"> Sign Up </a>
 
       {% endblock %}
     

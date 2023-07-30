@@ -3,12 +3,10 @@
 
 {% block content%}
 <h2>Login</h2>
-<ul>
-  {% for err in msg %}
-    <li>{{ err }}</li>
-  {% endfor %}
-  </ul>
-<form action="{{ request.path }}" method="post">
+
+<span class="error">{{msg}}</span>
+
+<form action="/auth/login" method="post">
   <label>Email: </label>
   <input type="text" name="email" />
   <br />
