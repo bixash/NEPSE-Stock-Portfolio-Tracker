@@ -39,7 +39,8 @@ def portfolio(request: Request):
     if not request.session["token"]:
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-    all_history = trans_repo.retrieve_all_transaction(user)
+    all_transactions = trans_repo.retrieve_all_transaction(user)
+    limit_transactions = trans_repo.retrieve_limit_transaction(user)
 
-    return templates.TemplateResponse("portfolio.html", { "request": request, "transaction": all_history, "username": user.username})
+    return templates.TemplateResponse("portfolio.html", { "request": request, "all_transactions": all_transactions, "limit_transactions": limit_transactions,"username": user.username})
 

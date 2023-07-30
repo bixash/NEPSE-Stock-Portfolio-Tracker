@@ -46,7 +46,7 @@ def upload(request: Request, file: UploadFile):
     file_location = f"{os.path.join(Settings.CSV_UPLOAD_PATH)}/{user.user_id}_{user.username}_transactions.csv"
    
     if not filename.endswith('.csv'):
-        return templates.TemplateResponse("upload.html", {"request": request, "msg": "File should be csv!"})
+        return templates.TemplateResponse("upload.html", {"request": request, "msg": "File should be csv format!"})
     try:
         with open(file_location, "wb+") as file_object:
             file_object.write(file.file.read())
@@ -55,6 +55,8 @@ def upload(request: Request, file: UploadFile):
     finally:
         file.file.close()
 
+    if trans_service.check_transaction(user):
+        trans_repo.delete_transaction(user)
     response = trans_service.upload_transactions(user, file_location)
     if response.error:
         return templates.TemplateResponse("upload.html",{ "request": request, "msg": response.msg})

@@ -69,6 +69,11 @@ def signup(request: Request, username: str = Form(), email: str = Form(), passwo
 @router.get('/auth/logout')
 def logout(request: Request):
     token = request.session["token"]
-    auth_service.logout(token)
     request.session["token"] = None
-    return RedirectResponse(url=request.url_for("root"), status_code=status.HTTP_303_SEE_OTHER)
+    request.session['user_status'] = "logged_out"
+    try:
+        auth_service.logout(token)
+        return RedirectResponse(url=request.url_for("root"), status_code=status.HTTP_303_SEE_OTHER)
+    except: 
+        return RedirectResponse(url=request.url_for("root"), status_code=status.HTTP_303_SEE_OTHER)
+    
