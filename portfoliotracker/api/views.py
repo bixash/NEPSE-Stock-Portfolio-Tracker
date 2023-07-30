@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect, flash
 from werkzeug.utils import secure_filename
 from portfoliotracker.utils.methods import date_format, stringToInt, shorten_history, tupleToStr, ZeroBalancetoEmpty, allowed_file
-from portfoliotracker.service.kittapi import getStockPrices
+from portfoliotracker.service.api_service import getStockPrices
 import csv, sqlite3, os
 from portfoliotracker.repo.db import cur, con
 from portfoliotracker.repo.models import fetch_scrip_balance_price, insert_history, fetch_history
