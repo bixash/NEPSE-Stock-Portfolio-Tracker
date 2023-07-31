@@ -24,7 +24,6 @@ class TransactionService:
                     success = self.trans_repo.insert_transaction(user, transaction)
                     if not success:
                         raise Exception ("Could not insert a transaction!")
-                    
                 return BaseResponse(error=False, success=True, result=transaction_data)
         except Exception as e:
             return BaseResponse(error=True, success=False, msg = str(e))
