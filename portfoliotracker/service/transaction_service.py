@@ -33,3 +33,29 @@ class TransactionService:
         if result is None:
             return False
         return True
+
+    def distinct_stockSymbols(self, user:User) -> list:
+        stockSymbols = []
+        for item in self.trans_repo.retrieve_distinct_scrip(user):
+            stockSymbols.append(item[0])
+        print(stockSymbols)
+        return stockSymbols
+    
+    def balanced_transactions_with_prices(self, user:User, stockSymbol: str):
+        result = self.trans_repo.transaction_join_stock(user, stockSymbol)
+        print(result)
+        for item in result:
+            if item[5] <= 0:
+                return None
+            return dict(stockSymbol = item[1], transaction_date = item[2], balance = item[5], previous_price=item[9], trade_date=item[10], closing_price=item[11])   
+            
+    
+    def transactions_balance_price_info(self, user:User):
+        transactionDict =[]
+        for stockSymbol in self.distinct_stockSymbols(user):
+            result = self.balanced_transactions_with_prices(user, stockSymbol)
+            if result:
+                transactionDict.append(result)
+        return transactionDict
+
+    
