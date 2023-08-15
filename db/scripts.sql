@@ -20,3 +20,25 @@ CREATE TABLE IF NOT EXISTS transactions (
     FOREIGN KEY(scrip) REFERENCES stock(scrip), 
     PRIMARY KEY (id)
     );
+
+
+CREATE TABLE IF NOT EXISTS company (
+    scrip VARCHAR(225) NOT NULL,
+    company_name VARCHAR(225) NOT NULL,
+    status VARCHAR(225) NOT NULL,
+    sector VARCHAR(225) NOT NULL,
+    instrument VARCHAR(225) NOT NULL,
+    email VARCHAR(225) NOT NULL,
+    url VARCHAR(225),
+    FOREIGN KEY(scrip) REFERENCES stock(scrip) 
+    );
+
+CREATE TABLE IF NOT EXISTS stock(
+    scrip VARCHAR(255) NOT NULL,
+    previous_closing FLOAT NOT NULL,
+    trade_date DATE NOT NULL,
+    closing_price FLOAT NOT NULL,
+    difference_rs FLOAT NOT NULL ,
+    percent_change FLOAT NOT NULL,
+    PRIMARY KEY (scrip)
+    );
