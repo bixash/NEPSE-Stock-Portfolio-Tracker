@@ -8,11 +8,27 @@
     margin: auto;
     text-align: center;
 }
-table {
-    border-collapse: collapse;
-    border: 1px solid black;
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: blue;
+    
+}
+.navbar ul {
+    width: 500px;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-evenly;
+    
+}
+ a {
+    text-decoration: none;
 }
 
-td, th {
-    border: 1px solid black;
+.navbar  a{
+    color: white;
+    
 }

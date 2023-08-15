@@ -1,43 +1,57 @@
 {% extends "base.html" %}
  {% block title %} Dashboard {% endblock %}
+ {% block cssLink%}<link href="../static/portfolio.css" rel="stylesheet" /> {% endblock %}
  {% block content %}
-  <div class="portofio-section">
 
-    <h2>{{ username }}'s Portfolio</h2>
+ 
+  <section class="portfolio">
 
-    {% if not transaction%}
+  
+  <div class="portfolio-section">
+
+    <h2> Portfolio</h2>
+
+    {% if not transactions%}
     {{ msg }}
     <h3>Oops, No transaction available!!</h3>
 
 
     {% else %}
-
-      <a href="auth/logout">Logout</a>
   
     <table>
       {{ msg }}
-      <tr>
+      <!-- <tr>
         <th>SN</th>
         <th>Scrip</th>
+        <th>Company Name</th>
         <th>Balance</th>
         <th>Last Price</th>
-        <th>Value as of LTP</th>
+        <th>Close Price</th>
       </tr>
+       -->
       
       
+      {% for row in transactions%}
       
-      {% for item in transaction%}
-      
-      <tr> 
-         {{item}}
+      <tr class="portfolio-item"> 
+        <td>{{ loop.index }}</td>
+        <td>{{row['stockSymbol']}}</a></td>
+        <td>{{row['company_name']}}</td>
+        <td>{{row['balance']}}</td>
+        <td>{{row['previous_price']}}</td>
+        <td>{{row['closing_price']}}</td>
+        
       </tr>
       {% endfor %}
+
+     
       
       
       
     </table>
     
     {% endif %}
+
 
   </div>
 
@@ -48,14 +62,14 @@
       <tr>
         <th>SN</th>
         <th>Scrip</th>
-        <th>Transaction Date</th>
-        <th>Credit Quantity</th>
-        <th>Debit Quantity</th>
-        <th>Balance After Transaction</th>
-        <th>History Description</th>
+        <th>Date</th>
+        <th>Credit quantity</th>
+        <th>Debit quantity</th>
+        <!-- <th>Balance After Transaction</th> -->
+        <th>Description</th>
     </tr>
 
-    {% for item in limit_transactions%}
+    {% for item in recent_transactions%}
   
     <tr> 
         <td>{{ loop.index }}</td>
@@ -63,7 +77,7 @@
         <td>{{item[1]}}</td>
         <td>{{item[2]}}</td>
         <td>{{item[3]}}</td>
-        <td>{{item[4]}}</td>
+        <!-- <td>{{item[4]}}</td> -->
         <td>{{item[5]}}</td>
     
     </tr>
@@ -74,7 +88,8 @@
 
     <a href="/all_transactions/">Show all history</a>
   </div>
+  </section>
     <a href="/upload">Upload transaction file</a>
     <a href="">Show CSV</a>
-    
+  
 {% endblock %}   

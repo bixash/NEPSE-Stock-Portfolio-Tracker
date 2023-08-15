@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Home{% endblock %}</title>
     <link href="/static/style.css"  rel="stylesheet" />
+    {% block cssLink %}{% endblock %}
   </head>
   <body>
-      <h1 class="main-head">Nepal Stock Exchange Portfoilo Tracker</h1>
       <nav class="navbar">
+
+        <a class="navbar-logo" href="http://" target="#"> NEPSE Portfolio Tracker</a>
         <ul>
         {% if request.session["token"]%}
-           <li class="navbar-list"><a href="/portfolio"> Home </a> </li>
-            <li class="navbar-list"><a href="/auth/logout"> Logout </a> </li>
-            <li class="navbar-list"><a href="/all_transactions"> History </a> </li>
+           <li class="menu-item"><a href="/portfolio"> Home </a> </li>
+            <li class="menu-item"><a href="/auth/logout"> Logout </a> </li>
+            <li class="menu-item"><a href="/all_transactions"> History </a> </li>
         {% else %}
-          <li class="navbar-list"><a href="/auth/login"> Login </a> </li>
-          <li class="navbar-list"><a href="/auth/signup"> Signup </a> </li>
+          <li class="menu-item"><a href="/auth/login"> Login </a> </li>
+          <li class="menu-item"><a href="/auth/signup"> Signup </a> </li>
         {% endif %}
         </ul>
 

@@ -1,0 +1,16 @@
+.portfolio{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+}
+
+.portfolio-section {
+    /* background-color: red; */
+    width: 600px;
+    
+}
+
+.history-section {
+    /* background-color: green; */
+    width: 700px;
+}
