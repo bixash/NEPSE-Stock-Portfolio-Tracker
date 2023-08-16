@@ -20,15 +20,16 @@
   
     <table>
       {{ msg }}
-      <!-- <tr>
+      <tr>
         <th>SN</th>
         <th>Scrip</th>
-        <th>Company Name</th>
         <th>Balance</th>
-        <th>Last Price</th>
-        <th>Close Price</th>
+        <th>Previous closing</th>
+        <th>Points change</th>
+        <th>Percent change</th>
+        <th>Closing Price</th>
       </tr>
-       -->
+      
       
       
       {% for row in transactions%}
@@ -36,9 +37,10 @@
       <tr class="portfolio-item"> 
         <td>{{ loop.index }}</td>
         <td>{{row['stockSymbol']}}</a></td>
-        <td>{{row['company_name']}}</td>
         <td>{{row['balance']}}</td>
         <td>{{row['previous_price']}}</td>
+        <td>{{row['difference_rs']}}</td>
+        <td>{{row['percent_change']}}</td>
         <td>{{row['closing_price']}}</td>
         
       </tr>
@@ -60,24 +62,22 @@
     <h3> Recent transactions</h3>
     <table>
       <tr>
-        <th>SN</th>
-        <th>Scrip</th>
+        <!-- <th>SN</th> -->
         <th>Date</th>
+        <th>Scrip</th>
         <th>Credit quantity</th>
         <th>Debit quantity</th>
-        <!-- <th>Balance After Transaction</th> -->
-        <th>Description</th>
+        <th>Remarks</th>
     </tr>
 
     {% for item in recent_transactions%}
   
     <tr> 
-        <td>{{ loop.index }}</td>
-        <td>{{item[0]}}</td>
+        <!-- <td>{{ loop.index }}</td> -->
         <td>{{item[1]}}</td>
+        <td>{{item[0]}}</td>
         <td>{{item[2]}}</td>
         <td>{{item[3]}}</td>
-        <!-- <td>{{item[4]}}</td> -->
         <td>{{item[5]}}</td>
     
     </tr>
@@ -86,10 +86,8 @@
       
     </table>
 
-    <a href="/all_transactions/">Show all history</a>
+    <a href="/all_transactions/">Show All</a>
   </div>
   </section>
-    <a href="/upload">Upload transaction file</a>
-    <a href="">Show CSV</a>
   
 {% endblock %}   

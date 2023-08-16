@@ -14,8 +14,9 @@
         <ul>
         {% if request.session["token"]%}
            <li class="menu-item"><a href="/portfolio"> Home </a> </li>
+           <li class="menu-item"> <a href="/upload">Upload</a> </li>
+           <li class="menu-item"><a href="/all_transactions"> History </a> </li>
             <li class="menu-item"><a href="/auth/logout"> Logout </a> </li>
-            <li class="menu-item"><a href="/all_transactions"> History </a> </li>
         {% else %}
           <li class="menu-item"><a href="/auth/login"> Login </a> </li>
           <li class="menu-item"><a href="/auth/signup"> Signup </a> </li>
