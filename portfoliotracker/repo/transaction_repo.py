@@ -15,7 +15,7 @@ class TransactionRepo:
     def insert_transaction(self, user: User, transaction: Transaction) -> bool:
         cur = self.db.get_connection()
         con = self.db._commit()
-        cur.execute("INSERT INTO transactions( scrip, transaction_date, credit_quantity, debit_quantity,balance_after_transaction, history_description, uid) values(?,?,?,?,?,?,?)", (transaction.scrip, transaction.transaction_date, transaction.credit_quantity, transaction.debit_quantity, transaction.balance_after_transaction, transaction.history_description, user.user_id,))
+        cur.execute("INSERT INTO transactions( scrip, transaction_date, credit_quantity, debit_quantity,balance_after_transaction, history_description, unit_price uid) values(?,?,?,?,?,?,?,?)", (transaction.scrip, transaction.transaction_date, transaction.credit_quantity, transaction.debit_quantity, transaction.balance_after_transaction, transaction.history_description, transaction.unit_price, user.user_id,))
         con.commit()
         return True
                
@@ -39,7 +39,7 @@ class TransactionRepo:
         cur.execute("SELECT * FROM transactions NATURAL JOIN stock WHERE uid = ? ORDER BY transaction_date desc",(user.user_id,))
         return cur.fetchall()
     
-    def transaction_join_stock(self, user: User, stockSymbol:str):
+    def last_transaction_join_stock(self, user: User, stockSymbol:str):
         cur = self.db.get_connection()
         cur.execute("SELECT * FROM transactions NATURAL JOIN stock WHERE uid = ? AND scrip = ? ORDER BY transaction_date desc limit 1",(user.user_id, stockSymbol,))
         return cur.fetchall()
@@ -49,4 +49,8 @@ class TransactionRepo:
         cur.execute("SELECT DISTINCT scrip FROM transactions where uid = ?", (user.user_id,))
         return cur.fetchall()
 
+    def get_stock_tradeDate(self):
+        cur = self.db.get_connection()
+        cur.execute("SELECT trade_date FROM stock limit 1")
+        return cur.fetchone()
     

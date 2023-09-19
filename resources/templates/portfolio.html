@@ -1,7 +1,27 @@
 {% extends "base.html" %}
  {% block title %} Dashboard {% endblock %}
- {% block cssLink%}<link href="../static/portfolio.css" rel="stylesheet" /> {% endblock %}
+ {% block cssLink%}<link href="../static/css/portfolio.css" rel="stylesheet" /> {% endblock %}
  {% block content %}
+
+
+ <div class="company-search">
+  <form method="post">
+    <input type="text" name="company" id="company">
+  </form>
+  <div id="result"></div>
+  
+ </div>
+
+ <!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+  </div>
+
+</div>
 
  
   <section class="portfolio">

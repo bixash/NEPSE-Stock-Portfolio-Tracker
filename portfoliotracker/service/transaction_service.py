@@ -15,7 +15,7 @@ class TransactionService:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 try:
-                    transaction = Transaction(scrip= row['Scrip'], transaction_date = date_format(row['Transaction Date']),credit_quantity = stringToInt(row['Credit Quantity']), debit_quantity = stringToInt(row['Debit Quantity']), balance_after_transaction = stringToInt(row['Balance After Transaction']),history_description = shorten_history(row['History Description']))
+                    transaction = Transaction(scrip= row['Scrip'], transaction_date = date_format(row['Transaction Date']),credit_quantity = stringToInt(row['Credit Quantity']), debit_quantity = stringToInt(row['Debit Quantity']), balance_after_transaction = stringToInt(row['Balance After Transaction']),history_description = shorten_history(row['History Description']), unit_price = row['Unit Price'])
                 except Exception:
                     return BaseResponse(error=True, success=False, msg="CSV file is not valid in format!")
                 if not self.trans_repo.insert_transaction(user, transaction):
@@ -28,27 +28,25 @@ class TransactionService:
             return False
         return True
 
-    def distinct_stockSymbols(self, user:User) -> list:
+    def get_distinct_stockSymbols(self, user:User) -> list:
         stockSymbols = []
         for item in self.trans_repo.retrieve_distinct_scrip(user):
             stockSymbols.append(item[0])
         return stockSymbols
     
-    def balanced_transactions_with_prices(self, user:User, stockSymbol: str):
-        result = self.trans_repo.transaction_join_stock(user, stockSymbol)
-        """[(39, 'MKHC', '2023-03-17', 10, 0, 10, 'IPO-MKHCL-079/80', 8, 215.8, '2023-08-14', 215.9, 0.1, 0.05)]"""
-        for item in result:
-            if item[5] <= 0:
-                return None
-            return dict(stockSymbol = item[1], transaction_date = item[2], balance = item[5], previous_price=item[8], trade_date=item[9], closing_price=item[10], difference_rs = item[11], percent_change = item[12])   
-            
+    def get_balanced_transactions_with_prices(self, user:User)->BaseResponse:
+        try:
+            transactionDict =[]
+            for stockSymbol in self.get_distinct_stockSymbols(user):
+                result = self.trans_repo.last_transaction_join_stock(user, stockSymbol)
+                
+                for item in result:
+                    if item[5] > 0:
+                        stock = dict(stockSymbol = item[1], transaction_date = item[2], balance = item[5], previous_price=item[8], trade_date=item[9], closing_price=item[10], difference_rs = item[11], percent_change = item[12])
+                        transactionDict.append(stock)
+            return BaseResponse(error=False, success=True, msg="success", result=transactionDict)    
+        except Exception as e:
+            return BaseResponse(error=True, success=False, msg=str(e))
     
-    def transactions_balance_price_info(self, user:User):
-        transactionDict =[]
-        for stockSymbol in self.distinct_stockSymbols(user):
-            result = self.balanced_transactions_with_prices(user, stockSymbol)
-            if result:
-                transactionDict.append(result)
-        return transactionDict
 
     

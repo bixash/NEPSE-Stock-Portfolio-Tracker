@@ -54,8 +54,10 @@ templates = Jinja2Templates(directory=templates_directory)
 def portfolio(request: Request):
     if not request.session["token"]:
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
-    response = api_service.update_prices_todb()
-   
+    # response = api_service.update_prices_todb()
+    
+    # print(response.msg)
+    
 
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
@@ -63,10 +65,10 @@ def portfolio(request: Request):
     recent_transactions = trans_repo.retrieve_limit_transaction(user)
     stock_prices = api_repo.fetch_allstock_prices()
     
-    transactions = trans_service.transactions_balance_price_info(user)
+    transactions = trans_service.get_balanced_transactions_with_prices(user)
     # stock_prices =  trans_service.transactions_stock_price(user)
-
-    # company_service.upload_company_csv()
   
-    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "transactions": transactions, "stock_prices": stock_prices})
+
+  
+    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "transactions": transactions.result, "stock_prices": stock_prices})
 

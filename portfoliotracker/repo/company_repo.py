@@ -23,4 +23,9 @@ class CompanyRepo:
         con = self.db._commit()
         cur.execute("SELECT scrip, company_name, status, sector, instrument, email, url FROM company WHERE scrip = ?", (scrip,))
         return cur.fetchone()
-       
+    
+    def get_company_like(self, scrip:str):
+        cur = self.db.get_connection()
+        con = self.db._commit()
+        cur.execute("SELECT scrip, company_name FROM company WHERE scrip LIKE ? or company_name LIKE ?  limit 10",(scrip, scrip, ))
+        return cur.fetchall()

@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     debit_quantity INTEGER NOT NULL,
     balance_after_transaction INTEGER NOT NULL,
     history_description VARCHAR(225), 
+    unit_price FLOAT NOT NULL,
     uid INTEGER NOT NULL, 
     FOREIGN KEY(uid) REFERENCES user(id), 
     FOREIGN KEY(scrip) REFERENCES stock(scrip), 
@@ -30,7 +31,7 @@ CREATE TABLE IF NOT EXISTS company (
     instrument VARCHAR(225) NOT NULL,
     email VARCHAR(225) NOT NULL,
     url VARCHAR(225),
-    FOREIGN KEY(scrip) REFERENCES stock(scrip) 
+    PRIMARY KEY (scrip)
     );
 
 CREATE TABLE IF NOT EXISTS stock(

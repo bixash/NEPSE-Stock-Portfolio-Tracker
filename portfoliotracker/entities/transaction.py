@@ -9,3 +9,4 @@ class Transaction(BaseModel):
     debit_quantity: int = None
     balance_after_transaction: int = None
     history_description: str = None
+    unit_price: float = None

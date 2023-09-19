@@ -4,7 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Home{% endblock %}</title>
-    <link href="/static/style.css"  rel="stylesheet" />
+    <link href="../static/css/style.css"  rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="../static/images/favicon.ico">
+    <script src="../static/js/jquery.min.js"></script>
     {% block cssLink %}{% endblock %}
   </head>
   <body>
@@ -13,10 +15,11 @@
         <a class="navbar-logo" href="http://" target="#"> NEPSE Portfolio Tracker</a>
         <ul>
         {% if request.session["token"]%}
-           <li class="menu-item"><a href="/portfolio"> Home </a> </li>
-           <li class="menu-item"> <a href="/upload">Upload</a> </li>
-           <li class="menu-item"><a href="/all_transactions"> History </a> </li>
-            <li class="menu-item"><a href="/auth/logout"> Logout </a> </li>
+          <li class="menu-item"><a href="/portfolio"> Home </a> </li>
+          <li class="menu-item"> <a href="/upload">Upload</a> </li>
+          <li class="menu-item"><a href="/all_transactions"> History </a> </li>
+          <li class="menu-item"><a href="/company"> Company </a> </li>
+          <li class="menu-item"><a href="/auth/logout"> Logout </a> </li>
         {% else %}
           <li class="menu-item"><a href="/auth/login"> Login </a> </li>
           <li class="menu-item"><a href="/auth/signup"> Signup </a> </li>
@@ -36,6 +39,6 @@
       {% endblock %}
     
     </div>
-    <!-- <script src="script.js"></script> -->
+    <script src="../static/js/script.js"></script>
   </body>
 </html>

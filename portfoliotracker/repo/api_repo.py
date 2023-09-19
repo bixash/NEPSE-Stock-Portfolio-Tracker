@@ -8,7 +8,7 @@ class APIRepo:
     def update_stock_prices(self, stock: Stock) -> bool:
         cur = self.db.get_connection()
         con = self.db._commit()
-        cur.execute("UPDATE stock SET previous_closing = ?, trade_date = ?, closing_price = ? difference_rs =?, percent_change = ? WHERE scrip = ?",(stock.previous_closing, stock.trade_date, stock.closing_price, stock.difference_rs, stock.percent_change, stock.scrip, ))
+        cur.execute("UPDATE stock SET previous_closing = ?, trade_date = ?, closing_price = ?, difference_rs =?, percent_change = ? WHERE scrip = ?",(stock.previous_closing, stock.trade_date, stock.closing_price, stock.difference_rs, stock.percent_change, stock.scrip, ))
         con.commit()
         return True
     

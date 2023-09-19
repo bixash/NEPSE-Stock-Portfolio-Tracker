@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+ {% block title %} Company {% endblock %}
+ {% block cssLink%}<link href="../static/portfolio.css" rel="stylesheet" /> {% endblock %}
+ {% block content %}
+
+
+
+
+  <table>
+    {{ msg }}
+    <tr>
+
+      <th>SN</th>
+      <th>Scrip</th>
+      <th>Company Name</th>
+      <th>Status</th>
+      <th>Sector</th>
+      <th>Instrument</th>
+      <th>Email</th>
+      <th>Url</th>
+    </tr>
+    
+    
+    {% for row in limit_company%}
+
+    <tr> 
+      <td>{{ loop.index }}</td>
+      <td>{{row['scrip']}}</a></td>
+      <td>{{row['company_name']}}</td>
+      <td>{{row['status']}}</td>
+      <td>{{row['sector']}}</td>
+      <td>{{row['instrument']}}</td>
+      <td>{{row['email']}}</td>
+      <td>{{row['url']}}</td>
+      
+    </tr>
+    {%endfor%}
+   
+
+   
+    
+    
+    
+  </table>
+  
+  
+{% endblock %}   
