@@ -27,6 +27,7 @@ class TransactionService:
         if result is None:
             return False
         return True
+    
 
     def get_distinct_stockSymbols(self, user:User) -> list:
         stockSymbols = []
@@ -48,5 +49,11 @@ class TransactionService:
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
     
-
+    def recent_transactions(self, user:User):
+        try:
+            res = self.trans_repo.retrieve_limit_transaction(user)
+            return BaseResponse(error=False, success=True, msg="success", result=res)    
+        except Exception as e:
+            return BaseResponse(error=True, success=False, msg=str(e))
+    
     

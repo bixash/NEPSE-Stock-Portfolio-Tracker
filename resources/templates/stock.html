@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+ {% block title %} Company {% endblock %}
+ {% block cssLink%}<link href="../static/css/portfolio.css" rel="stylesheet" /> {% endblock %}
+ {% block content %}
+
+  <table>
+    {{ msg }}
+    <tr>
+
+      <th>SN</th>
+      <th>Scrip</th>
+      <th>closing_price</th>
+      <th>previous_closing</th>
+      <th>trade_date</th>
+      <th>percent_change</th>
+      <th>difference_rs</th>
+      
+    </tr>
+    
+    
+    {% for row in stock_prices%}
+
+    <tr> 
+      <td>{{ loop.index }}</td>
+      <td>{{row['scrip']}}</a></td>
+      <td>{{row['closing_price']}}</td>
+      <td>{{row['previous_closing']}}</td>
+      <td>{{row['trade_date']}}</td>
+      <td>{{row['percent_change']}}</td>
+      <td>{{row['difference_rs']}}</td>
+      
+      
+    </tr>
+    {%endfor%}
+   
+  </table>
+  
+  
+{% endblock %}   

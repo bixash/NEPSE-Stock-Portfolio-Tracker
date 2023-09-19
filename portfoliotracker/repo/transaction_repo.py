@@ -15,13 +15,13 @@ class TransactionRepo:
     def insert_transaction(self, user: User, transaction: Transaction) -> bool:
         cur = self.db.get_connection()
         con = self.db._commit()
-        cur.execute("INSERT INTO transactions( scrip, transaction_date, credit_quantity, debit_quantity,balance_after_transaction, history_description, unit_price uid) values(?,?,?,?,?,?,?,?)", (transaction.scrip, transaction.transaction_date, transaction.credit_quantity, transaction.debit_quantity, transaction.balance_after_transaction, transaction.history_description, transaction.unit_price, user.user_id,))
+        cur.execute("INSERT INTO transactions( scrip, transaction_date, credit_quantity, debit_quantity,balance_after_transaction, history_description, unit_price, uid) values(?,?,?,?,?,?,?,?)", (transaction.scrip, transaction.transaction_date, transaction.credit_quantity, transaction.debit_quantity, transaction.balance_after_transaction, transaction.history_description, transaction.unit_price, user.user_id,))
         con.commit()
         return True
                
     def retrieve_all_transaction(self, user: User):
         cur = self.db.get_connection()
-        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description from transactions where uid = ? ",(user.user_id,))
+        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction,  unit_price, history_description from transactions where uid = ? ",(user.user_id,))
         return cur.fetchall()
     
     def retrieve_stock_transaction(self, user: User, stock: str):

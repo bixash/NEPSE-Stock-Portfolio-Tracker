@@ -10,7 +10,8 @@
             <th>Credit Quantity</th>
             <th>Debit Quantity</th>
             <th>Balance After Transaction</th>
-            <th>History Description</th>
+            <th>Unit Price</th>
+            <th>Description</th>
         </tr>
 
         {% for item in all_transactions%}
@@ -23,6 +24,7 @@
             <td>{{item[3]}}</td>
             <td>{{item[4]}}</td>
             <td>{{item[5]}}</td>
+            <td>{{item[6]}}</td>
         
         </tr>
        

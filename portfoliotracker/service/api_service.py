@@ -43,6 +43,20 @@ class APIService:
             if result:
                 pricesDict.append(result)
         return pricesDict
+    
+    def all_stock_prices(self)-> BaseResponse:
+        try:
+            res= self.api_repo.select_all_stock_prices()
+            resultList = []
+            for item in res:
+                stock_info = dict(scrip = item[0], previous_closing = item[1], trade_date= item[2],closing_price= item[3],difference_rs = item[4],percent_change=item[5] )
+                resultList.append(stock_info)
+            return BaseResponse(error=False, success=True, msg='success', result= resultList)
+        except Exception as e:
+            return BaseResponse(error=True, success=False, msg=str(e))
+        
+            
+
 
     def getKittaDevPrices():
         url = 'https://api.kitta.dev/stocks/live'

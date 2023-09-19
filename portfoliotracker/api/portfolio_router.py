@@ -58,17 +58,13 @@ def portfolio(request: Request):
     
     # print(response.msg)
     
-
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    all_transactions = trans_repo.retrieve_all_transaction(user)
-    recent_transactions = trans_repo.retrieve_limit_transaction(user)
-    stock_prices = api_repo.fetch_allstock_prices()
-    
-    transactions = trans_service.get_balanced_transactions_with_prices(user)
-    # stock_prices =  trans_service.transactions_stock_price(user)
+    recent_transactions = trans_service.recent_transactions(user)
+    holdings = trans_service.get_balanced_transactions_with_prices(user)
+
   
 
   
-    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "transactions": transactions.result, "stock_prices": stock_prices})
+    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions.result,"username": user.username, "transactions": holdings.result,})
 

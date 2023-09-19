@@ -32,3 +32,10 @@ class APIRepo:
         cur.execute("SELECT scrip, previous_closing, trade_date, closing_price FROM stock WHERE scrip = ?", (stockSymbol,))
         con.commit()
         return cur.fetchone()
+    
+    def select_all_stock_prices(self) ->list:
+        cur = self.db.get_connection()
+        con = self.db._commit()
+        cur.execute("SELECT * FROM stock")
+        con.commit()
+        return cur.fetchall()

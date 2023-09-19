@@ -40,5 +40,4 @@ def getCompany(request: Request):
 def search_company(company: Company):
     script = company.scrip + "%"
     result = company_service.company_like(script)
-    print(result.result)
     return {"message": result.result}
