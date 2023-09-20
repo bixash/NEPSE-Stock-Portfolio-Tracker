@@ -29,3 +29,27 @@ class CompanyRepo:
         con = self.db._commit()
         cur.execute("SELECT scrip, company_name FROM company WHERE scrip LIKE ? or company_name LIKE ?  limit 10",(scrip, scrip, ))
         return cur.fetchall()
+    
+    def select_status_sector_instrument(self, scrip: str) -> bool:
+        cur = self.db.get_connection()
+        con = self.db._commit()
+        cur.execute("SELECT scrip, status, sector, instrument FROM company WHERE scrip = ?", (scrip,))
+        return cur.fetchone()
+    
+    def select_all_distinct_sector(self):
+        cur = self.db.get_connection()
+        con = self.db._commit()
+        cur.execute("SELECT DISTINCT sector FROM company")
+        return cur.fetchall()
+    
+    def select_all_distinct_instrument(self):
+        cur = self.db.get_connection()
+        con = self.db._commit()
+        cur.execute("SELECT DISTINCT instrument FROM company")
+        return cur.fetchall()
+    
+    def select_all_distinct_status(self):
+        cur = self.db.get_connection()
+        con = self.db._commit()
+        cur.execute("SELECT DISTINCT status FROM company")
+        return cur.fetchall()

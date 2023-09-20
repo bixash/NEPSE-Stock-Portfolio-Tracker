@@ -1,38 +1,58 @@
-{% extends "base.html" %}
- {% block title %} Dashboard {% endblock %}
- {% block cssLink%}<link href="../static/css/portfolio.css" rel="stylesheet" /> {% endblock %}
- {% block content %}
+{% extends "base.html" %} {% block title %} Dashboard {% endblock %} {% block
+cssLink%}<link href="../static/css/portfolio.css" rel="stylesheet" /> {%
+endblock %} {% block content %}
 
-
- <div class="company-search">
+<div class="company-search">
   <form method="post">
-    <input type="text" name="company" id="company">
+    <input type="text" name="company" id="company" />
   </form>
   <div id="result"></div>
-  
- </div>
+</div>
 
- <!-- The Modal -->
-<div id="myModal" class="modal">
+<!-- <div id="myModal" class="modal">
 
-  <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
     <p>Some text in the Modal..</p>
   </div>
 
-</div>
-  <div class="greet"> <h2>Hi, {{username}}</h2></div>
- 
-  <section class="portfolio">
+</div> -->
 
-  <div class="portfolio-section">
+
+<section class="dashboard">
+  <div class="greet-block"><h2>Hi, {{username}}</h2>
+  </div>
+
+  <div class="dashboard-block">
+    <div class="dashboard-equity-block">
+      Microfinance
+      Commercial Banks
+      Hydro Power
+      Life Insurance
+      Tradings
+      Finance
+      Manufacturing And Processing
+      Hotels And Tourism
+      Investment
+      Mutual Fund
+      Development Banks
+      Non Life Insurance
+      Others
+
+    </div>
+    <div class="dashboard-mutual-block">
+      Equity
+      Non-Convertible Debentures
+      Mutual Funds
+
+    </div>
 
   </div>
 
-  <div class="history-section">
 
-    <h3> Recent transactions</h3>
+</section>
+  <div class="history-section">
+    <h3>Recent transactions</h3>
     <table>
       <tr>
         <!-- <th>SN</th> -->
@@ -41,26 +61,24 @@
         <th>Credit quantity</th>
         <th>Debit quantity</th>
         <th>Remarks</th>
-    </tr>
+      </tr>
 
-    {% for item in recent_transactions%}
-  
-    <tr> 
+      {% for item in recent_transactions%}
+
+      <tr>
         <!-- <td>{{ loop.index }}</td> -->
         <td>{{item[1]}}</td>
         <td>{{item[0]}}</td>
         <td>{{item[2]}}</td>
         <td>{{item[3]}}</td>
         <td>{{item[5]}}</td>
-    
-    </tr>
-   
-    {% endfor%}
-      
+      </tr>
+
+      {% endfor%}
     </table>
 
     <a href="/all_transactions/">Show All</a>
   </div>
-  </section>
-  
-{% endblock %}   
+
+
+{% endblock %}

@@ -61,10 +61,13 @@ def portfolio(request: Request):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
     recent_transactions = trans_service.recent_transactions(user)
-    holdings = trans_service.get_balanced_transactions_with_prices(user)
+    joined_trans = trans_service.get_joined_result(user)
 
-  
+    holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
+   
+    sector_summary = trans_service.get_sector_summary(holdings, company_service.get_all_sectors().result)
+    instrument_summary = trans_service.get_instrument_summary(holdings, company_service.get_all_instrument().result)
 
-  
-    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions.result,"username": user.username, "holdings": holdings.result,})
+
+    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions.result,"username": user.username, "holdings": joined_trans.result, "sector_summary":sector_summary,"instrument_summary":instrument_summary })
 

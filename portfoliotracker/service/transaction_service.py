@@ -31,23 +31,66 @@ class TransactionService:
 
     def get_distinct_stockSymbols(self, user:User) -> list:
         stockSymbols = []
-        for item in self.trans_repo.retrieve_distinct_scrip(user):
+        for item in self.trans_repo.select_distinct_scrip(user):
             stockSymbols.append(item[0])
         return stockSymbols
     
-    def get_balanced_transactions_with_prices(self, user:User)->BaseResponse:
+
+    def get_sector_summary(self, trans:dict, sectorList: list )-> list:
+        
+        sectorInfo = []
+        for sector in sectorList:
+            count = 0
+            value = 0
+            for item in trans:
+                if item['sector'] == sector[0]:
+                    count = count + 1
+                    value = value + item['closing_price'] * item['balance']
+            sectorInfo.append(dict(sector= sector[0], no_of_scrip = count, total_value= value))
+        return sectorInfo     
+
+
+    def get_instrument_summary(self, trans:dict, instrument: list):
+        instrumentInfo = []
+        for ins in instrument:
+            count = 0
+            value = 0
+            for item in trans:
+                if item['instrument'] == ins[0]:
+                    count = count + 1
+                    value = value + item['closing_price'] * item['balance']
+            instrumentInfo.append(dict(instrument= ins[0], no_of_scrip = count, total_value= value))
+        return instrumentInfo
+
+
+    def get_statusActive_scrip(self, trans:dict):
+        temp = []
+        for item in trans:
+            if item['status'] == 'Active':
+                temp.append(item)
+        return temp
+
+    def get_holdings(self, trans: dict):
+        holds=[]
+        for item in trans:
+            if item['balance'] > 0 and item['balance'] != None:
+                holds.append(item)
+        return holds
+    
+    def get_joined_result(self, user:User)->BaseResponse:
         try:
             transactionDict =[]
             for stockSymbol in self.get_distinct_stockSymbols(user):
-                result = self.trans_repo.last_transaction_join_stock(user, stockSymbol)
-                
+                result = self.trans_repo.join_one_transaction_stock_company(user, stockSymbol)
                 for item in result:
-                    if item[5] > 0:
-                        stock = dict(stockSymbol = item[1], transaction_date = item[2], balance = item[5], previous_price=item[8], trade_date=item[9], closing_price=item[10], difference_rs = item[11], percent_change = item[12])
-                        transactionDict.append(stock)
+                    """id|scrip|transaction_date|credit_quantity|debit_quantity|balance_after_transaction|history_description|unit_price|uid|previous_closing|trade_date|closing_price|difference_rs|percent_change|company_name|status|sector|instrument|email|url"""
+
+                    stock = dict(stockSymbol = item[1], transaction_date = item[2], balance = item[5], unit_price=item[7], previous_price=item[9], trade_date=item[10], closing_price=item[11], difference_rs = item[12], percent_change = item[13], company_name = item[14], status= item[15], sector = item[16], instrument = item[17] )
+                    transactionDict.append(stock)
             return BaseResponse(error=False, success=True, msg="success", result=transactionDict)    
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
+    
     
     def recent_transactions(self, user:User):
         try:

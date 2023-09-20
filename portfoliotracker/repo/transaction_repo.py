@@ -44,7 +44,7 @@ class TransactionRepo:
         cur.execute("SELECT * FROM transactions NATURAL JOIN stock WHERE uid = ? AND scrip = ? ORDER BY transaction_date desc limit 1",(user.user_id, stockSymbol,))
         return cur.fetchall()
     
-    def retrieve_distinct_scrip(self, user: User):
+    def select_distinct_scrip(self, user: User):
         cur = self.db.get_connection()
         cur.execute("SELECT DISTINCT scrip FROM transactions where uid = ?", (user.user_id,))
         return cur.fetchall()
@@ -54,3 +54,7 @@ class TransactionRepo:
         cur.execute("SELECT trade_date FROM stock limit 1")
         return cur.fetchone()
     
+    def join_one_transaction_stock_company(self, user: User, stockSymbol: str):
+        cur = self.db.get_connection()
+        cur.execute("SELECT * FROM transactions NATURAL JOIN stock  NATURAL JOIN company  WHERE uid = ? AND transactions.scrip = ? ORDER BY transaction_date desc limit 1",(user.user_id, stockSymbol,))
+        return cur.fetchall()

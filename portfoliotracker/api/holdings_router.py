@@ -26,6 +26,7 @@ def get_transaction(request: Request):
 
 
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-    holdings = trans_service.get_balanced_transactions_with_prices(user)
+    holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
+   
   
-    return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings.result,})
+    return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings,})
