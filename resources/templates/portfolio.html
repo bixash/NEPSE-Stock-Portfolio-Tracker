@@ -22,58 +22,11 @@
   </div>
 
 </div>
-
+  <div class="greet"> <h2>Hi, {{username}}</h2></div>
  
   <section class="portfolio">
 
-  
   <div class="portfolio-section">
-
-    <h2> Portfolio</h2>
-
-    {% if not transactions%}
-    {{ msg }}
-    <h3>Oops, No transaction available!!</h3>
-
-
-    {% else %}
-  
-    <table>
-      {{ msg }}
-      <tr>
-        <th>SN</th>
-        <th>Scrip</th>
-        <th>Balance</th>
-        <th>Previous closing</th>
-        <th>Points change</th>
-        <th>Percent change</th>
-        <th>Closing Price</th>
-      </tr>
-      
-      
-      
-      {% for row in transactions%}
-      
-      <tr class="portfolio-item"> 
-        <td>{{ loop.index }}</td>
-        <td>{{row['stockSymbol']}}</a></td>
-        <td>{{row['balance']}}</td>
-        <td>{{row['previous_price']}}</td>
-        <td>{{row['difference_rs']}}</td>
-        <td>{{row['percent_change']}}</td>
-        <td>{{row['closing_price']}}</td>
-        
-      </tr>
-      {% endfor %}
-
-     
-      
-      
-      
-    </table>
-    
-    {% endif %}
-
 
   </div>
 

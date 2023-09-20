@@ -66,5 +66,5 @@ def portfolio(request: Request):
   
 
   
-    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions.result,"username": user.username, "transactions": holdings.result,})
+    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions.result,"username": user.username, "holdings": holdings.result,})
 

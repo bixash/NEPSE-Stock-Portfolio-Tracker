@@ -15,7 +15,8 @@
         <a class="navbar-logo" href="http://" target="#"> NEPSE Portfolio Tracker</a>
         <ul>
         {% if request.session["token"]%}
-          <li class="menu-item"><a href="/portfolio"> Home </a> </li>
+          <li class="menu-item"><a href="/portfolio"> Dashboard </a> </li>
+          <li class="menu-item"><a href="/holdings"> Holdings </a> </li>
           <li class="menu-item"><a href="/stock-prices">Stock Prices </a> </li>
           <li class="menu-item"> <a href="/upload">Upload</a> </li>
           <li class="menu-item"><a href="/all_transactions"> History </a> </li>
