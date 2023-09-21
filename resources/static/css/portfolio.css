@@ -14,3 +14,15 @@
     /* background-color: green; */
     width: 700px;
 }
+
+.dashboard-block {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    /* border: 1px solid green; */
+}
+.dashboard-sector-block, .dashboard-instrument-block{
+
+    border: 1px solid green;
+
+}

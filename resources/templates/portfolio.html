@@ -24,31 +24,44 @@ endblock %} {% block content %}
   </div>
 
   <div class="dashboard-block">
-    <div class="dashboard-equity-block">
-      Microfinance
-      Commercial Banks
-      Hydro Power
-      Life Insurance
-      Tradings
-      Finance
-      Manufacturing And Processing
-      Hotels And Tourism
-      Investment
-      Mutual Fund
-      Development Banks
-      Non Life Insurance
-      Others
+    <div class="dashboard-sector-block">
+      
+      {% for item in sector_summary %}
+      <div>
+      <span>{{item['sector']}}</span>
+      <span>{{item['no_of_scrip']}}</span>
+      <span>{{item['total_value']}}</span>
+
+      </div>
+      {% endfor %}
+    
 
     </div>
-    <div class="dashboard-mutual-block">
-      Equity
-      Non-Convertible Debentures
-      Mutual Funds
+    <div class="dashboard-instrument-block">
+      {% for item in instrument_summary %}
+      <div>
+      <span>{{item['instrument']}}</span>
+      <span>{{item['no_of_scrip']}}</span>
+      <span>{{item['total_value']}}</span>
+
+      </div>
+      {% endfor %}
 
     </div>
 
   </div>
 
+  <div>
+    <h2> Holdings ({{ holdings|length }})</h2>
+    <div>
+      {% for item in holdings_summary%}
+      <div>Investment Value: {{item['invest_value']}}</div> 
+      <div>Current Value: {{item['current_value']}} </div>
+      <div>Profit & Loss: {{item['profit_loss']}} </div>
+      {{item['profit_loss_percent']}} %
+      {% endfor %}
+    </div>
+  </div>
 
 </section>
   <div class="history-section">

@@ -46,7 +46,7 @@ class TransactionService:
                 if item['sector'] == sector[0]:
                     count = count + 1
                     value = value + item['closing_price'] * item['balance']
-            sectorInfo.append(dict(sector= sector[0], no_of_scrip = count, total_value= value))
+            sectorInfo.append(dict(sector= sector[0], no_of_scrip = count, total_value=  round(value, 2)))
         return sectorInfo     
 
 
@@ -59,7 +59,7 @@ class TransactionService:
                 if item['instrument'] == ins[0]:
                     count = count + 1
                     value = value + item['closing_price'] * item['balance']
-            instrumentInfo.append(dict(instrument= ins[0], no_of_scrip = count, total_value= value))
+            instrumentInfo.append(dict(instrument= ins[0], no_of_scrip = count, total_value= round(value, 2)))
         return instrumentInfo
 
 
@@ -76,6 +76,19 @@ class TransactionService:
             if item['balance'] > 0 and item['balance'] != None:
                 holds.append(item)
         return holds
+    
+    def get_holdings_summary(self, holdings: list):
+        invest_value = 0
+        current_value = 0
+        profit_loss = 0
+        for item in holdings:
+            invest_value= invest_value + (item['unit_price']* item['balance'])
+            current_value= current_value + (item['closing_price'] * item['balance'])
+        profit_loss = round(current_value - invest_value, 2)
+        profit_loss_percent = round((profit_loss * 100)/invest_value, 2)
+        return [{"invest_value": invest_value, "current_value": current_value, "profit_loss": profit_loss, "profit_loss_percent":  profit_loss_percent}]
+
+            
     
     def get_joined_result(self, user:User)->BaseResponse:
         try:
