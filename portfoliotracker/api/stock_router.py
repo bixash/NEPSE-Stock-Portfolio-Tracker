@@ -27,5 +27,5 @@ templates = Jinja2Templates(directory=get_templates_directory())
 def today_prices(request: Request):
     if not request.session["token"]:
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
-    all_stock = api_service.all_stock_prices()
+    all_stock = api_service.get_all_stock_prices()
     return templates.TemplateResponse("stock.html", {"request": request, "stock_prices": all_stock.result})

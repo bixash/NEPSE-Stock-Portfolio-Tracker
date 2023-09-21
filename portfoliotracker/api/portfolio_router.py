@@ -1,7 +1,4 @@
-"""
--- Created by: Ashok Kumar Pant
--- Created on: 7/18/23
-"""
+
 import logging
 
 from fastapi import APIRouter, Request, Form, status
@@ -54,23 +51,21 @@ templates = Jinja2Templates(directory=templates_directory)
 def portfolio(request: Request):
     if not request.session["token"]:
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
-    # response = api_service.update_prices_todb()
-    
-    # print(response.msg)
-    
+   
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    recent_transactions = trans_service.recent_transactions(user)
-    joined_trans = trans_service.get_joined_result(user)
+    if not api_service.is_tradeDate_same():
+        response = api_service.update_prices_todb()
+        print(response.msg)
 
-    holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
-   
+
+    recent_transactions = trans_service.recent_transactions(user).result
     sector_summary = trans_service.get_sector_summary(holdings, company_service.get_all_sectors().result)
     instrument_summary = trans_service.get_instrument_summary(holdings, company_service.get_all_instrument().result)
-
     holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
     holdings_summary = trans_service.get_holdings_summary(holdings)
+
     # print(holdings_summary)
 
-    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions.result,"username": user.username, "holdings": holdings, "sector_summary":sector_summary,"instrument_summary":instrument_summary, "holdings_summary": holdings_summary })
+    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings": holdings, "sector_summary":sector_summary,"instrument_summary":instrument_summary, "holdings_summary": holdings_summary })
 
