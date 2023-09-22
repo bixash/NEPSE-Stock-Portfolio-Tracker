@@ -3,43 +3,51 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Home{% endblock %}</title>
-    <link href="../static/css/style.css"  rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="../static/images/favicon.ico">
+    <title>{% block title %}Stock Portfolio Tracker{% endblock %}</title>
+
+    <!-- main-css -->
+    <link href="../static/css/style.css" rel="stylesheet" />
+
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="../static/images/favicon.ico" />
+
+    <!--jquery.min.js -->
     <script src="../static/js/jquery.min.js"></script>
+
     {% block cssLink %}{% endblock %}
   </head>
+
   <body>
-      <nav class="navbar">
 
-        <a class="navbar-logo" href="http://" target="#"> NEPSE Portfolio Tracker</a>
-        <ul>
+  
+
+    <nav class="navbar">
+      <a class="navbar-logo" href="/"> NEPSE Stock Portfolio Tracker</a>
+      <ul>
         {% if request.session["token"]%}
-          <li class="menu-item"><a href="/portfolio"> Dashboard </a> </li>
-          <li class="menu-item"><a href="/holdings"> Holdings </a> </li>
-          <li class="menu-item"><a href="/stock-prices">Stock Prices </a> </li>
-          <li class="menu-item"> <a href="/upload">Upload</a> </li>
-          <li class="menu-item"><a href="/all_transactions"> History </a> </li>
-          <li class="menu-item"><a href="/company"> Company </a> </li>
-          <li class="menu-item"><a href="/auth/logout"> Logout </a> </li>
+        <li class="menu-item"><a href="/portfolio"> Dashboard </a></li>
+        <li class="menu-item"><a href="/holdings"> Holdings </a></li>
+        <li class="menu-item"><a href="/stock-prices">Stock Prices </a></li>
+        <li class="menu-item"><a href="/upload">Upload</a></li>
+        <li class="menu-item"><a href="/all_transactions"> History </a></li>
+        <li class="menu-item"><a href="/company"> Company </a></li>
+        <li class="menu-item"><a href="/auth/logout"> Logout </a></li>
         {% else %}
-          <li class="menu-item"><a href="/auth/login"> Login </a> </li>
-          <li class="menu-item"><a href="/auth/signup"> Signup </a> </li>
+        <li class="menu-item"><a href="/auth/login"> Login </a></li>
+        <li class="menu-item"><a href="/auth/signup"> Signup </a></li>
         {% endif %}
-        </ul>
-
-      </nav>
+      </ul>
+    </nav>
     <div>
-      {% block content %} 
+      {% block content %}
       <span>{{name}}</span>
-      <h2> Track all your stock at one place!</h2>
-    
-      <a href="/auth/login"> Login </a> 
+      <h2>Track all your stock at one place!</h2>
+
+      <a href="/auth/login"> Login </a>
       or
       <a href="/auth/signup"> Sign Up </a>
 
       {% endblock %}
-    
     </div>
     <script src="../static/js/script.js"></script>
   </body>

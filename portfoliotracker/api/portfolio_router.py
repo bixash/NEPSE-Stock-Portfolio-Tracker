@@ -58,11 +58,10 @@ def portfolio(request: Request):
         response = api_service.update_prices_todb()
         print(response.msg)
 
-
+    holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
     recent_transactions = trans_service.recent_transactions(user).result
     sector_summary = trans_service.get_sector_summary(holdings, company_service.get_all_sectors().result)
     instrument_summary = trans_service.get_instrument_summary(holdings, company_service.get_all_instrument().result)
-    holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
     holdings_summary = trans_service.get_holdings_summary(holdings)
 
     # print(holdings_summary)

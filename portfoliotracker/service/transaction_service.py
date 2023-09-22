@@ -80,13 +80,18 @@ class TransactionService:
     def get_holdings_summary(self, holdings: list):
         invest_value = 0
         current_value = 0
+        previous_value = 0
         profit_loss = 0
         for item in holdings:
             invest_value= invest_value + (item['unit_price']* item['balance'])
             current_value= current_value + (item['closing_price'] * item['balance'])
+            previous_value = previous_value + (item['previous_price']* item['balance'])
         profit_loss = round(current_value - invest_value, 2)
         profit_loss_percent = round((profit_loss * 100)/invest_value, 2)
-        return [{"invest_value": invest_value, "current_value": current_value, "profit_loss": profit_loss, "profit_loss_percent":  profit_loss_percent}]
+        today_profit_loss = round(current_value - previous_value, 2)
+        today_PL_percent = round((today_profit_loss * 100)/ previous_value, 2)
+        
+        return [{"invest_value": invest_value, "current_value": current_value, "profit_loss": profit_loss, "today_profit_loss": today_profit_loss,  "today_PL_percent": today_PL_percent, "profit_loss_percent":  profit_loss_percent}]
 
             
     

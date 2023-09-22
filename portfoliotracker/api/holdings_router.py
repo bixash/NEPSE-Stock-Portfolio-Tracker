@@ -28,7 +28,7 @@ def get_transaction(request: Request):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
     holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
     holdings_summary = trans_service.get_holdings_summary(holdings)
-    print(holdings_summary)
+    # print(holdings_summary)
    
   
-    return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings,})
+    return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary})

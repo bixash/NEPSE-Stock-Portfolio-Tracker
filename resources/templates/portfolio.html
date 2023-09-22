@@ -67,22 +67,23 @@ endblock %} {% block content %}
     <table>
       <tr>
         <!-- <th>SN</th> -->
-        <th>Date</th>
+        
         <th>Scrip</th>
         <th>Credit quantity</th>
         <th>Debit quantity</th>
         <th>Remarks</th>
+        <th>Date</th>
       </tr>
 
       {% for item in recent_transactions%}
 
       <tr>
         <!-- <td>{{ loop.index }}</td> -->
-        <td>{{item[1]}}</td>
         <td>{{item[0]}}</td>
         <td>{{item[2]}}</td>
         <td>{{item[3]}}</td>
         <td>{{item[5]}}</td>
+        <td>{{item[1]}}</td>
       </tr>
 
       {% endfor%}
