@@ -31,7 +31,7 @@ class TransactionRepo:
     
     def retrieve_limit_transaction(self, user: User):
         cur = self.db.get_connection()
-        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description from transactions where uid = ? ORDER BY transaction_date desc limit 7",(user.user_id,))
+        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, unit_price  from transactions where uid = ? ORDER BY transaction_date desc limit 7",(user.user_id,))
         return cur.fetchall()
     
     def transaction_join_all_stock(self, user: User):

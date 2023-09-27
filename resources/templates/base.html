@@ -13,6 +13,7 @@
 
     <!--jquery.min.js -->
     <script src="../static/js/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 
     {% block cssLink %}{% endblock %}
   </head>
@@ -39,16 +40,16 @@
       </ul>
     </nav>
     <div>
-      {% block content %}
+      
       <span>{{name}}</span>
       <h2>Track all your stock at one place!</h2>
 
       <a href="/auth/login"> Login </a>
       or
       <a href="/auth/signup"> Sign Up </a>
-
-      {% endblock %}
     </div>
+      {% endblock %}
+    
     <script src="../static/js/script.js"></script>
   </body>
 </html>

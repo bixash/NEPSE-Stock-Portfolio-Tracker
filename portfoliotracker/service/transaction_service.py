@@ -4,6 +4,9 @@ from portfoliotracker.entities import User, Transaction, BaseResponse
 
 
 import csv
+import threading 
+
+lock = threading.Lock()
 
 
 class TransactionService:
@@ -49,6 +52,11 @@ class TransactionService:
             sectorInfo.append(dict(sector= sector[0], no_of_scrip = count, total_value=  round(value, 2)))
         return sectorInfo     
 
+    def sectorDicttoArray(self, arr:list)-> list:
+        resultArray = [['Sector', 'Total Value'],]
+        for item in arr:
+            resultArray.append([item['sector'], item['total_value']])
+        return resultArray
 
     def get_instrument_summary(self, trans:dict, instrument: list):
         instrumentInfo = []
@@ -61,7 +69,12 @@ class TransactionService:
                     value = value + item['closing_price'] * item['balance']
             instrumentInfo.append(dict(instrument= ins[0], no_of_scrip = count, total_value= round(value, 2)))
         return instrumentInfo
-
+    
+    def instrumentDicttoArray(self, arr:list)-> list:
+        resultArray = [['Instrument', 'Total Value'],]
+        for item in arr:
+            resultArray.append([item['instrument'], item['total_value']])
+        return resultArray
 
     def get_statusActive_scrip(self, trans:dict):
         temp = []
@@ -97,6 +110,7 @@ class TransactionService:
     
     def get_joined_result(self, user:User)->BaseResponse:
         try:
+            lock.acquire(True)
             transactionDict =[]
             for stockSymbol in self.get_distinct_stockSymbols(user):
                 result = self.trans_repo.join_one_transaction_stock_company(user, stockSymbol)
@@ -108,13 +122,29 @@ class TransactionService:
             return BaseResponse(error=False, success=True, msg="success", result=transactionDict)    
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
-    
+        finally:
+            lock.release()
+
     
     def recent_transactions(self, user:User):
         try:
-            res = self.trans_repo.retrieve_limit_transaction(user)
-            return BaseResponse(error=False, success=True, msg="success", result=res)    
+            # res = self.trans_repo.retrieve_limit_transaction(user)
+            result = self.dictifiy_transactions(self.trans_repo.retrieve_limit_transaction(user))
+            # print (result)
+            return BaseResponse(error=False, success=True, msg="success", result=result)    
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
     
-    
+    def dictifiy_transactions(self, transactions:tuple):
+        # MKHC|2023-03-17|10|0|10|IPO-MKHCL-079/80|100.0|1
+        resultList = []
+        for item in transactions:
+            transaction = dict(scrip = item[0], transaction_date= item[1], credit_quantity = item[2], debit_quantity = item[3], after_balance = item[4], history_description =item[5], unit_price =item[6])
+            resultList.append(transaction)
+        return resultList
+
+                
+
+            
+        
+        

@@ -1,28 +1,196 @@
-.portfolio{
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between;
+:root {
+  --primary-color: #158686;
+  --secondary-color: #158644;
+  --global-title-size: 24px;
+  --global-font-size: 16px;
+  --global-line-height: 1.3;
+  --color-border-default: #eee;
+  --color-text-default: #444;
+  --color-bg-body: #f9f9f9;
+  --color-text-5: #ff5722;
+  --color-text-8: #4caf50;
+  --color-text-1: #9b9b9b;
 }
 
-.portfolio-section {
-    /* background-color: red; */
-    width: 600px;
-    
+.title {
+  font-size: var(--global-font-size);
+  margin-left: 20px;
 }
 
-.history-section {
-    /* background-color: green; */
-    width: 700px;
+.dashboard-section {
+  background-color: white;
+}
+.dashboard-section .greet-textbox {
+  margin: 0;
+  padding: 10px;
+  /* margin-bottom: 5px; */
+  margin-top: 20px;
+  color: var(--color-text-default);
+  border-bottom: 1px solid var(--color-border-default);
 }
 
-.dashboard-block {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    /* border: 1px solid green; */
+.greet-textbox {
+  background-color: white;
 }
-.dashboard-sector-block, .dashboard-instrument-block{
+.greet-textbox .greet-big-title {
+  /* padding-left: 10px; */
+  /* padding-top: 20px; */
+  font-size: var(--global-title-size);
+  font-weight: 100;
+  margin: 0;
+}
 
-    border: 1px solid green;
+.dashboard-sector-instrument-box {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  background-color: white;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px 0;
+  border-bottom: 2px solid var(--color-border-default);
+}
 
+.sector-icon svg,
+.instrument-icon svg {
+  /* color: white; */
+  width: 28px;
+  height: 28px;
+}
+
+.sector-icon,
+.instrument-icon {
+  display: inline-block;
+}
+
+.dashboard-sector-head,
+.dashboard-instrument-head {
+    /* border: 1px solid black; */
+  margin: 0;
+  padding: 0 0 0 25px;
+  background-color: white;
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  /* max-width: fit-content; */
+  /* border-bottom: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-default); */
+}
+
+.dashboard-sector-title,
+.dashboard-instrument-title {
+  margin-left: 8px;
+}
+
+
+/* .dashboard-sector-body {
+    border-bottom: 1px solid var(--color-border-default);
+} */
+/* 
+  
+  
+  #sectorChart{
+    border: 5px solid black;
+  } */
+
+/* .dashboard-instrument-body #instrumentChart {
+    width: 100%;
+  } */
+.dashboard__left {
+  border-right: 1.5px solid var(--color-border-default);
+  margin: 0;
+  width: 100%;
+}
+.dashboard__right {
+  border-left: 1.5px solid var(--color-border-default);
+  margin: 0;
+  width: 100%;
+}
+
+.dashboard-holds-recent {
+  display: flex;
+  /* justify-content: center; */
+  /* align-items: center; */
+  background-color: white;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 20px 0;
+  /* padding: 15px 0 0 15px; */
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.transactions-icon svg,
+.holdings-icon svg {
+  width: 25px;
+  height: 25px;
+}
+.transactions-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.transactions-icon,
+.holdings-icon {
+  display: inline-block;
+}
+.dashboard-holdings-head,
+.dashboard-recent-head {
+  margin: 0;
+  background-color: White;
+  /* padding: 15px 0 0 15px; */
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-holdings-title,
+.dashboard-recent-title {
+  margin-left: 8px;
+}
+
+.dashboard-holdings-box {
+  padding: 15px 0 0 25px;
+  width: 60%;
+  border-right: 2px solid var(--color-border-default);
+  padding-right: 10px;
+}
+
+.dashboard-recent-box {
+  padding: 0px 0 0 25px;
+  width: 40%;
+
+  /* background-color: greenyellow; */
+}
+
+.dashboard-recent-body {
+  background-color: white;
+}
+.dashboard-recent-box table {
+  width: 100%;
+  font-size: 1rem;
+  border-collapse: collapse;
+}
+.dashboard-recent-box table th {
+  border: 1px solid var(--color-border-default);
+  border-left: none;
+  color:var(--color-text-1);
+}
+.dashboard-recent-box table td {
+  border: 1px solid var(--color-border-default);
+  border-left: none;
+  text-align: center;
+  /* border-top: 2px solid var(--color-border-default); */
+}
+
+.dashboard-recent-box .text-red{
+    color: var(--color-text-5);
+}
+.dashboard-recent-box .text-green {
+    color: var(--color-text-8);
+}
+
+.recent-table .head .row span{
+    font-weight: 100;
+    text-align: left;
 }

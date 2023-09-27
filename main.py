@@ -5,7 +5,7 @@ from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from portfoliotracker.api import auth_router, stock_router, transaction_router, upload_router, portfolio_router, company_router, holdings_router
+from portfoliotracker.api import auth_router, sector_router, stock_router, transaction_router, upload_router, portfolio_router, company_router, holdings_router, sector_router, instrument_router
 from portfoliotracker.entities import BaseResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -39,7 +39,7 @@ templates = Jinja2Templates(directory=templates_directory)
 async def root(request: Request):
     # return BaseResponse(error=False, msg="OK")
     context = {"name": "World"}
-    return templates.TemplateResponse("base.html",{ "request": request, "context": context})
+    return templates.TemplateResponse("index.html",{ "request": request, "context": context})
 
 
 app.include_router(auth_router.router)
@@ -49,6 +49,8 @@ app.include_router(portfolio_router.router)
 app.include_router(company_router.router)
 app.include_router(stock_router.router)
 app.include_router(holdings_router.router)
+app.include_router(sector_router.router)
+app.include_router(instrument_router.router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000, reload  = True)

@@ -1,96 +1,129 @@
-{% extends "base.html" %} {% block title %} Dashboard {% endblock %} {% block
-cssLink%}<link href="../static/css/portfolio.css" rel="stylesheet" /> {%
-endblock %} {% block content %}
+{% extends "index.html" %} 
+{% block title %} Dashboard {% endblock %} 
+{% block link %} <link href="../static/css/portfolio.css" rel="stylesheet" /> {% endblock %}
+{% block content %}
 
-<div class="company-search">
-  <form method="post">
-    <input type="text" name="company" id="company" />
-  </form>
-  <div id="result"></div>
-</div>
-
-<!-- <div id="myModal" class="modal">
-
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p>Some text in the Modal..</p>
-  </div>
-
-</div> -->
-
-
-<section class="dashboard">
-  <div class="greet-block"><h2>Hi, {{username}}</h2>
-  </div>
-
-  <div class="dashboard-block">
-    <div class="dashboard-sector-block">
-      
-      {% for item in sector_summary %}
-      <div>
-      <span>{{item['sector']}}</span>
-      <span>{{item['no_of_scrip']}}</span>
-      <span>{{item['total_value']}}</span>
-
+<section class="dashboard-section">
+  <div class="wrapper-container">
+    <div class="warning-msg"></div>
+    <header class="greet-textbox">
+      <h1 class="greet-big-title">
+        Hi, <span id="nickname">{{username}}</span>
+      </h1>
+    </header>
+    <div class="dashboard-sector-instrument-box">
+      <div class="dashboard__left">
+        <div class="dashboard-sector-head">
+          <span class="sector-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+              <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M304 240V16.6c0-9 7-16.6 16-16.6C443.7 0 544 100.3 544 224c0 9-7.6 16-16.6 16H304zM32 272C32 150.7 122.1 50.3 239 34.3c9.2-1.3 17 6.1 17 15.4V288L412.5 444.5c6.7 6.7 6.2 17.7-1.5 23.1C371.8 495.6 323.8 512 272 512C139.5 512 32 404.6 32 272zm526.4 16c9.3 0 16.6 7.8 15.4 17c-7.7 55.9-34.6 105.6-73.9 142.3c-6 5.6-15.4 5.2-21.2-.7L320 288H558.4z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          <span class="dashboard-sector-title title"> Sectorwise summary </span>
+        </div>
+        <div class="dashboard-sector-body">
+          <div
+            id="sectorChart"
+            style="max-width: 100%; height: 250px"
+          ></div>
+        </div>
       </div>
-      {% endfor %}
+      <div class="dashboard__right">
+        <div class="dashboard-instrument-head">
+          <span class="instrument-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          <span class="dashboard-instrument-title title"> Instrument </span>
+        </div>
+        <div class="dashboard-instrument-body">
+          <div
+            id="instrumentChart"
+            style="max-width: 100%; height: 250px"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-holds-recent">
+      <div class="dashboard-holdings-box">
+        <div class="dashboard-holdings-head">
+          <span class="holdings-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M176 56V96H336V56c0-4.4-3.6-8-8-8H184c-4.4 0-8 3.6-8 8zM128 96V56c0-30.9 25.1-56 56-56H328c30.9 0 56 25.1 56 56V96v32V480H128V128 96zM64 96H96V480H64c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64zM448 480H416V96h32c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          <span class="dashboard-holdings-title title"> Holdings </span>
+        </div>
+        <div class="dashboard-holdings-body">
+          <div
+            id="holdingsChart"
+            style="width: 100%; height: 230px"
+          ></div>
+        </div>
+      </div>
+      <div class="dashboard-recent-box">
+        <div class="dashboard-recent-head">
+          <span class="transactions-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+              <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M535 41c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l64 64c4.5 4.5 7 10.6 7 17s-2.5 12.5-7 17l-64 64c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l23-23L384 112c-13.3 0-24-10.7-24-24s10.7-24 24-24l174.1 0L535 41zM105 377l-23 23L256 400c13.3 0 24 10.7 24 24s-10.7 24-24 24L81.9 448l23 23c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L7 441c-4.5-4.5-7-10.6-7-17s2.5-12.5 7-17l64-64c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM96 64H337.9c-3.7 7.2-5.9 15.3-5.9 24c0 28.7 23.3 52 52 52l117.4 0c-4 17 .6 35.5 13.8 48.8c20.3 20.3 53.2 20.3 73.5 0L608 169.5V384c0 35.3-28.7 64-64 64H302.1c3.7-7.2 5.9-15.3 5.9-24c0-28.7-23.3-52-52-52l-117.4 0c4-17-.6-35.5-13.8-48.8c-20.3-20.3-53.2-20.3-73.5 0L32 342.5V128c0-35.3 28.7-64 64-64zm64 64H96v64c35.3 0 64-28.7 64-64zM544 320c-35.3 0-64 28.7-64 64h64V320zM320 352a96 96 0 1 0 0-192 96 96 0 1 0 0 192z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          <span class="dashboard-recent-title title"> Recent transactions </span>
+        </div>
+
+        <div class="dashboard-recent-body">
+          <table class="recent-table">
+            <tr class="head">
+              <th class="row"><span>Scrip</span></th>
+              <th class="row"><span>Quantity</span></th>
+              <th class="row"><span>Unit Price</span></th>
+              <th class="row"><span>Date</span></th>
+            </tr>
+
+            {% for item in recent_transactions%}
+            <tr class="tbody">
+              {% set quantity = item['credit_quantity']-item['debit_quantity'] %}
+             
+              {% if quantity > 0 %}
+              <td class="row"><span class="text-green">{{item['scrip']}}</span></td>
+              <td class="row"><span class="text-green">{{quantity|abs}}</span></td>
+              <td class="row"><span class="text-green">{{item['unit_price']}}</span></td>
+              {% else %}
+              <td class="row"><span class="text-red">{{item['scrip']}}</span></td>
+              <td class="row"><span class="text-red">{{quantity|abs}}</span></td>
+              <td class="row"><span class="text-red">{{item['unit_price']}}</span></td>
+              {% endif%}
+              <td class="row">{{item['transaction_date']}}</td>
+              
+            </tr>
+            {% endfor%}
+            
+          </table>
+          <a href="/transactions" class="transactions">View all transactions</a>
+        </div>
+      </div>
+    </div>
+
     
-
-    </div>
-    <div class="dashboard-instrument-block">
-      {% for item in instrument_summary %}
-      <div>
-
-
-      </div>
-      {% endfor %}
-
-    </div>
-
   </div>
-
-  <div>
-    <h2> Holdings ({{ holdings|length }})</h2>
-    <div>
-      {% for item in holdings_summary%}
-      <div>Investment Value: {{item['invest_value']}}</div> 
-      <div>Current Value: {{item['current_value']}} </div>
-      <div>Profit & Loss: {{item['profit_loss']}} </div>
-      {{item['profit_loss_percent']}} %
-      {% endfor %}
-    </div>
-  </div>
-
 </section>
-  <div class="history-section">
-    <h3>Recent transactions</h3>
-    <table>
-      <tr>
-        <!-- <th>SN</th> -->
-        
-        <th>Scrip</th>
-        <th>Credit quantity</th>
-        <th>Debit quantity</th>
-        <th>Remarks</th>
-        <th>Date</th>
-      </tr>
-
-      {% for item in recent_transactions%}
-
-      <tr>
-        <!-- <td>{{ loop.index }}</td> -->
-        <td>{{item[0]}}</td>
-        <td>{{item[2]}}</td>
-        <td>{{item[3]}}</td>
-        <td>{{item[5]}}</td>
-        <td>{{item[1]}}</td>
-      </tr>
-
-      {% endfor%}
-    </table>
-
-    <a href="/all_transactions/">Show All</a>
-  </div>
-
+<script src="../static/js/script.js"></script>
 
 {% endblock %}

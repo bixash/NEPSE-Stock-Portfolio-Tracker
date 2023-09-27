@@ -22,7 +22,7 @@ trans_repo = TransactionRepo(db)
 transaction_service = TransactionService(trans_repo=trans_repo)
 templates = Jinja2Templates(directory=get_templates_directory())
 
-@router.get("/all_transactions")
+@router.get("/transactions")
 def get_transaction(request: Request):
     if not request.session["token"]:
         return templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})

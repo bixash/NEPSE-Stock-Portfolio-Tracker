@@ -32,3 +32,12 @@ def get_transaction(request: Request):
    
   
     return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary})
+
+# @router.get("/get_holdings_stats")
+# def get_holdings_stats(request: Request):
+#     user = User(username = request.session["username"], user_id = request.session['user_id'])
+    
+#     holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
+#     holdings_summary = trans_service.get_holdings_summary(holdings)
+#     # print(holdings_summary[0])
+#     return {"result": holdings_summary[0]}

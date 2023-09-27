@@ -3,19 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stock Portfolio Tracker</title>
+    <title>{% block title %}Stock Portfolio Tracker{% endblock %}</title>
 
     <!-- base-css -->
-    <link href="../static/css/style.css" rel="stylesheet" />
+    <link href="../static/css/index.css" rel="stylesheet" />
 
     <!-- specific-css -->
-    <link href="../static/css/portfolio.css" rel="stylesheet" />
-
+    {% block link %}{% endblock %}
+    
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="../static/images/favicon.ico" />
 
     <!--jquery.min.js -->
     <script src="../static/js/jquery.min.js"></script>
+
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body>
     <header class="header">
@@ -23,85 +25,75 @@
         <a href="/" class="col site-logo" title="Stock Portfolio Tracker">
           <img src="../static/images/console.svg" alt="logo" />
         </a>
+        <div class="col search-bar">
+          <div class="search-box" id="search-box">
+            <form method="post"class="search-form">
+              <input type="text" name="company" id="company-search" class="search-input" placeholder="Search eg: scrip or company" />
+            </form>
+
+            <div class="search-list" id="search-list">
+           
+        
+            </div>
+        
+
+          </div>
+
+          <div class="search-result-box">
+            <div class="search-result-item"></div>
+          </div>
+        </div>
+
         <nav class="col main-nav">
           <span class="menu-bar">
             <span></span>
           </span>
           <ul id="navigation" class="menu">
-            <li><a href="">Dashboard</a></li>
-            <li><a href="">Holdings</a></li>
-            <li><a href="">History</a></li>
-            <li><a href="">Companies</a></li>
+            {% if request.session["token"]%}
+            <li><a href="/portfolio">Dashboard</a></li>
+            <li><a href="/holdings">Holdings</a></li>
+            <li><a href="/transactions">History</a></li>
             <li><a href="">Stock Prices</a></li>
+            <li><a href="">Companies</a></li>
+            {% else %}
+            <li><a href="/auth/login">Login</a></li>
+            <li><a href="/auth/signup">Signup</a></li>
+            <li><a href="">Stock Prices</a></li>
+            <li><a href="">Companies</a></li>
+            {% endif %}
+
           </ul>
         </nav>
         <div class="col">
-          <div class="profile" title="profile">
-            <span class="profile__inner">
-                <svg></svg>
-                <a href="#" class="profile-text">Username</a>
+          {% if request.session["token"]%}
+          <div class="profile-col" title="profile">
+            <span class="profile__inner" id ="profile">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                  d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"
+                  fill="currentColor"
+                />
+              </svg>
+              <a href="#" class="profile-text" >{{username}}</a>
             </span>
+              <div class="profile-options" id ="profile-options">
+                <a href="#" class="profile">Profile</a>
+                <a href="#" class="profile">Settings</a>
+                <a href="/auth/logout" class="logout">Logout</a>
+               
+                
+              </div>
+              
           </div>
+          {% endif %}
         </div>
       </div>
     </header>
-    <section class="dashboard-section">
-        <div class="warning-msg">
-
-        </div>
-        <header class="greet-textbox">
-            <h1 class="greet-title">Hi, Username</h1>
-        </header>
-        <div class="dashboard-sector-instrument-box">
-            <div class="dashboard-sector__left">
-                <div class="dashboard-sector-head">
-                    <span class="sector-icon">
-
-                    </span>
-                    <span class="dashboard-sector-title">
-    
-                    </span>
-                </div>
-               <div class="dashborad-sector-body">
-                
-               </div>
-            </div>
-            <div class="dashboard-sector__right">
-                <div class="dashboard-sector-head">
-                    <span class="sector-icon">
-
-                    </span>
-                    <span class="dashboard-sector-title">
-    
-                    </span>
-                </div>
-               <div class="dashborad-sector-body">
-
-               </div>
-            </div>
-        </div>
-        <div class="dashboard-holdings-box">
-            <div class="dashboard-holdings-head">
-                <span class="holdings-icon">
-
-                </span>
-                <span class="dashboard-holdings-title">
-
-                </span>
-            </div>
-           <div class="dashborad-holdings-body">
-            
-           </div>
-
-        </div>
-        <div class="dashboard-recent-box">
-
-        </div>
-        
-        <footer class="footer">
-
-        </footer>
-
-    </section>
+    {% block content %}
+   
+    {% endblock%}
+    <footer class="footer"></footer>
+    <script src="../static/js/main.js"></script>
   </body>
 </html>

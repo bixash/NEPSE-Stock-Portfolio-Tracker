@@ -1,20 +1,23 @@
-{% extends "base.html" %} 
+{% extends "index.html" %} 
 {% block title %}Login {% endblock %} 
 
 {% block content%}
-<h2>Login</h2>
+<section class="login">
+  <h2>Login</h2>
 
-<span class="error">{{msg}}</span>
+  <span class="error">{{ msg }}</span>
+  
+  <form action="/auth/login" method="post">
+    <label>Email: </label>
+    <input type="text" name="email" />
+    <br />
+    <label>Password: </label>
+    <input type="password" name="password" />
+    <br />
+    <br />
+    <button type="submit">Submit</button>
+  </form>
+</section>
 
-<form action="/auth/login" method="post">
-  <label>Email: </label>
-  <input type="text" name="email" />
-  <br />
-  <label>Password: </label>
-  <input type="password" name="password" />
-  <br />
-  <br />
-  <button type="submit">Submit</button>
-</form>
 
 {% endblock %}
