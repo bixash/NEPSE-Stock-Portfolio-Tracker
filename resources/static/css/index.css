@@ -10,7 +10,7 @@ body {
   line-height: 1.6;
   font-weight: 400;
   letter-spacing: 0;
-  font-family: Open Sans,sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: var(--color-text-default);
   font-size: 14px;
   /* font-size: var(--global-font-size);
@@ -31,6 +31,9 @@ body {
   --color-text-default: #444;
   --color-bg-body: #f9f9f9;
   --color-text-5: #ff5722;
+  --color-border-5--rgb: 0,0,0;
+  --color-text-8: #4caf50;
+  --color-text-1: #9b9b9b;
 }
 
 body,
@@ -54,14 +57,21 @@ img {
 
 .header {
   background-color: white;
-  max-height: 80px;
-  border-bottom: 1px solid var(--color-border-default);
+  /* max-height: 80px; */
+  /* padding: 0; */
+  box-shadow: 0 1px 5px 0 rgba(var(--color-border-5--rgb),.1);
+  box-sizing: border-box;
+  z-index: 9;
+  width: 100%;
+  position: sticky;
+  top: 0;
 }
 .container {
   max-width: 1440px;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
+  /* background-color: red; */
 }
 
 .header .container {
@@ -172,8 +182,8 @@ img {
   color: var(--color-text-default);
   display: inline-block;
   text-decoration: none;
-  padding: 36px 12px;
-  font-size: var(--global-font-size); /* 21/19 */
+  padding: 24px 12px;
+  font-size: 14px; /* 21/19 */
   /* text-transform: uppercase; */
   transition: 0.3s;
 }
@@ -204,7 +214,7 @@ img {
   /* background-color: white; */
   color: var(--color-text-default);
   text-decoration: none;
-  font-size: 16px;
+  font-size: 14px;
   padding: 5px 5px;
   border-bottom: 1px solid var(--color-border-default);
 }
@@ -214,6 +224,7 @@ img {
 }
 .profile-col .profile__inner{
     display: flex;
+    align-items: center;
     flex-direction: row;
     color: var(--color-text-default)
     /* justify-content: space-around; */
@@ -224,13 +235,13 @@ img {
 }   
 .profile__inner svg {
   /* color: var(--color-text-5); */
-  width: 21px;
-  height: 21px;
+  width: 14px;
+  height: 14px;
 }
 
 .profile__inner .profile-text {
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 14px;
   margin-left: 5px;
   color:var(--color-text-default);
 }
@@ -243,4 +254,3 @@ img {
   color:var(--color-text-5);
   /* text-decoration: underline; */
 }
-

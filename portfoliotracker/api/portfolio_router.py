@@ -54,7 +54,8 @@ def portfolio(request: Request):
    
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    if not api_service.is_tradeDate_same():
+   
+    if api_service.is_tradeDate_same():
         response = api_service.update_prices_todb()
         print(response.msg)
 
@@ -62,6 +63,7 @@ def portfolio(request: Request):
     recent_transactions = trans_service.recent_transactions(user).result
     
     holdings_summary = trans_service.get_holdings_summary(holdings)
+    # print(holdings_summary)
 
     return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings": holdings, "holdings_summary": holdings_summary })
 

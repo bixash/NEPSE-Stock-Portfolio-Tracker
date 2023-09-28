@@ -8,6 +8,8 @@
     <!-- base-css -->
     <link href="../static/css/index.css" rel="stylesheet" />
 
+    <link href="../static/css/fonts.css" rel="stylesheet" />
+
     <!-- specific-css -->
     {% block link %}{% endblock %}
     
@@ -17,7 +19,7 @@
     <!--jquery.min.js -->
     <script src="../static/js/jquery.min.js"></script>
 
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="../static/js/charts-loader.js"></script>
   </head>
   <body>
     <header class="header">
@@ -91,7 +93,13 @@
       </div>
     </header>
     {% block content %}
-   
+    <div>
+      <h2>Track all your stock at one place!</h2>
+
+      <a href="/auth/login"> Login </a>
+      or
+      <a href="/auth/signup"> Sign Up </a>
+    </div>
     {% endblock%}
     <footer class="footer"></footer>
     <script src="../static/js/main.js"></script>

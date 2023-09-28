@@ -11,21 +11,24 @@ class APIService:
         self.api_url = "https://www.nepalipaisa.com/api/GetTodaySharePrice"
         self.api_repo = api_repo
 
-    def get_stock_prices_from_api(self):
-        response = requests.get(self.api_url)
-        result = response.json()
-        return result
+    def get_stock_prices_from_api(self)-> BaseResponse:
+        try:
+            response = requests.get(self.api_url)
+            result = response.json()
+            return BaseResponse(error=False, success=True, msg='Got prices from api!', result= result)
+        except Exception as e:
+           return BaseResponse(error=True, success=False, msg=str(e))
 
     def update_prices_todb(self) -> BaseResponse:
 
         try:
-            result = self.get_stock_prices_from_api()
+           
+            if not self.get_stock_prices_from_api().success:
+                raise Exception("Could not update a stock_prices!")
+            result = self.get_stock_prices_from_api().result
             for item in result['result']['stocks']:
-              stock = Stock(scrip=item['stockSymbol'], closing_price=item['closingPrice'], previous_closing=item['previousClosing'], trade_date=item['tradeDate'], difference_rs=item['differenceRs'], percent_change=item['percentChange'])
-
-              response = self.api_repo.update_stock_prices(stock)
-            if not response:
-              raise Exception("Could not update a stock_prices!")
+                stock = Stock(scrip=item['stockSymbol'], closing_price=item['closingPrice'], previous_closing=item['previousClosing'], trade_date=item['tradeDate'], difference_rs=item['differenceRs'], percent_change=item['percentChange'])
+                self.api_repo.update_stock_prices(stock)
             return BaseResponse(error=False, success=True, msg='Stock_prices updated into db!')
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
@@ -78,10 +81,14 @@ class APIService:
         db = get_db_connection()
 
         trans_repo = TransactionRepo(db)
-        result = self.get_stock_prices_from_api()
-        api_date = result['result']['stocks'][1]['tradeDate']
-
-        db_date = trans_repo.get_stock_tradeDate()
-        if api_date == db_date[0]:
-            return True
-        return False
+        try:
+            result = self.get_stock_prices_from_api()
+            if result.success:
+                api_date = result['result']['stocks'][1]['tradeDate']
+                db_date = trans_repo.get_stock_tradeDate()
+                if api_date == db_date[0]:
+                    return True
+            else:
+                return False
+        except Exception as e:
+            return False

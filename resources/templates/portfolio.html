@@ -14,7 +14,7 @@
     <div class="dashboard-sector-instrument-box">
       <div class="dashboard__left">
         <div class="dashboard-sector-head">
-          <span class="sector-icon">
+          
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
               <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
@@ -22,7 +22,7 @@
                 fill="currentColor"
               />
             </svg>
-          </span>
+         
           <span class="dashboard-sector-title title"> Sectorwise summary </span>
         </div>
         <div class="dashboard-sector-body">
@@ -34,7 +34,7 @@
       </div>
       <div class="dashboard__right">
         <div class="dashboard-instrument-head">
-          <span class="instrument-icon">
+          
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
               <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
@@ -42,7 +42,7 @@
                 fill="currentColor"
               />
             </svg>
-          </span>
+          
           <span class="dashboard-instrument-title title"> Instrument </span>
         </div>
         <div class="dashboard-instrument-body">
@@ -56,7 +56,6 @@
     <div class="dashboard-holds-recent">
       <div class="dashboard-holdings-box">
         <div class="dashboard-holdings-head">
-          <span class="holdings-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
               <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
@@ -64,15 +63,46 @@
                 fill="currentColor"
               />
             </svg>
-          </span>
-          <span class="dashboard-holdings-title title"> Holdings </span>
+          <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
         </div>
         <div class="dashboard-holdings-body">
-          <div
-            id="holdingsChart"
-            style="width: 100%; height: 230px"
-          ></div>
+          
+            
+          {% set invest_value =  holdings_summary['invest_value']%}
+          {% set current_value =   holdings_summary['current_value']%}
+          {% set today_profit_loss =   holdings_summary['today_profit_loss']%}
+          {% set profit_loss =   holdings_summary['profit_loss'] %}
+          {% set profit_loss_percent = holdings_summary['profit_loss_percent'] %}
+
+          <div class="holdings-stats-box">
+            <div class="holdings-item">
+            
+              <div class="holdings-item-value profit">
+                <span class="text-large">{{ profit_loss}}</span>
+                <span class="text-small">{{profit_loss_percent}}%</span>
+              </div>
+              <span class="holdings-text">P&L</span>
+            </div> 
+            <div class="holdings-divider">
+              <div class="holdings-item">
+                <span class="holdings-text">Current value</span>
+                <span class="holdings-item-value">{{current_value}}</span>
+              </div> 
+            <div class="holdings-item">
+              <span class="holdings-text">Investment</span>
+              <span class="holdings-item-value">{{invest_value}}</span>
+            </div> 
+  
+            </div>
+          </div>
+          <div class="holdings-chart-box">
+            <div class="holdings-chart">
+
+            </div>
+          </div>
+         
         </div>
+      
       </div>
       <div class="dashboard-recent-box">
         <div class="dashboard-recent-head">
@@ -116,7 +146,7 @@
             {% endfor%}
             
           </table>
-          <a href="/transactions" class="transactions">View all transactions</a>
+          <a href="/transactions" class="transactions">View all</a>
         </div>
       </div>
     </div>

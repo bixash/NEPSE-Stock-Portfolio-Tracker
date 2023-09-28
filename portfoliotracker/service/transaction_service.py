@@ -104,7 +104,7 @@ class TransactionService:
         today_profit_loss = round(current_value - previous_value, 2)
         today_PL_percent = round((today_profit_loss * 100)/ previous_value, 2)
         
-        return [{"invest_value": invest_value, "current_value": current_value, "profit_loss": profit_loss, "today_profit_loss": today_profit_loss,  "today_PL_percent": today_PL_percent, "profit_loss_percent":  profit_loss_percent}]
+        return {"invest_value": invest_value, "current_value": current_value, "profit_loss": profit_loss, "today_profit_loss": today_profit_loss,  "today_PL_percent": today_PL_percent, "profit_loss_percent":  profit_loss_percent}
 
             
     

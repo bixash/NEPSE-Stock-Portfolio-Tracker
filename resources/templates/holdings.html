@@ -1,70 +1,112 @@
 {% extends "index.html" %}
  {% block title %} Dashboard {% endblock %}
+ {% block link %}<link rel="stylesheet" href="../static/css/holdings.css">{% endblock %}
 
  {% block content %}
-  
-  <div class="holdings-section">
-
-    <h2> Holdings ({{ holdings|length }})</h2>
-
+  <section class="section-holdings">
     {% if not holdings%}
     {{ msg }}
     <h3>Oops, No holdings available!!</h3>
 
 
     {% else %}
-  
-    <table>
-      {{ msg }}
-      <tr>
-        <!-- <th>SN</th> -->
-        <th>Scrip</th>
-        <th>Qty</th>
-        <th>LTP</th>
-        <th>P&L</th>
-        <th>Net change</th>
-        <th>Current Value</th>
-      </tr>
-      
-      
-      
-      {% for row in holdings%}
-      
-      <tr class="portfolio-item"> 
-        <!-- <td>{{ loop.index }}</td> -->
-        <td>{{row['stockSymbol']}}</a></td>
-        <td>{{row['balance']}}</td>
-        <td>{{row['previous_price']}}</td>
-        <td>{{row['difference_rs']}}</td>
-        <td>{{row['percent_change']}}%</td>
-        <td>{{row['closing_price']}}</td>
-        
-      </tr>
-      {% endfor %}
-
-     
-      
-      
-      
-    </table>
-
-    {% for item in holdings_summary%}
-    <div>Investment Value: {{item['invest_value']}}</div> 
-    <div>Current Value: {{item['current_value']}} </div>
-    <span>Today's P&L: {{ item['today_profit_loss']}}</span>
-    <span></span>{{item['today_PL_percent']}} %</span>
-    <div>
-      <span>Total Profit & Loss: {{item['profit_loss']}} </span>
-      <span>{{item['profit_loss_percent']}} %</span>
+    <div class="holdings-block">
+      <div class="dashboard-holdings-head">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path
+            d="M176 56V96H336V56c0-4.4-3.6-8-8-8H184c-4.4 0-8 3.6-8 8zM128 96V56c0-30.9 25.1-56 56-56H328c30.9 0 56 25.1 56 56V96v32V480H128V128 96zM64 96H96V480H64c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64zM448 480H416V96h32c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64z"
+            fill="currentColor"
+          />
+        </svg>
+      <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
     </div>
-    {% endfor %}
+      <div class="holdings-table">
+        <table >
+          {{ msg }}
+          <tr>
+            <!-- <th>SN</th> -->
+            <th>Scrip</th>
+            <th>Qty</th>
+            <th>LTP</th>
+            <th>P&L</th>
+            <th>Net chg.</th>
+            <th>Closing</th>
+          </tr>
+          
+          
+          
+          {% for row in holdings%}
+          
+          <tr class="portfolio-item"> 
+            <!-- <td>{{ loop.index }}</td> -->
+            <td>{{row['stockSymbol']}}</a></td>
+            <td>{{row['balance']}}</td>
+            <td>{{row['previous_price']}}</td>
+            <td>{{row['difference_rs']}}</td>
+            <td>{{row['percent_change']}}%</td>
+            <td>{{row['closing_price']}}</td>
+            
+          </tr>
+          {% endfor %}
     
-    {% endif %}
+        </table>
+      </div>
+   
+      <div class="dashboard-holdings-box">
+        
+        <div class="dashboard-holdings-body">
+          
+            
+          {% set invest_value =  holdings_summary['invest_value']%}
+          {% set current_value =   holdings_summary['current_value']%}
+          {% set today_profit_loss =   holdings_summary['today_profit_loss']%}
+          {% set profit_loss =   holdings_summary['profit_loss'] %}
+          {% set profit_loss_percent = holdings_summary['profit_loss_percent'] %}
+          {% set today_profit_loss_percent = 34 %}
 
+          <div class="holdings-stats-box">
+            <div class="holdings-item">
+              <span class="holdings-text">Investment</span>
+              <div class="holdings-item-value text-large">{{invest_value}}</div>
+            </div> 
+            <div class="holdings-item">
+              <span class="holdings-text">Current value</span>
+              <div class="holdings-item-value text-large">{{current_value}}</div>
+            </div> 
+            <div class="holdings-item">
+            
+              <span class="holdings-text">Day's P&L</span>
+              <div class="holdings-item-value profit">
+                <span class="text-large text-green">{{today_profit_loss}}</span>
+                <div class="text-small text-green">({{today_profit_loss_percent}}%)</div>
+              </div>
+            </div> 
+            <div class="holdings-item">
+            
+              <span class="holdings-text">Total P&L</span>
+              <div class="holdings-item-value profit">
+                <span class="text-large text-green">{{ profit_loss}}</span>
+                <div class="text-small text-green">({{profit_loss_percent}}%)</div>
+              </div>
+            </div> 
 
-  </div>
+  
+          </div>
+          <div class="holdings-chart-box">
+            <div class="holdings-chart">
+              
+            </div>
+          </div>
+        
+        </div>
+      
+    
 
-  </div>
+      </div>
+    </div>
+  {% endif %}
   </section>
+   
   
 {% endblock %}   
