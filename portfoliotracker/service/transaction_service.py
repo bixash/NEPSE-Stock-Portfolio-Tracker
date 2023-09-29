@@ -3,6 +3,7 @@ from portfoliotracker.utils.methods import *
 from portfoliotracker.entities import User, Transaction, BaseResponse
 
 
+
 import csv
 import threading 
 
@@ -134,12 +135,21 @@ class TransactionService:
             return BaseResponse(error=False, success=True, msg="success", result=result)    
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
+        
+    def all_transactions(self, user:User):
+        try:
+            # res = self.trans_repo.retrieve_limit_transaction(user)
+            result = self.dictifiy_transactions(self.trans_repo.retrieve_all_transaction(user))
+            # print (result)
+            return BaseResponse(error=False, success=True, msg="success", result=result)    
+        except Exception as e:
+            return BaseResponse(error=True, success=False, msg=str(e))
     
     def dictifiy_transactions(self, transactions:tuple):
         # MKHC|2023-03-17|10|0|10|IPO-MKHCL-079/80|100.0|1
         resultList = []
         for item in transactions:
-            transaction = dict(scrip = item[0], transaction_date= item[1], credit_quantity = item[2], debit_quantity = item[3], after_balance = item[4], history_description =item[5], unit_price =item[6])
+            transaction = dict(scrip = item[0], transaction_date= convert_date_format(item[1]), credit_quantity = item[2], debit_quantity = item[3], after_balance = item[4], history_description =item[5], unit_price =item[6])
             resultList.append(transaction)
         return resultList
 

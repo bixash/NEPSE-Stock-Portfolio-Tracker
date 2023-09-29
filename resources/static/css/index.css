@@ -55,6 +55,26 @@ img {
   height: auto;
 }
 
+/* global css */
+.text-red{
+  color: var(--color-text-5);
+}
+.text-green {
+  color: var(--color-text-8);
+}
+
+ table th, table td {
+  border-bottom: 1px solid var(--color-border-default);
+  text-align: left;
+  font-size: 14px;
+}
+
+ table th span {
+  color:var(--color-text-1);
+  font-weight: 400;
+}
+
+
 .header {
   background-color: white;
   /* max-height: 80px; */

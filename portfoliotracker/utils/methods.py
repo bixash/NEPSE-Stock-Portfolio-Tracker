@@ -48,3 +48,15 @@ def ZeroBalancetoEmpty(trans):
 
 
 
+
+
+def convert_date_format(input_date):
+    from datetime import datetime
+    # Parse the input date string
+    date_obj = datetime.strptime(input_date, "%Y-%m-%d")
+
+    # Format the date in the desired format
+    formatted_date = date_obj.strftime("%d %b, %Y")
+
+    return formatted_date
+

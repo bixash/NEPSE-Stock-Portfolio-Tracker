@@ -40,38 +40,19 @@
   font-size: 14px;
   border-collapse: collapse;
 }
-.holdings-table table th {
-  border: 1px solid var(--color-border-default);
-  font-weight: 400;
-  border-left: none;
-  color: var(--color-text-1);
-  
-}
-.holdings-table table td {
-  border: 1px solid var(--color-border-default);
-  border-left: none;
-    
-  /* border-top: 2px solid var(--color-border-default); */
-}
 
 .holdings-table table th, .holdings-table table td {
-    text-align: left;
-    padding: 8px 0;
-    padding-left: 10px;
-
-}
-
-.holdings-table .text-red {
-  color: var(--color-text-5);
-}
- .text-green {
-  color: var(--color-text-8);
-}
-
-.recent-table .head .row span {
-  font-weight: 300;
+  border-bottom: 1px solid var(--color-border-default);
   text-align: left;
+  padding: 8px 0;
+  font-size: 14px;
 }
+
+.holdings-table table th span {
+  color:var(--color-text-1);
+  font-weight: 400;
+}
+
 
 .dashboard-holdings-box {
   padding: 15px 0 0 25px;
@@ -84,7 +65,6 @@
 .dashboard-holdings-body .holdings-stats-box {
   display: flex;
   align-items: flex-start;
-
 
 }
 

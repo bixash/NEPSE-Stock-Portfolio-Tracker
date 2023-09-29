@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 db = get_db_connection()
 trans_repo = TransactionRepo(db)
-transaction_service = TransactionService(trans_repo=trans_repo)
+trans_service = TransactionService(trans_repo=trans_repo)
 templates = Jinja2Templates(directory=get_templates_directory())
 
 @router.get("/transactions")
@@ -30,7 +30,8 @@ def get_transaction(request: Request):
     user_id = request.session['user_id']
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    all_transactions = trans_repo.retrieve_all_transaction(user)
+    all_transactions = trans_service.all_transactions(user).result
+    # print(all_transactions)
     
-    return templates.TemplateResponse("show_history.html", { "request": request, "all_transactions": all_transactions})
+    return templates.TemplateResponse("history.html", { "request": request, "username": user.username, "all_transactions": all_transactions})
     

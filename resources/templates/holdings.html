@@ -21,31 +21,30 @@
         </svg>
       <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
     </div>
+    {{ msg }}
       <div class="holdings-table">
-        <table >
-          {{ msg }}
-          <tr>
-            <!-- <th>SN</th> -->
-            <th>Scrip</th>
-            <th>Qty</th>
-            <th>LTP</th>
-            <th>P&L</th>
-            <th>Net chg.</th>
-            <th>Closing</th>
+        <table class="table">
+          <tr class="table-head">
+            <th class="cols"><span>Scrip</span></th>
+            <th class="cols"><span>Qty</span></th>
+            <th class="cols"><span>LTP</span></th>
+            <th class="cols"><span>Closing</span></th>
+            <th class="cols"><span>P&L</span></th>
+            <th class="cols"><span>Net chg.</span></th>
           </tr>
           
           
           
           {% for row in holdings%}
           
-          <tr class="portfolio-item"> 
+          <tr class="table-row"> 
             <!-- <td>{{ loop.index }}</td> -->
-            <td>{{row['stockSymbol']}}</a></td>
-            <td>{{row['balance']}}</td>
-            <td>{{row['previous_price']}}</td>
-            <td>{{row['difference_rs']}}</td>
-            <td>{{row['percent_change']}}%</td>
-            <td>{{row['closing_price']}}</td>
+            <td><span><a href="#">{{row['stockSymbol']}}</a></span></td>
+            <td><span>{{row['balance']}}</span></td>
+            <td><span>{{row['previous_price']}}</span></td>
+            <td><span>{{row['closing_price']}}</span></td>
+            <td><span>{{row['difference_rs']}}</span></td>
+            <td><span>{{row['percent_change']}}%</span></td>
             
           </tr>
           {% endfor %}
