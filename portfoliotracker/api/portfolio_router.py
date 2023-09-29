@@ -63,8 +63,10 @@ def portfolio(request: Request):
     recent_transactions = trans_service.recent_transactions(user).result
     
     holdings_summary = trans_service.get_holdings_summary(holdings)
+    sector_summary = trans_service.get_sector_summary(holdings, company_service.get_all_sectors().result)
+    instrument_summary = trans_service.get_instrument_summary(holdings, company_service.get_all_instrument().result)
     # print(holdings_summary)
 
-    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings": holdings, "holdings_summary": holdings_summary })
+    return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings": holdings, "holdings_summary": holdings_summary, "sector_summary":sector_summary, "instrument_summary": instrument_summary })
 
 

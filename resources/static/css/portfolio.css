@@ -39,13 +39,23 @@
   border-bottom: 1px solid var(--color-border-default);
 }
 
+.dashboard__left {
+  border-right: 0.5px solid var(--color-border-default);
+  margin: 0;
+  width: 100%;
+}
+.dashboard__right {
+  border-left: 0.5px solid var(--color-border-default);
+  margin: 0;
+  width: 100%;
+}
+
 .dashboard-sector-head svg,
 .dashboard-instrument-head svg {
   /* color: white; */
   width: 16px;
   height: 15px;
 }
-
 
 
 .dashboard-sector-head,
@@ -68,29 +78,7 @@
 }
 
 
-/* .dashboard-sector-body {
-    border-bottom: 1px solid var(--color-border-default);
-} */
-/* 
-  
-  
-  #sectorChart{
-    border: 5px solid black;
-  } */
 
-/* .dashboard-instrument-body #instrumentChart {
-    width: 100%;
-  } */
-.dashboard__left {
-  border-right: 0.5px solid var(--color-border-default);
-  margin: 0;
-  width: 100%;
-}
-.dashboard__right {
-  border-left: 0.5px solid var(--color-border-default);
-  margin: 0;
-  width: 100%;
-}
 
 .dashboard-holds-recent {
   display: flex;

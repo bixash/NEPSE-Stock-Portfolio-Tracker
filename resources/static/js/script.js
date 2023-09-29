@@ -1,12 +1,34 @@
 
 $(document).ready(function () {
-  google.charts.load("current", { packages: ["corechart"] });
+  // $.get("/get_sector_stats", function (response, status) {
+  //   array = response.result;
+  // });
+  var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+  var yValues = [55, 49, 44, 24, 15];
+  var barColors = [
+    "rgba(0,0,255,1.0)",
+    "rgba(0,0,255,0.8)",
+    "rgba(0,0,255,0.6)",
+    "rgba(0,0,255,0.4)",
+    "rgba(0,0,255,0.2)",
+  ];
 
-  google.charts.setOnLoadCallback(drawSectorChart);
-  // google.charts.setOnLoadCallback(drawInstrumentChart);
-
-  google.charts.load("current", { packages: ["bar"] });
-  google.charts.setOnLoadCallback(drawHoldingsChart);
+  new Chart("myChart", {
+    type: "doughnut",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        // text: "World Wide Wine Production"
+      }
+    }
+  });
 
   // $.get("/get_holdings_stats", function (data, status) {
   //   document.getElementById(

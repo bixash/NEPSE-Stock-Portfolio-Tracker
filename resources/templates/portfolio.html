@@ -26,10 +26,15 @@
           <span class="dashboard-sector-title title"> Sectorwise summary </span>
         </div>
         <div class="dashboard-sector-body">
-          <div
-            id="sectorChart"
-            style="max-width: 100%; height: 250px"
-          ></div>
+
+        {% for item in sector_summary %}
+        <div>
+          <span>{{ item['sector'] }} ({{ item['no_of_scrip'] }})</span>
+          <span>{{ item['total_value'] }}</span>
+        </div>
+          
+        {% endfor %}
+          <!-- <canvas id="myChart" style="width:100%;max-width:700px"></canvas> -->
         </div>
       </div>
       <div class="dashboard__right">
@@ -46,10 +51,17 @@
           <span class="dashboard-instrument-title title"> Instrument </span>
         </div>
         <div class="dashboard-instrument-body">
-          <div
+          <!-- <div
             id="instrumentChart"
             style="max-width: 100%; height: 250px"
-          ></div>
+          ></div> -->
+          {% for item in instrument_summary %}
+            <div>
+              <span>{{ item['instrument'] }} ({{ item['no_of_scrip'] }})</span>
+              <span>{{ item['total_value'] }}</span>
+            </div>
+              
+          {% endfor %}
         </div>
       </div>
     </div>
