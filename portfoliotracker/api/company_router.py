@@ -29,13 +29,14 @@ trans_repo = TransactionRepo(db)
 trans_service = TransactionService(trans_repo=trans_repo)
 templates = Jinja2Templates(directory=get_templates_directory())
 
-@router.get("/company")
+@router.get("/companies")
 def getCompany(request: Request):
     if not request.session["token"]:
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     
+    user = User(username = request.session["username"], user_id = request.session['user_id'])
     limit_company = company_service.get_company_info_limit(limit=600)
-    return templates.TemplateResponse("company.html", {"request": request, "limit_company": limit_company.result})
+    return templates.TemplateResponse("company.html", {"request": request, "limit_company": limit_company.result, "username": user.username})
 
 
 

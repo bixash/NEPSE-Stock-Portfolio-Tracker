@@ -1,4 +1,4 @@
-.transactions-block {
+.content-block {
   /* background-color: aqua; */
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@
   width: 100%;
 }
 
-.transactions-head {
+.content-head {
   margin: 0;
   width: 70%;
   background-color: white;
@@ -18,38 +18,42 @@
   display: flex;
   align-items: center;
 }
-.transactions-head svg {
+.content-head svg {
   width: 18px;
   height: 18px;
 }
 
-.transactions-head-title {
+.head-title {
   font-size: 18px;
   margin-left: 8px;
 }
 
-.transactions-body {
+.content-body {
   padding: 0 25px;
   width: 70%;
   background-color: white;
 }
 
-.transactions-body table {
+.content-body table {
   padding: 0 25px;
   width: 100%;
   font-size: 14px;
   border-collapse: collapse;
 }
 
-.transactions-body table th,
-.transactions-body table td {
+.content-body table th,
+.content-body table td {
   border-bottom: 1px solid var(--color-border-default);
   text-align: left;
   padding: 8px 0;
   font-size: 14px;
 }
 
-.transactions-body table th span {
+.content-body table th span {
   color: var(--color-text-1);
   font-weight: 400;
+}
+
+.company-head, .company-body {
+  width: 90%;
 }

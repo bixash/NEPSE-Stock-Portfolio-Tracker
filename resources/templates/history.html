@@ -2,8 +2,8 @@
 {% block title %}Transactions history {% endblock %} 
 {% block link %} <link href="../static/css/history.css" rel="stylesheet" /> {% endblock %}
 {% block content %}
-<div class="transactions-block">
-  <div class="transactions-head">
+<div class="content-block">
+  <div class="content-head">
    
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
       <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -12,10 +12,10 @@
         fill="currentColor"
       />
     </svg>
-    <span class="transactions-head-title">Transactions history</span>
+    <span class="head-title">Transactions history</span>
   </div>
   
-  <div class="transactions-body">
+  <div class="content-body">
     <table class="table">
       <tr class="table-head">
         <th class="cols"><span>SN</span></th>
@@ -27,7 +27,7 @@
       </tr>
   
       {% for item in all_transactions%}
-      <tr class="tbody">
+      <tr class="table-row">
           {% set quantity = item['credit_quantity']-item['debit_quantity'] %}
          
           <td class="cols"><span>{{loop.index}}</span></td>
