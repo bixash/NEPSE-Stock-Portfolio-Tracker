@@ -31,7 +31,7 @@
 .dashboard-sector-instrument-box {
   display: flex;
   /* justify-content: space-between; */
-  align-items: center;
+  /* align-items: center; */
   background-color: white;
   max-width: 100%;
   margin: 0 auto;
@@ -42,12 +42,15 @@
 .dashboard__left {
   border-right: 0.5px solid var(--color-border-default);
   margin: 0;
-  width: 100%;
+  width: 60%;
 }
 .dashboard__right {
   border-left: 0.5px solid var(--color-border-default);
   margin: 0;
-  width: 100%;
+  width: 40%;
+}
+.dashboard-instrument-body, .dashboard-sector-body{
+  padding-left: 25px;
 }
 
 .dashboard-sector-head svg,
@@ -77,7 +80,25 @@
   margin-left: 8px;
 }
 
+.dashboard-instrument-body{
+  /* background-color: blue; */
+  display: flex;
+  /* align-items: center; */
+  flex-direction: column;
+  /* justify-content: space-evenly; */
+  height: 100%;
+}
 
+.instrument-stats {
+  margin-bottom: 20px;
+  margin-left: 22px;
+}
+
+.instrument-item .instrument-item-text{
+  display: inline-block;
+  width: 100px;
+  color: var(--color-text-1);
+}
 
 
 .dashboard-holds-recent {

@@ -33,5 +33,7 @@ def get_sector_stats(request: Request):
     sector_summary = trans_service.get_sector_summary(holdings, company_service.get_all_sectors().result)
     instrument_summary = trans_service.get_instrument_summary(holdings, company_service.get_all_instrument().result)
 
-    return{"result": {"xValues":[], "yValues":[]}}
+
+    return{"result": trans_service.XYarray(sector_summary)}
+
 

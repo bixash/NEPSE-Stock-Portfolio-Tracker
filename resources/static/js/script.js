@@ -1,33 +1,48 @@
-
 $(document).ready(function () {
-  // $.get("/get_sector_stats", function (response, status) {
-  //   array = response.result;
-  // });
-  var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-  var yValues = [55, 49, 44, 24, 15];
-  var barColors = [
-    "rgba(0,0,255,1.0)",
-    "rgba(0,0,255,0.8)",
-    "rgba(0,0,255,0.6)",
-    "rgba(0,0,255,0.4)",
-    "rgba(0,0,255,0.2)",
-  ];
+  $.get("/get_sector_stats", function (response, status) {
+    array = response.result;
+    
 
-  new Chart("myChart", {
-    type: "doughnut",
-    data: {
-      labels: xValues,
-      datasets: [{
-        backgroundColor: barColors,
-        data: yValues
-      }]
-    },
-    options: {
-      title: {
-        display: true,
-        // text: "World Wide Wine Production"
-      }
-    }
+    var xValues = array.xValues;
+    var yValues = array.yValues;
+
+    var barColors = [
+      "rgba(0,0,255,1.0)",
+      "rgba(0,0,255,0.8)",
+      "rgba(0,0,255,0.6)",
+      "rgba(0,0,255,0.4)",
+      "rgba(0,0,255,0.2)",
+      "rgba(50,0,255,1.0)",
+      "rgba(50,0,255,0.8",
+      "rgba(50,0,255,0.6)",
+      "rgba(50,0,255,0.4)",
+      "rgba(50,0,255,0.2)",
+      "rgba(100,0,255,1.0)", 
+      "rgba(100,0,255,0.6)", 
+      "rgba(100,0,255,0.4)",
+      
+   
+     
+    ];
+
+    new Chart("sectorChart", {
+      type: "doughnut",
+      data: {
+        labels: xValues,
+        datasets: [
+          {
+            backgroundColor: barColors,
+            data: yValues,
+          },
+        ],
+      },
+      options: {
+        title: {
+          display: false,
+          // text: "World Wide Wine Production"
+        },
+      },
+    });
   });
 
   // $.get("/get_holdings_stats", function (data, status) {
@@ -92,28 +107,15 @@ $(document).ready(function () {
 
 
 
-$.ajax({
-  url: "/get_company",
-  method: "POST",
-  data: { company: company },
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  },
-  success: function (response) {
-    $("#result").html(response);
-  },
-});
-
-var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function () {
-  modal.style.display = "none";
-};
+// var modal = document.getElementById("myModal");
+// var span = document.getElementsByClassName("close")[0];
+// span.onclick = function () {
+//   modal.style.display = "none";
+// };
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
+// window.onclick = function (event) {
+//   if (event.target == modal) {
+//     modal.style.display = "none";
+//   }
+// };

@@ -23,18 +23,18 @@
               />
             </svg>
          
-          <span class="dashboard-sector-title title"> Sectorwise summary </span>
+          <span class="dashboard-sector-title title"> Sectors </span>
         </div>
         <div class="dashboard-sector-body">
 
-        {% for item in sector_summary %}
+        <!-- {% for item in sector_summary %}
         <div>
           <span>{{ item['sector'] }} ({{ item['no_of_scrip'] }})</span>
           <span>{{ item['total_value'] }}</span>
         </div>
           
-        {% endfor %}
-          <!-- <canvas id="myChart" style="width:100%;max-width:700px"></canvas> -->
+        {% endfor %} -->
+          <canvas id="sectorChart" style="width:100%;max-width:700px"></canvas>
         </div>
       </div>
       <div class="dashboard__right">
@@ -56,11 +56,20 @@
             style="max-width: 100%; height: 250px"
           ></div> -->
           {% for item in instrument_summary %}
-            <div>
-              <span>{{ item['instrument'] }} ({{ item['no_of_scrip'] }})</span>
-              <span>{{ item['total_value'] }}</span>
+
+            {%if item['no_of_scrip'] >0 %}
+            <div class="instrument-stats">
+              <div><span class="text-medium-large">{{ item['instrument'] }}</span></div>
+              <div class="instrument-item">
+                <span class="instrument-item-text">No. of scrip</span>
+                <span class="instrument-item-value">{{ item['no_of_scrip'] }}</span>
+              </div> 
+              <div class="instrument-item">
+                <span class="instrument-item-text">Current value</span>
+                <span class="instrument-item-value">{{ item['total_value'] }}</span>
+              </div> 
             </div>
-              
+            {% endif%}
           {% endfor %}
         </div>
       </div>
@@ -167,5 +176,6 @@
   </div>
 </section>
 <script src="../static/js/script.js"></script>
+<script src="../static/js/chart.js"></script>
 
 {% endblock %}

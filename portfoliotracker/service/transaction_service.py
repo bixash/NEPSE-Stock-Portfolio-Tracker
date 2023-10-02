@@ -53,6 +53,16 @@ class TransactionService:
             sectorInfo.append(dict(sector= sector[0], no_of_scrip = count, total_value=  round(value, 2)))
         return sectorInfo     
 
+
+    def XYarray(self, sectorInfo:list):
+        xarray = []
+        yarray = []
+        for item in sectorInfo:
+            if item['total_value'] > 0:
+                xarray.append(item['sector'])
+                yarray.append(item['total_value'])
+        return {'xValues': xarray, 'yValues': yarray}
+
     def sectorDicttoArray(self, arr:list)-> list:
         resultArray = [['Sector', 'Total Value'],]
         for item in arr:

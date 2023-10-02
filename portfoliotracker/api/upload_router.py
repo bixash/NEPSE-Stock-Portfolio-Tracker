@@ -30,7 +30,8 @@ templates = Jinja2Templates(directory=get_templates_directory())
 def upload(request: Request):
     if not request.session["token"]:
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
-    return templates.TemplateResponse("upload.html", {"request": request})
+    user = User(username = request.session["username"], user_id = request.session['user_id'])
+    return templates.TemplateResponse("upload.html", {"request": request, "username": user.username})
 
 
 @router.post("/upload")
@@ -41,19 +42,19 @@ def upload(request: Request, file: UploadFile):
     file_location = f"{os.path.join(Settings.CSV_UPLOAD_PATH)}/{user.user_id}_{user.username}_transactions.csv"
 
     if not file:
-        return templates.TemplateResponse("upload.html", {"request": request, "msg": "No upload file sent!"})
+        return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "No upload file sent!"})
     if filename == '':
-        return templates.TemplateResponse("upload.html", {"request": request, "msg": "No file selected!"})
+        return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "No file selected!"})
     if not filename.endswith('.csv'):
-        return templates.TemplateResponse("upload.html", {"request": request, "msg": "File should be csv format!"})
+        return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "File should be csv format!"})
     
     if not check_fileUploaded(file_location, file):
-        return templates.TemplateResponse("upload.html", {"request": request, "msg": "File can't be uploaded!"})
+        return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "File can't be uploaded!"})
 
     if trans_service.check_transaction(user):
         trans_repo.delete_transaction(user)
         
     response = trans_service.upload_transactions(user, file_location)
     if response.error:
-        return templates.TemplateResponse("upload.html",{ "request": request, "msg": response.msg})
+        return templates.TemplateResponse("upload.html",{ "request": request, "msg": response.msg, "username": user.username})
     return RedirectResponse(url=request.url_for("portfolio"), status_code=status.HTTP_303_SEE_OTHER)
