@@ -29,4 +29,5 @@ def today_prices(request: Request):
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     user = User(username = request.session["username"], user_id = request.session['user_id'])
     all_stock = api_service.get_all_stock_prices()
-    return templates.TemplateResponse("stock.html", {"request": request, "stock_prices": all_stock.result, "username": user.username})
+    trade_date = all_stock.result[0]['trade_date']
+    return templates.TemplateResponse("stock.html", {"request": request, "stock_prices": all_stock.result, "trade_date": trade_date, "username": user.username})

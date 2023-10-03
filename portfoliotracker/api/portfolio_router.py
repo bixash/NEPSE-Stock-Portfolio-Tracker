@@ -55,7 +55,7 @@ def portfolio(request: Request):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
    
-    if api_service.is_tradeDate_same():
+    if not api_service.is_tradeDate_same():
         response = api_service.update_prices_todb()
         print(response.msg)
 
