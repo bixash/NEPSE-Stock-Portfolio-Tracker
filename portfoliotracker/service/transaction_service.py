@@ -164,7 +164,16 @@ class TransactionService:
         return resultList
 
                 
-
-            
-        
-        
+    def check_user_transactions(self, user:User)->bool:
+        if self.trans_repo.retrieve_all_transaction(user):
+            return True
+        return False
+    
+    def get_transactions_by_scrip(self, user:User, scrip: str):
+        try:
+            result= self.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))
+            return BaseResponse(error=False, success=True, msg="success", result=result)
+        except Exception as e:
+            return BaseResponse(error=True, success=False, msg = str(e))
+       
+           

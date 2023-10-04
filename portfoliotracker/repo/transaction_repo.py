@@ -24,9 +24,9 @@ class TransactionRepo:
         cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction,  history_description, unit_price from transactions where uid = ? ",(user.user_id,))
         return cur.fetchall()
     
-    def retrieve_stock_transaction(self, user: User, stock: str):
+    def retrieve_transaction_by_scrip(self, user: User, stock: str):
         cur = self.db.get_connection()
-        cur.execute("SELECT * FROM transactions WHERE scrip = ? and uid = ? ORDER BY transaction_date desc",(stock, user.user_id,))
+        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction,  history_description, unit_price FROM transactions WHERE scrip = ? and uid = ? ORDER BY transaction_date desc",(stock, user.user_id,))
         return cur.fetchall()
     
     def retrieve_limit_transaction(self, user: User):

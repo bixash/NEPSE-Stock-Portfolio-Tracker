@@ -5,12 +5,17 @@
 
 <section class="dashboard-section">
   <div class="wrapper-container">
-    <div class="warning-msg"></div>
     <header class="greet-textbox">
       <h1 class="greet-big-title">
         Hi, <span id="nickname">{{username}}</span>
       </h1>
     </header>
+    {% if flag %}
+    <div class="warning-msg">
+      <span>Oops! Can't find the transactions!</span>
+      <a href="/upload" class="upload">Upload to continue!</a>
+    </div>
+    {% else %}
     <div class="dashboard-sector-instrument-box">
       <div class="dashboard__left">
         <div class="dashboard-sector-head">
@@ -171,10 +176,11 @@
         </div>
       </div>
     </div>
-
+    {% endif %}
     
   </div>
 </section>
+
 <script src="../static/js/script.js"></script>
 <script src="../static/js/chart.js"></script>
 
