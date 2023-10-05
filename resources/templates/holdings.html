@@ -36,16 +36,23 @@
           
           
           {% for row in holdings%}
-          
+
           <tr class="table-row"> 
             <!-- <td>{{ loop.index }}</td> -->
-            <td><span><a href="/company/{{row['stockSymbol']}}">{{row['stockSymbol']}}</a></span></td>
+            <td><span><a class="holdings-scrip" href="/company/{{row['stockSymbol']}}">{{row['stockSymbol']}}</a></span></td>
             <td><span>{{row['balance']}}</span></td>
             <td><span>{{row['previous_price']}}</span></td>
             <td><span>{{row['closing_price']}}</span></td>
-            <td><span>{{row['difference_rs']}}</span></td>
-            <td><span>{{row['percent_change']}}%</span></td>
-            
+            {%if row['difference_rs'] > 0%}
+            <td><span class="text-green">{{row['difference_rs']}}</span></td>
+            {% else%}
+            <td><span class="text-red">{{row['difference_rs']}}</span></td>
+            {%endif%}
+            {%if row['percent_change'] > 0%}
+            <td><span class="text-green">{{row['percent_change']}}%</span></td>
+            {% else%}
+            <td><span class="text-red">{{row['percent_change']}}%</span></td>
+            {%endif%}
           </tr>
           {% endfor %}
     
@@ -77,16 +84,27 @@
             
               <span class="holdings-text">Day's P&L</span>
               <div class="holdings-item-value profit">
+
+                {%if today_profit_loss > 0%}
                 <span class="text-large text-green">{{today_profit_loss}}</span>
                 <div class="text-small text-green">({{today_profit_loss_percent}}%)</div>
+                {% else%}
+                <span class="text-large text-red">{{today_profit_loss}}</span>
+                <div class="text-small text-red">({{today_profit_loss_percent}}%)</div>
+                {%endif%}
               </div>
             </div> 
             <div class="holdings-item">
             
               <span class="holdings-text">Total P&L</span>
               <div class="holdings-item-value profit">
+                {%if profit_loss > 0%}
                 <span class="text-large text-green">{{ profit_loss}}</span>
                 <div class="text-small text-green">({{profit_loss_percent}}%)</div>
+                {% else%}
+                <span class="text-large text-red">{{ profit_loss}}</span>
+                <div class="text-small text-red">({{profit_loss_percent}}%)</div>
+                {%endif%}
               </div>
             </div> 
 

@@ -1,9 +1,9 @@
 {% extends "index.html" %}
  {% block title %} Company {% endblock %}
- {% block link %} <link href="../static/css/history.css" rel="stylesheet" /> {% endblock %}
+ {% block link %} <link href="../static/css/company.css" rel="stylesheet" /> {% endblock %}
  {% block content %}
  <div class="content-block">
-  <div class="content-head company-head">
+  <div class="content-head">
    
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
       <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -14,39 +14,80 @@
     </svg>
     <span class="head-title">{{company_info['company_name']}}</span>
   </div>
-  <div class="content-body company-body">
-    <table class="table">
-      {{ msg }}
-      <tr class="table-head">
-  
-        
-        <th class="cols"><span>Scrip</span></th>
-        <th class="cols"><span>Company Name</span></th>
-        <th class="cols"><span>Status</span></th>
-        <th class="cols"><span>Sector</span></th>
-        <th class="cols"><span>Instrument</span></th>
-        <th class="cols"><span>Email</span></th>
-        <th class="cols"><span>Url</span></th>
-        
-      </tr>
+  <div class="content-body">
+    <div class="company-details">
+      <div class="details-block">
+        <span class="details-title">Scrip :</span>
+        <span>{{company_info['scrip']}}</span>
+      </div>
+      <div class="details-block">
+        <span class="details-title">Company Name :</span>
+        <span>{{company_info['company_name']}}</span>
+      </div>
+      <div class="details-block">
+        <span class="details-title">Status :</span>
+        <span>{{company_info['status']}}</span>
+      </div>
+      <div class="details-block">
+        <span class="details-title">Sector :</span>
+        <span>{{company_info['sector']}}</span>
+      </div>
+      <div class="details-block">
+        <span class="details-title">Instrument :</span>
+        <span>{{company_info['instrument']}}</span>
+      </div>
+      <div class="details-block">
+        <span class="details-title">Email :</span>
+        <span>{{company_info['email']}}</span>
+      </div>
       
+      <div class="details-block">
+        <span class="details-title">Url :</span>
+        <span>{{company_info['url']}}</span>
+      </div>
       
-     
-
-        <tr class="table-row"> 
+    </div>
     
-          <td class="cols"><span>{{company_info['scrip']}}</span></td>
-          <td class="cols"><span>{{company_info['company_name']}}</span></td>
-          <td class="cols"><span>{{company_info['status']}}</span></td>
-          <td class="cols"><span>{{company_info['sector']}}</span></td>
-          <td class="cols"><span>{{company_info['instrument']}}</span></td>
-          <td class="cols"><span>{{company_info['email']}}</span></td>
-          <td class="cols"><span>{{company_info['url']}}</span></td>
-          
-        </tr>
+    <div class="company-transactions">
+      <div class="transactions-head">
+        <span class="transactions-title">Transactions</span>
+      </div>
+    
       
-     
-    </table>
+        <table class="table">
+          <tr class="table-head">
+            <th class="cols"><span>SN</span></th>
+            <th class="cols"><span>Scrip</span></th>
+            <th class="cols"><span>Quantity</span></th>
+            <th class="cols"><span>Unit Price</span></th>
+            <th class="cols"><span>Date</span></th>
+            <th class="cols"><span>Details</span></th>
+          </tr>
+      
+          {% for item in scrip_transactions%}
+          <tr class="table-row">
+              {% set quantity = item['credit_quantity']-item['debit_quantity'] %}
+            
+              <td class="cols"><span>{{loop.index}}</span></td>
+              
+              <td class="cols"><span>{{item['scrip']}}</span></td>
+              
+              {% if quantity > 0 %}
+              <td class="cols"><span class="text-green">{{quantity|abs}}</span></td>
+              {% else %}
+              <td class="cols"><span class="text-red">{{quantity|abs}}</span></td>
+              {% endif%}
+              <td class="cols"><span>{{item['unit_price']}}</span></td>
+              <td class="cols"><span>{{item['transaction_date']}}</span></td>
+              <td class="cols"><span>{{item['history_description']}}</span></td>
+              
+            </tr>
+            {% endfor%}
+      
+          
+        </table>
+      
+    </div>
   </div>
     
 </div>

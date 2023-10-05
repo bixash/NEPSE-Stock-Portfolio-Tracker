@@ -104,8 +104,13 @@
             <div class="holdings-item">
             
               <div class="holdings-item-value profit">
-                <span class="text-large">{{ profit_loss}}</span>
-                <span class="text-small">{{profit_loss_percent}}%</span>
+                {% if profit_loss > 0 %}
+                <span class="text-large text-green">{{ profit_loss}}</span>
+                <span class="text-small text-green">{{profit_loss_percent}}%</span>
+                {% else%}
+                <span class="text-large text-red">{{ profit_loss}}</span>
+                <span class="text-small text-red">{{profit_loss_percent}}%</span>
+                {% endif%}
               </div>
               <span class="holdings-text">P&L</span>
             </div> 
