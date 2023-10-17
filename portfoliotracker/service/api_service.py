@@ -16,17 +16,21 @@ class APIService:
         try:
             response = requests.get(self.api_url)
             result = response.json()
+            print("red")
             return BaseResponse(error=False, success=True, msg='Got prices from api!', result= result)
         except Exception as e:
+           print("green")
            return BaseResponse(error=True, success=False, msg=str(e))
+        
 
     def update_prices_todb(self) -> BaseResponse:
 
         try:
+            api_response = self.get_stock_prices_from_api()
            
-            if not self.get_stock_prices_from_api().success:
+            if not api_response.success:
                 raise Exception("Could not update a stock_prices!")
-            result = self.get_stock_prices_from_api().result
+            result = api_response.result
             for item in result['result']['stocks']:
                 stock = Stock(scrip=item['stockSymbol'], closing_price=item['closingPrice'], previous_closing=item['previousClosing'], trade_date=item['tradeDate'], difference_rs=item['differenceRs'], percent_change=item['percentChange'])
                 self.api_repo.update_stock_prices(stock)
@@ -76,20 +80,16 @@ class APIService:
             # con.commit()
         return result
 
-    def is_tradeDate_same(self):
+    def is_tradeDate_same_db(self):
         from portfoliotracker.repo import TransactionRepo
         from portfoliotracker.repo.db import get_db_connection
         db = get_db_connection()
 
         trans_repo = TransactionRepo(db)
-        try:
-            result = self.get_stock_prices_from_api()
-            if result.success:
-                api_date = result['result']['stocks'][1]['tradeDate']
-                db_date = trans_repo.get_stock_tradeDate()
-                if api_date == db_date[0]:
-                    return True
-            else:
-                return False
-        except Exception as e:
+        api_date = self.get_stock_prices_from_api().result['result']['stocks'][1]['tradeDate']
+        db_date = trans_repo.get_stock_tradeDate()
+        if api_date == db_date[0]:
             return True
+        else:
+            return False
+       
