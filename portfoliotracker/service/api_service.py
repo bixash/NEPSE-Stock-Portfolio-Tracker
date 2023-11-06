@@ -16,10 +16,8 @@ class APIService:
         try:
             response = requests.get(self.api_url)
             result = response.json()
-            print("red")
             return BaseResponse(error=False, success=True, msg='Got prices from api!', result= result)
         except Exception as e:
-           print("green")
            return BaseResponse(error=True, success=False, msg=str(e))
         
 

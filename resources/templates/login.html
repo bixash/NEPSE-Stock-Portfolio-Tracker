@@ -1,23 +1,26 @@
 {% extends "index.html" %} 
 {% block title %}Login {% endblock %} 
-
+{% block link %}<link rel="stylesheet" href="../static/css/login-sign.css">{% endblock %}
 {% block content%}
-<section class="login">
-  <h2>Login</h2>
+
+<div class="form-container">
+  <h2 class="form-title">Login</h2>
 
   <span class="error">{{ msg }}</span>
   
   <form action="/auth/login" method="post">
-    <label>Email: </label>
-    <input type="text" name="email" />
-    <br />
-    <label>Password: </label>
-    <input type="password" name="password" />
-    <br />
-    <br />
-    <button type="submit">Submit</button>
+    <div class="form-group">
+      <label>Email </label>
+      <input type="text" name="email" class="form-control" />
+    </div>
+    
+    <div class="form-group">
+      <label>Password </label>
+      <input type="password" name="password"  class="form-control"/>
+    </div>
+    
+    <button type="submit" class="btn-primary">Submit</button>
   </form>
-</section>
-
+</div>
 
 {% endblock %}

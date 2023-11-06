@@ -1,43 +1,49 @@
 {% extends "index.html" %}
 {% block title %} Signup {% endblock %}
+{% block link %}<link rel="stylesheet" href="../static/css/login-sign.css">{% endblock %}
 {% block content %}
 
-  <span>{{ msg }} </span>
+  
 
-<form action="/auth/signup" method="POST">
-    <h2>Sign Up</h2>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        name="email"
-        placeholder="johndoe@email.com"
-      />
-    </div>
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input
-        type="text"
-        class="form-control"
-        id="username"
-        name="username"
-        placeholder="RoastedPotato24"
-      />
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        name="password"
-        placeholder=""
-      />
-    </div>
-    
-    <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+  <div class="form-container">
+    <h2 class="form-title">Sign Up</h2>
+    <span class="error">{{ msg }}</span>
+    <form action="/auth/signup" method="POST">
+  
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="johndoe@email.com"
+        />
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          placeholder="RoastedPotato24"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder=""
+        />
+      </div>
+      
+      <button type="submit" class="btn-primary">Submit</button>
+    </form>
+
+  </div>
+
 {% endblock %}

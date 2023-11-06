@@ -27,7 +27,7 @@ class CompanyRepo:
     def get_company_like(self, scrip:str):
         cur = self.db.get_connection()
         con = self.db._commit()
-        cur.execute("SELECT scrip, company_name FROM company WHERE scrip LIKE ? or company_name LIKE ?  limit 10",(scrip, scrip, ))
+        cur.execute("SELECT scrip, company_name FROM company WHERE scrip LIKE ? or company_name LIKE ?  limit 8",(scrip, scrip, ))
         return cur.fetchall()
     
     def select_status_sector_instrument(self, scrip: str) -> bool:

@@ -162,20 +162,21 @@ img {
   position: relative;
 }
 
-.search-list{
-  display: none;
+.search-list.active{
+
   z-index: 999;
   position: absolute;
-  margin-top: 18px;
+  margin-top: 5px;
   background-color: white;
   width: 300px;
-  border-bottom: 1cap solid var(--color-border-default) ;
-  border-radius: 5px;
+  /* border-bottom: 1cap solid var(--color-border-default) ; */
   box-shadow: -2px 2px 8px 3px var(--color-border-default);
+  border-radius: 5px;
+  
   
 }
 
-.search-list a {
+.search-list.active a {
   display: block;
   /* background-color: white; */
   color: var(--color-text-default);

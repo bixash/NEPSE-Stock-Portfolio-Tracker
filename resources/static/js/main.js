@@ -2,10 +2,10 @@ const profile = document.getElementById("profile");
 const profile_options = document.getElementById("profile-options");
 const search = document.getElementById("search-box");
 const search_list = document.getElementById("search-list");
+const inputBox = search.querySelector("#company-search");
+const resultsDiv = document.getElementById("search-list");
 
-search.addEventListener("click", function () {
-  search_list.style.display = "block";
-});
+
 profile.addEventListener("click", function () {
   profile_options.style.display = "block";
 });
@@ -22,31 +22,44 @@ document.addEventListener("click", (event) => {
   }
 });
 
-function search_result(data) {
-  for (item in data) {
-    return item;
-  }
-}
-$("#company-search").keyup(function () {
-  var company = $(this).val();
-  fetch("/get_company", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ scrip: company }),
-  })
-    .then((response) => response.json()) // or, resp.text(), etc
-    .then((data) => {
-      
-      document.getElementById("search-list").innerHTML = `
-      <a href="#" class="search-item">${data.message[1]}</a>
-      <a href="#" class="search-item">${data.message[2]}</a>
-      <a href="#" class="search-item">${data.message[3]}</a>
-      <a href="#" class="search-item">${data.message[4]}</a>
-      `; // handle response data
+inputBox.onkeyup = (e) => {
+  var userData = e.target.value;
+
+  if (userData) {
+    fetch("/get_company", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ scrip: userData }),
     })
-    .catch((error) => {
-      console.error(error);
-    });
-});
+      .then((response) => response.json()) // or, resp.text(), etc
+      .then((data) => {
+        $("#search-list").empty();
+  
+        if(data.companyList.length > 0){
+  
+          for (let i = 0; i < data.companyList.length; i++) {
+            var symbol = data.companyList[i][0];
+            var company_name = data.companyList[i][1];
+    
+            $("#search-list").append(
+              `<a href="/company/${symbol}">${symbol} - ${company_name}</a>`
+            );
+          }
+          search_list.classList.add("active"); //show autocomplete box
+        } else {
+          search_list.innerHTML = "";
+          search_list.classList.remove("active"); //hide autocomplete box
+        }
+        
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    
+  } else {
+    search_list.innerHTML = "";
+    search_list.classList.remove("active"); //hide autocomplete box
+  }
+};

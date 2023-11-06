@@ -45,7 +45,7 @@ def getCompany(request: Request):
 def search_company(company: Company):
     script = company.scrip + "%"
     result = company_service.company_like(script)
-    return {"message": result.result}
+    return {"companyList": result.result}
 
 @router.get("/company/{scrip}")
 def get_company(scrip, request:Request):
