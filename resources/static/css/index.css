@@ -55,7 +55,7 @@ img {
   height: auto;
 }
 .text-medium-large {
-  font-size: 30px;
+  font-size: 23px;
   font-weight: 300;
 }
 /* global css */
@@ -146,16 +146,16 @@ img {
   height: 30px;
   width: 300px;
   padding: 3px 8px;
-  border-radius: 2px; 
+  border-radius: 4px; 
   border: none;
   font-size: 16px;
-  border: 1px solid var(--color-border-default);
+  border: 1px solid var(--color-text-1);
 } 
 
 
 .search-input:focus{
   outline: none;
-  border: 1.5px solid var(--color-border-default);
+  border: 1.5px solid var(--color-text-1);
 }
 
 .search-box {
@@ -225,11 +225,12 @@ img {
 .profile-options{
   display: none;
   position: absolute;
-  margin-top: 18px;
+  margin-top: 5px;
   background-color: white;
-  width: 100%;
-  padding: 15px;
-  border-top: 1px solid var(--color-border-default) ;
+  width: fit-content;
+  padding: 10px;
+  box-shadow: -2px 2px 8px 3px var(--color-border-default);
+  /* border-radius: 5px; */
   
 }
 
@@ -245,16 +246,13 @@ img {
 
 .profile-options a:hover {
   background-color: var(--color-bg-body);
+  color: var(--color-text-5);
 }
 .profile-col .profile__inner{
     display: flex;
     align-items: center;
     flex-direction: row;
-    color: var(--color-text-default)
-    /* justify-content: space-around; */
-    /* align-items: center; */
-    /* background-color: black; */
-    /* margin: 10px auto; */
+    color: var(--color-text-default);
   
 }   
 .profile__inner svg {

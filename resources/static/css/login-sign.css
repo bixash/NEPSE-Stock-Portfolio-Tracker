@@ -43,10 +43,11 @@ body {
 }
 
 .form-group .form-control{
-    border: 1.5px solid var(--color-border-default);
+    border: 1.5px solid var(--color-text-1);
     font-size: 14px;
     padding: 6px 6px;
     width: 200px;
+    border-radius: 3px;
    
 }
 .form-group .form-control:focus {

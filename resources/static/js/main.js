@@ -1,4 +1,4 @@
-const profile = document.getElementById("profile");
+const header_profile = document.getElementById("profile");
 const profile_options = document.getElementById("profile-options");
 const search = document.getElementById("search-box");
 const search_list = document.getElementById("search-list");
@@ -6,7 +6,7 @@ const inputBox = search.querySelector("#company-search");
 const resultsDiv = document.getElementById("search-list");
 
 
-profile.addEventListener("click", function () {
+header_profile.addEventListener("click", function () {
   profile_options.style.display = "block";
 });
 

@@ -62,7 +62,7 @@
           ></div> -->
           {% for item in instrument_summary %}
 
-            {%if item['no_of_scrip'] >0 %}
+            
             <div class="instrument-stats">
               <div><span class="text-medium-large">{{ item['instrument'] }}</span></div>
               <div class="instrument-item">
@@ -74,7 +74,7 @@
                 <span class="instrument-item-value">{{ item['total_value'] }}</span>
               </div> 
             </div>
-            {% endif%}
+            
           {% endfor %}
         </div>
       </div>
@@ -163,7 +163,7 @@
               {% set quantity = item['credit_quantity']-item['debit_quantity'] %}
              
               
-              <td class="cols">{{item['scrip']}}</td>
+              <td class="cols"><a href="company/{{item['scrip']}}">{{item['scrip']}}</a></td>
               
               {% if quantity > 0 %}
               <td class="cols"><span class="text-green">{{quantity|abs}}</span></td>

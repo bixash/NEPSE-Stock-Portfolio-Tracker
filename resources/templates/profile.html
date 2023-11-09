@@ -1,0 +1,68 @@
+{% extends "index.html" %} 
+{% block title %}Profile{% endblock %} 
+{% block link %}<link rel="stylesheet" href="../static/css/profile.css">{% endblock %}
+{% block content %}
+  
+    <h2 class="form-title">My Account</h2>
+    <span class="error">{{ msg }}</span>
+
+    <div class="user-profile">
+      
+      <div class="user-info">
+        <div class="user-detail">
+          <div class="detail-group">
+            <span class="detail-head">Username</span>
+            <span class="detail-info">{{username}}</span>
+          </div>
+          <button class="edit-btn" onclick="changeUsername('{{username}}')">Edit</button>
+          
+        </div>
+        <div class="user-detail">
+          <div class="detail-group">
+            <span class="detail-head">Email</span>
+            <span class="detail-info">{{email}}</span>
+          </div>
+          <button class="edit-btn" onclick="changeEmail('{{email}}')">Edit</button>
+        </div>
+        <div class="user-detail">
+          <div class="detail-group">
+            <span class="detail-head">Password</span>
+            <span class="detail-info">*****</span>
+          </div>
+          <button class="edit-btn" onclick="changePassword()">Edit</button>
+        </div>
+        
+      </div>
+      <div class="account-info">
+        <button onclick="deleteData('{{user_id}}')">Delete Data</button>
+        <button onclick="deleteAccount('{{user_id}}')">Delete Account</button>
+      </div>
+
+    </div>
+
+    <div id="update-modal-block" class="update-modal-block">
+      
+      <div class="modal-content">
+
+        <div class="modal-head">
+          <h2 class="modal-head-title"></h2>
+          <span class="modal-subtitle"></span>
+          <span class="close" id ="close">X</span>
+        </div>
+        
+        <form  id="update-form" action="" method="POST">
+    
+          <div class="form-group">
+           
+          </div>
+          <div class="button-group">
+            <span class="close-btn">Cancel</span>
+            <button type="submit" class="btn-primary">Done</button>
+          </div>
+            
+        </form>
+        
+      </div>
+    </div>
+    <script src="../static/js/profile.js"></script>
+{% endblock %}
