@@ -52,7 +52,7 @@ def upload(request: Request, file: UploadFile):
         return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "File can't be uploaded!"})
 
     if trans_service.check_transaction(user):
-        trans_repo.delete_transaction(user)
+        trans_repo.delete_transaction(user.user_id)
         
     response = trans_service.upload_transactions(user, file_location)
     if response.error:

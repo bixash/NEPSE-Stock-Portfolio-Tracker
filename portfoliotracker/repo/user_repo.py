@@ -41,3 +41,11 @@ class UserRepo:
         cur.execute("UPDATE `user` set email = ? WHERE id = ? ", (email, user_id,  ))
         con.commit()
         return True
+    
+
+    def delete_user(self, user_id:int) -> bool:
+        cur = self.db.get_connection()
+        con = self.db._commit()
+        cur.execute("DELETE FROM `user` WHERE id = ? ", ( user_id,  ))
+        con.commit()
+        return True

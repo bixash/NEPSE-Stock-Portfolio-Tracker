@@ -39,4 +39,9 @@ class UserService:
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
 
-    
+    def delete_user(self, user_id: int) -> BaseResponse:
+        try:
+            if self.user_repo.delete_user(user_id):
+                return BaseResponse(error=False, success=True, result=user_id)
+        except Exception as e:
+            return BaseResponse(error=True, success=False, msg=str(e))

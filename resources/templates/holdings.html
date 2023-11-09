@@ -5,10 +5,10 @@
  {% block content %}
   <section class="section-holdings">
     {% if not holdings%}
-    {{ msg }}
-    <h3>Oops, No holdings available!!</h3>
-
-
+    <div class="warning-msg">
+      <span>Oops! Can't find the transactions!</span>
+      <a href="/upload" class="upload">Upload to continue!</a>
+    </div>
     {% else %}
     <div class="holdings-block">
       <div class="dashboard-holdings-head">

@@ -5,10 +5,10 @@ class TransactionRepo:
     def __init__(self, db: DBConnection):
         self.db = db
 
-    def delete_transaction(self, user: User):
+    def delete_transaction(self, user_id:int):
         cur = self.db.get_connection()
         con = self.db._commit()
-        cur.execute("DELETE FROM transactions where uid = ?", (user.user_id,))
+        cur.execute("DELETE FROM transactions where uid = ?", (user_id,))
         con.commit()
         
 

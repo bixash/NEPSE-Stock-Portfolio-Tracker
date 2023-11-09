@@ -18,7 +18,7 @@ trans_service = TransactionService(trans_repo=trans_repo)
 templates = Jinja2Templates(directory=get_templates_directory())
 
 @router.get("/holdings")
-def get_transaction(request: Request):
+def holdings(request: Request):
     if not request.session["token"]:
         return templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     token = request.session["token"]
@@ -26,12 +26,16 @@ def get_transaction(request: Request):
 
 
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-    holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
-    holdings_summary = trans_service.get_holdings_summary(holdings)
-    # print(holdings_summary)
-   
-  
-    return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary})
+ 
+    if trans_service.get_holdings(trans_service.get_joined_result(user).result):
+        holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
+        holdings_summary = trans_service.get_holdings_summary(holdings)
+        # print(holdings_summary)
+    
+        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary})
+    
+    return templates.TemplateResponse("holdings.html", { "request": request,  "username": user.username, "holdings": []})
+
 
 # @router.get("/get_holdings_stats")
 # def get_holdings_stats(request: Request):

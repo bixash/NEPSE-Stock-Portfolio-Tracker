@@ -7,8 +7,10 @@ from fastapi.responses import RedirectResponse
 from portfoliotracker.entities import BaseResponse, User
 from portfoliotracker.entities.auth import LoginRequest, SignupRequest
 from portfoliotracker.repo.user_repo import UserRepo
+from portfoliotracker.repo.transaction_repo import TransactionRepo
 from portfoliotracker.repo.db import get_db_connection
 from portfoliotracker.service.user_service import UserService
+from portfoliotracker.service.transaction_service import TransactionService
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -21,6 +23,8 @@ logger = logging.getLogger(__name__)
 db = get_db_connection()
 user_repo = UserRepo(db)
 user_service = UserService(user_repo=user_repo)
+trans_repo = TransactionRepo(db)
+trans_service = TransactionService(trans_repo=trans_repo)
 
 
 
@@ -39,7 +43,6 @@ def profile(request: Request):
     response = user_service.get_user(user.user_id).result
   
     return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email})
-
 
 
 @router.post('/profile/change-username')
@@ -110,6 +113,43 @@ def change_password(request: Request, new_password: str = Form(), password: str 
     else:
         return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Sorry password invalid!"})
  
+@router.post('/profile/delete-account')
+def delete_account(request: Request, password: str = Form()):
+    if not request.session["token"]:
+        return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
+    
+    user = User(username = request.session["username"], user_id = request.session['user_id'])
+
+    response = user_service.get_user(user.user_id).result
+    real_pass = response.password
+    typed_pass = password
+
+    if real_pass == typed_pass:
+        if user_service.delete_user(user.user_id).success:
+
+            return RedirectResponse(url=request.url_for("logout"), status_code=status.HTTP_303_SEE_OTHER)
+        
+    else:
+        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Sorry password invalid!"})
+
+
+@router.post('/profile/delete-data')
+def delete_data(request: Request, password: str = Form()):
+    if not request.session["token"]:
+        return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
+    
+    user = User(username = request.session["username"], user_id = request.session['user_id'])
+
+    response = user_service.get_user(user.user_id).result
+    real_pass = response.password
+    typed_pass = password
+
+    if real_pass == typed_pass:
+        print(trans_service.delete_transactions(user.user_id).msg)
+        if trans_service.delete_transactions(user.user_id).success:
+            return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Your transactions data was deleted permanently!"})
+    else:
+        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Sorry password invalid!"})
         
 
     

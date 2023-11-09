@@ -177,3 +177,10 @@ class TransactionService:
             return BaseResponse(error=True, success=False, msg = str(e))
        
            
+
+    def delete_transactions(self, user_id:int):
+        try:
+            result = self.trans_repo.delete_transaction(user_id)
+            return BaseResponse(error=False, success=True, msg="success", result=result)
+        except Exception as e:
+            return BaseResponse(error=True, success=False, msg = str(e))
