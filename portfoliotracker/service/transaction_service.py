@@ -26,19 +26,16 @@ class TransactionService:
                     return BaseResponse(error=True, success=False, msg="Could not insert a transaction into db!")
             return BaseResponse(error=False, success=True, msg="success")
  
-    def check_transaction(self, user: User) -> bool:
-        result = self.trans_repo.retrieve_all_transaction(user)
-        if result is None:
-            return False
-        return True
+    def check_user_transactions(self, user:User)->bool:
+        if self.trans_repo.retrieve_all_transaction(user):
+            return True
+        return False
     
-
     def get_distinct_stockSymbols(self, user:User) -> list:
         stockSymbols = []
         for item in self.trans_repo.select_distinct_scrip(user):
             stockSymbols.append(item[0])
         return stockSymbols
-    
 
     def get_sector_summary(self, trans:dict, sectorList: list )-> list:
         
@@ -52,7 +49,6 @@ class TransactionService:
                     value = value + item['closing_price'] * item['balance']
             sectorInfo.append(dict(sector= sector[0], no_of_scrip = count, total_value=  round(value, 2)))
         return sectorInfo     
-
 
     def XYarray(self, sectorInfo:list):
         xarray = []
@@ -81,11 +77,6 @@ class TransactionService:
             instrumentInfo.append(dict(instrument= ins[0], no_of_scrip = count, total_value= round(value, 2)))
         return instrumentInfo
     
-    def instrumentDicttoArray(self, arr:list)-> list:
-        resultArray = [['Instrument', 'Total Value'],]
-        for item in arr:
-            resultArray.append([item['instrument'], item['total_value']])
-        return resultArray
 
     def get_statusActive_scrip(self, trans:dict):
         temp = []
@@ -115,10 +106,8 @@ class TransactionService:
         today_profit_loss = round(current_value - previous_value, 2)
         today_PL_percent = round((today_profit_loss * 100)/ previous_value, 2)
         
-        return {"invest_value": invest_value, "current_value": current_value, "profit_loss": profit_loss, "today_profit_loss": today_profit_loss,  "today_PL_percent": today_PL_percent, "profit_loss_percent":  profit_loss_percent}
+        return {"invest_value": round(invest_value, 2), "current_value": round(current_value, 2), "profit_loss": profit_loss, "today_profit_loss": today_profit_loss,  "today_PL_percent": today_PL_percent, "profit_loss_percent":  profit_loss_percent}
 
-            
-    
     def get_joined_result(self, user:User)->BaseResponse:
         try:
             lock.acquire(True)
@@ -136,7 +125,6 @@ class TransactionService:
         finally:
             lock.release()
 
-    
     def recent_transactions(self, user:User):
         try:
             # res = self.trans_repo.retrieve_limit_transaction(user)
@@ -162,13 +150,7 @@ class TransactionService:
             transaction = dict(scrip = item[0], transaction_date= convert_date_format(item[1]), credit_quantity = item[2], debit_quantity = item[3], after_balance = item[4], history_description =item[5], unit_price =item[6])
             resultList.append(transaction)
         return resultList
-
-                
-    def check_user_transactions(self, user:User)->bool:
-        if self.trans_repo.retrieve_all_transaction(user):
-            return True
-        return False
-    
+               
     def get_transactions_by_scrip(self, user:User, scrip: str):
         try:
             result= self.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))
@@ -176,8 +158,6 @@ class TransactionService:
         except Exception as e:
             return BaseResponse(error=True, success=False, msg = str(e))
        
-           
-
     def delete_transactions(self, user_id:int):
         try:
             result = self.trans_repo.delete_transaction(user_id)

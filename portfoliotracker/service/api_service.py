@@ -18,9 +18,8 @@ class APIService:
             result = response.json()
             return BaseResponse(error=False, success=True, msg='Got prices from api!', result= result)
         except Exception as e:
-           return BaseResponse(error=True, success=False, msg=str(e))
+            return BaseResponse(error=True, success=False, msg=str(e))
         
-
     def update_prices_todb(self) -> BaseResponse:
 
         try:
@@ -36,19 +35,6 @@ class APIService:
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
 
-    def get_stock_price_db(self, stockSymbol: str):
-        result = self.api_repo.fetch_stock_price(stockSymbol)
-        if result:
-            return dict(stockSymbol=result[0], previous_closing=result[1], trade_date=result[2], closing_price=result[3])
-
-    def transactions_stock_price(self, user: User) -> list:
-        pricesDict = []
-        for stockSymbol in self.distinct_stockSymbols(user):
-            result = self.get_stock_price_db(user, stockSymbol)
-            if result:
-                pricesDict.append(result)
-        return pricesDict
-    
     def get_all_stock_prices(self)-> BaseResponse:
         try:
             res= self.api_repo.select_all_stock_prices()
@@ -59,10 +45,7 @@ class APIService:
             return BaseResponse(error=False, success=True, msg='success', result= resultList)
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
-        
-            
-
-
+                
     def getKittaDevPrices():
         url = 'https://api.kitta.dev/stocks/live'
 

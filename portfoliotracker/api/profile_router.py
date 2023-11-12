@@ -67,7 +67,7 @@ def change_username(request: Request, username: str = Form(), password: str = Fo
     
         # return templates.TemplateResponse("profile.html",{ "request": request, "msg": "Username updated!"})
     else:
-        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Sorry password invalid!"})
+        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username, "email": response.email, "msg": "Sorry password invalid!"})
 
 @router.post('/profile/change-email')
 def change_email(request: Request, email: str = Form(), password: str = Form()):
@@ -90,7 +90,7 @@ def change_email(request: Request, email: str = Form(), password: str = Form()):
     
         # return templates.TemplateResponse("profile.html",{ "request": request, "msg": "email updated!"})
     else:
-        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Sorry password invalid!"})
+        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username, "email": response.email, "msg": "Sorry password invalid!"})
 
 @router.post('/profile/change-password')
 def change_password(request: Request, new_password: str = Form(), password: str = Form()):
@@ -111,7 +111,7 @@ def change_password(request: Request, new_password: str = Form(), password: str 
         return RedirectResponse(url=request.url_for("profile"), status_code=status.HTTP_303_SEE_OTHER, headers={"msg":"Password updated!"})
         
     else:
-        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Sorry password invalid!"})
+        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username, "email": response.email, "msg": "Sorry password invalid!"})
  
 @router.post('/profile/delete-account')
 def delete_account(request: Request, password: str = Form()):
@@ -130,26 +130,10 @@ def delete_account(request: Request, password: str = Form()):
             return RedirectResponse(url=request.url_for("logout"), status_code=status.HTTP_303_SEE_OTHER)
         
     else:
-        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Sorry password invalid!"})
+        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username, "email": response.email, "msg": "Sorry password invalid!"})
 
 
-@router.post('/profile/delete-data')
-def delete_data(request: Request, password: str = Form()):
-    if not request.session["token"]:
-        return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
-    
-    user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    response = user_service.get_user(user.user_id).result
-    real_pass = response.password
-    typed_pass = password
-
-    if real_pass == typed_pass:
-        print(trans_service.delete_transactions(user.user_id).msg)
-        if trans_service.delete_transactions(user.user_id).success:
-            return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Your transactions data was deleted permanently!"})
-    else:
-        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username,"password":response.password, "email": response.email, "msg": "Sorry password invalid!"})
         
 
     

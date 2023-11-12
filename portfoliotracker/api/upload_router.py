@@ -51,7 +51,7 @@ def upload(request: Request, file: UploadFile):
     if not check_fileUploaded(file_location, file):
         return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "File can't be uploaded!"})
 
-    if trans_service.check_transaction(user):
+    if trans_service.check_user_transactions(user):
         trans_repo.delete_transaction(user.user_id)
         
     response = trans_service.upload_transactions(user, file_location)

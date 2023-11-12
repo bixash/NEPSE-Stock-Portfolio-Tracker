@@ -47,27 +47,11 @@ class CompanyService:
             return BaseResponse(error=False, success=True, msg="success", result= result)
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
-    
-    def get_status_sector_instrument(self, scripSymbol: list) ->BaseResponse:
-        try:
-            resultList =[]
-            for scrip in scripSymbol:
-                result = self.company_repo.select_status_sector_instrument(scrip)
-                resultList.append(result)
-            return BaseResponse(error=False, success=True, msg="success", result= resultList)
-        except Exception as e:
-            return BaseResponse(error=True, success=False, msg=str(e))
+
     
     def get_all_sectors(self):
         try:
             result = self.company_repo.select_all_distinct_sector()
-            return BaseResponse(error=False, success=True, msg="success", result= result)
-        except Exception as e:
-            return BaseResponse(error=True, success=False, msg=str(e))
-        
-    def get_all_status(self):
-        try:
-            result = self.company_repo.select_all_distinct_status()
             return BaseResponse(error=False, success=True, msg="success", result= result)
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))

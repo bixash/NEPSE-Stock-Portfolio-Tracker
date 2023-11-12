@@ -60,7 +60,6 @@ def portfolio(request: Request):
             api_service.update_prices_todb()
        
 
-    # print(trans_service.check_user_transactions(user))
     if trans_service.check_user_transactions(user):
 
         holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
