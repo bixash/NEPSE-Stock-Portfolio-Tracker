@@ -20,7 +20,7 @@ from portfoliotracker.service.api_service import APIService
 from portfoliotracker.service.transaction_service import TransactionService
 from portfoliotracker.service.company_service import CompanyService
 
-from portfoliotracker.utils import  tuple_into_dict
+
 
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse

@@ -6,6 +6,16 @@ const inputBox = search.querySelector("#company-search");
 const resultsDiv = document.getElementById("search-list");
 
 
+
+// function validateInput(){
+//   var input_email = document.getElementById('email').value;
+//   var input_password = document.getElementById('password').value;
+//   var input_username = document.getElementById('username').value;
+//   var email = input_email.trim();
+
+// }
+
+
 header_profile.addEventListener("click", function () {
   profile_options.style.display = "block";
 });
@@ -63,3 +73,6 @@ inputBox.onkeyup = (e) => {
     search_list.classList.remove("active"); //hide autocomplete box
   }
 };
+
+
+

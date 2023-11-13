@@ -21,7 +21,6 @@ class CompanyService:
                     return ("Can't insert company info!")
         return "Uploaded company info! "  
 
-
     def get_company_info(self, scrip: str) -> BaseResponse:
         try:
             result = self.company_repo.retrieve_companyInfo_by_scrip(scrip)

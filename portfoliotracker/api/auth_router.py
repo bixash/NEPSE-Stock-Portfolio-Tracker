@@ -59,7 +59,7 @@ def signup(request: Request):
 @router.post('/auth/signup')
 def signup(request: Request, username: str = Form(), email: str = Form(), password: str = Form()):
 
-    signup_request = SignupRequest(username=username, email=email, password=password)
+    signup_request = SignupRequest(username=username.strip(), email=email.strip(), password=password.strip())
 
     response = auth_service.signup(signup_request)
     if response.error:
