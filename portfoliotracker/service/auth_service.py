@@ -25,10 +25,10 @@ class AuthService:
     def _login(self, email: str, password: str) -> AuthResponse:
         user = self.auth_repo.get_user_by_email(email)
         if user is None:
-            raise Exception("User not found")
+            raise Exception("User not found!")
         success = self.auth_repo.login(email, password)
         if not success:
-            raise Exception("Invalid password")
+            raise Exception("Invalid password!")
         token = utils.generate_uuid()
         auth_response = AuthResponse(token=token, user=user)
         self.auth_session[token] = auth_response
@@ -52,23 +52,25 @@ class AuthService:
 
         existing_user = self.auth_repo.get_user_by_email(signup_request.email)
         if existing_user is not None:
-            raise Exception("User already exists")
+            raise Exception("User already exists!")
         success = self.auth_repo.save_user(signup_request)
         if not success:
-            raise Exception("Could not save user")
+            raise Exception("Could not save user!")
         return signup_request
 
     def validate_signup(self, signup_request: SignupRequest) -> bool:
 
         if signup_request.email == "":
             raise Exception("Email required!")
+        if not utils.validate_email(signup_request.email):
+            raise Exception("Email invalid!")
         if signup_request.username == "":
             raise Exception("Username required!")
         if signup_request.password== "":
             raise Exception("Password required!")
         return True
 
-    def validate_login(self, email, password) -> bool:
+    def validate_login(self, email:str, password:str) -> bool:
 
         if email == "":
             raise Exception("Email required!")

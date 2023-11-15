@@ -25,11 +25,11 @@ function changeUsername(username) {
   formGroup.innerHTML = `
     <div class="input-form">
         <span class="input-label">Username</span>
-        <input type="text" class="form-control" id="username" name="username" value="${username}"/>
+        <input type="text" class="form-control" id="username" name="username" value="${username}" required/>
     </div>
     <div class="input-form">
         <span class="input-label">Current Password</span>
-        <input type="password" class="form-control" id="password" name="password"/>
+        <input type="password" class="form-control" id="password" name="password" required/>
     </div>
   `;
   modal.style.display = "block";
@@ -44,11 +44,11 @@ function changeEmail(email) {
   formGroup.innerHTML = `
     <div class="input-form">
         <span class="input-label">Email</span>
-        <input type="email" class="form-control" id="email" name="email" value="${email}"/>
+        <input type="email" class="form-control" id="email" name="email" value="${email}" required/>
     </div>
     <div class="input-form">
         <span class="input-label">Current Password</span>
-        <input type="password" class="form-control" id="password" name="password"/>
+        <input type="password" class="form-control" id="password" name="password" required/>
     </div>
   `;
   modal.style.display = "block";
@@ -61,11 +61,11 @@ function changePassword() {
   formGroup.innerHTML = `
     <div class="input-form">
         <span class="input-label">Current Password</span>
-        <input type="password" class="form-control" id="password" name="password"/>
+        <input type="password" class="form-control" id="password" name="password" required/>
     </div>
     <div class="input-form">
         <span class="input-label">New Password</span>
-        <input type="password" class="form-control" id="new_password" name="new_password"/>
+        <input type="password" class="form-control" id="new_password" name="new_password" required/>
     </div>
    
   `;
@@ -80,7 +80,7 @@ function deleteData() {
   formGroup.innerHTML = `
     <div class="input-form">
         <span class="input-label">Current Password</span>
-        <input type="password" class="form-control" id="password" name="password"/>
+        <input type="password" class="form-control" id="password" name="password" required/>
     </div>
   `;
   modal.style.display = "block";
@@ -94,7 +94,7 @@ function deleteAccount() {
   formGroup.innerHTML = `
     <div class="input-form">
         <span class="input-label">Current Password</span>
-        <input type="password" class="form-control" id="password" name="password"/>
+        <input type="password" class="form-control" id="password" name="password" required/>
     </div>
   `;
   modal.style.display = "block";

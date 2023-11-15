@@ -46,7 +46,7 @@ def upload(request: Request, file: UploadFile):
     if filename == '':
         return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "No file selected!"})
     if not filename.endswith('.csv'):
-        return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "File should be csv format!"})
+        return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "File should be in .csv extension!"})
     
     if not check_fileUploaded(file_location, file):
         return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg": "File can't be uploaded!"})

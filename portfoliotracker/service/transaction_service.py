@@ -21,7 +21,7 @@ class TransactionService:
                 try:
                     transaction = Transaction(scrip= row['Scrip'], transaction_date = date_format(row['Transaction Date']),credit_quantity = stringToInt(row['Credit Quantity']), debit_quantity = stringToInt(row['Debit Quantity']), balance_after_transaction = stringToInt(row['Balance After Transaction']),history_description = shorten_history(row['History Description']), unit_price = row['Unit Price'])
                 except Exception:
-                    return BaseResponse(error=True, success=False, msg="CSV file is not valid in format!")
+                    return BaseResponse(error=True, success=False, msg="File is not in valid format!")
                 if not self.trans_repo.insert_transaction(user, transaction):
                     return BaseResponse(error=True, success=False, msg="Could not insert a transaction into db!")
             return BaseResponse(error=False, success=True, msg="success")

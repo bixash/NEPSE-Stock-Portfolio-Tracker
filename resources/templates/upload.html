@@ -1,12 +1,23 @@
 {% extends "index.html" %}
 {% block title %} Upload {% endblock %}
 {% block content %}
-<span>{{msg}}</span>
+
+<div class="upload-container">
+    <span class="warning">{{msg}}</span>
 <h2>Upload transaction csv</h2>
 <form action="/upload" method="POST" enctype="multipart/form-data">
-    <p>Download transaction history csv file from Meroshare and upload.</p>
-    <br>
+    <div class="upload-instructions">
+        <ul>
+            <li>Make sure file is in CSV format.</li>
+            <li>For better report, download transaction history csv file from Meroshare.</li>
+            <li>If you edit the downloaded file, make sure it has same head as Meroshare</li>
+        </ul>
+        
+    </div>
     <input type="file" name="file" accept=".csv"/>
     <button type="submit">Upload</button>
 </form>
+
+</div>
+
 {% endblock %}

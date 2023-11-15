@@ -22,26 +22,26 @@ header_profile.addEventListener("click", function () {
 
 document.addEventListener("click", (event) => {
   if (
-    !profile_options.contains(event.target) &&
-    !profile.contains(event.target)
+    !profile_options.contains(event.target) && !header_profile.contains(event.target)
   ) {
     profile_options.style.display = "none";
   }
   if (!search_list.contains(event.target) && !search.contains(event.target)) {
     search_list.style.display = "none";
+  } else {
+    search_list.style.display = "block";
   }
 });
 
-inputBox.onkeyup = (e) => {
-  var userData = e.target.value;
+function search_company(inputValue){
 
-  if (userData) {
-    fetch("/get_company", {
+  if (inputValue) {
+    fetch("/search_company", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ scrip: userData }),
+      body: JSON.stringify({ scrip: inputValue }),
     })
       .then((response) => response.json()) // or, resp.text(), etc
       .then((data) => {
@@ -72,6 +72,11 @@ inputBox.onkeyup = (e) => {
     search_list.innerHTML = "";
     search_list.classList.remove("active"); //hide autocomplete box
   }
+
+}
+inputBox.onkeyup = (e) => {
+  var userData = e.target.value;
+  search_company(userData)
 };
 
 

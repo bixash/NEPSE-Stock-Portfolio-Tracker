@@ -14,6 +14,14 @@ class UserRepo:
             return User(username=result[0], email=result[1], password=result[2])
         return None
 
+    def get_user_password(self, user_id: int)->bool:
+        cur = self.db.get_connection()
+        cur.execute("SELECT password FROM `user` where id = ?", (user_id, ))
+        result = cur.fetchone()
+        if result:
+            return result[2]
+        return None
+    
     def update_user_by_id(self, user:User) -> bool:
         cur = self.db.get_connection()
         con = self.db._commit()

@@ -3,7 +3,7 @@ import logging
 import os
 from fastapi.responses import RedirectResponse
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Form
 from portfoliotracker.repo.db import get_db_connection
 from fastapi.templating import Jinja2Templates
 from portfoliotracker.entities.company import Company
@@ -38,12 +38,10 @@ def getCompany(request: Request):
     limit_company = company_service.get_company_info_limit(limit=600)
     return templates.TemplateResponse("companies.html", {"request": request, "limit_company": limit_company.result, "username": user.username})
 
-
-
-
-@router.post("/get_company")
+@router.post("/search_company")
 def search_company(company: Company):
     script = company.scrip + "%"
+    print(script)
     result = company_service.company_like(script)
     return {"companyList": result.result}
 

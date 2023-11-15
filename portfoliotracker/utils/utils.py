@@ -31,7 +31,21 @@ def check_fileUploaded(file_location: str, file)->bool:
         file.file.close()
         
 
-
-
+def validate_email(email:str)-> bool:
+    import re
+    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+    if re.fullmatch(regex, email):
+        return True
+    return False
+    
+def check_password(user_id:int, typed_password:str)->bool:
+    from portfoliotracker.repo.db import get_db_connection
+    from portfoliotracker.repo.user_repo import UserRepo
+    user_repo = UserRepo(get_db_connection())
+    if user_repo.get_user_password(user_id):
+        real_password = user_repo.get_user_password(user_id)
+        if real_password == typed_password:
+            return True
+    return False
 
 
