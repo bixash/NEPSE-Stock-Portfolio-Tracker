@@ -5,7 +5,7 @@ from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from portfoliotracker.api import auth_router, sector_router, stock_router, transaction_router, upload_router, portfolio_router, company_router, holdings_router, sector_router, instrument_router, profile_router
+from portfoliotracker.api import auth_router, stock_router, transaction_router, upload_router, portfolio_router, company_router, profile_router
 from portfoliotracker.entities import BaseResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -49,9 +49,6 @@ app.include_router(transaction_router.router)
 app.include_router(portfolio_router.router)
 app.include_router(company_router.router)
 app.include_router(stock_router.router)
-app.include_router(holdings_router.router)
-app.include_router(sector_router.router)
-app.include_router(instrument_router.router)
 app.include_router(profile_router.router)
 
 if __name__ == "__main__":

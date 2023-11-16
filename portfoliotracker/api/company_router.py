@@ -27,6 +27,7 @@ company_service = CompanyService(company_repo=company_repo)
 
 trans_repo = TransactionRepo(db)
 trans_service = TransactionService(trans_repo=trans_repo)
+
 templates = Jinja2Templates(directory=get_templates_directory())
 
 @router.get("/companies")
