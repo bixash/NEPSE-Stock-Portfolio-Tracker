@@ -51,7 +51,8 @@ def get_company(scrip, request:Request):
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-    scrip_transactions = trans_service.get_transactions_by_scrip(user, scrip)
+    scrip_transactions = trans_service.get_all_transactions_by_scrip(user, scrip)
+    company_transaction_stats = trans_service.company_transaction_stats(user, scrip)
     company_info = company_service.get_company_info(scrip)
 
-    return  templates.TemplateResponse("company.html", {"request": request, "username": user.username, "scrip_transactions":scrip_transactions.result, "company_info":company_info.result})
+    return  templates.TemplateResponse("company.html", {"request": request, "username": user.username, "scrip_transactions":scrip_transactions.result, "company_info":company_info.result, "stats":company_transaction_stats})

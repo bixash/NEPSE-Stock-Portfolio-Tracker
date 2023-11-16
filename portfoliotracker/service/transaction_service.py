@@ -1,5 +1,6 @@
 from portfoliotracker.repo.transaction_repo import TransactionRepo
-from portfoliotracker.utils.methods import *
+from portfoliotracker.utils import utils
+from portfoliotracker.utils.methods import stringToInt, date_format, convert_date_format, shorten_history
 from portfoliotracker.entities import User, Transaction, BaseResponse
 
 
@@ -117,7 +118,7 @@ class TransactionService:
                 for item in result:
                     """id|scrip|transaction_date|credit_quantity|debit_quantity|balance_after_transaction|history_description|unit_price|uid|previous_closing|trade_date|closing_price|difference_rs|percent_change|company_name|status|sector|instrument|email|url"""
 
-                    stock = dict(stockSymbol = item[1], transaction_date = item[2], balance = item[5], unit_price=item[7], previous_price=item[9], trade_date=item[10], closing_price=item[11], difference_rs = item[12], percent_change = item[13], company_name = item[14], status= item[15], sector = item[16], instrument = item[17] )
+                    stock = dict(stockSymbol = item[1], transaction_date = item[2], credit = item[3], debit =item[4], balance = item[5], unit_price=item[7], previous_price=item[9], trade_date=item[10], closing_price=item[11], difference_rs = item[12], percent_change = item[13], company_name = item[14], status= item[15], sector = item[16], instrument = item[17] )
                     transactionDict.append(stock)
             return BaseResponse(error=False, success=True, msg="success", result=transactionDict)    
         except Exception as e:
@@ -128,7 +129,7 @@ class TransactionService:
     def recent_transactions(self, user:User):
         try:
             # res = self.trans_repo.retrieve_limit_transaction(user)
-            result = self.dictifiy_transactions(self.trans_repo.retrieve_limit_transaction(user))
+            result = utils.dictifiy_transactions(self.trans_repo.retrieve_limit_transaction(user))
             # print (result)
             return BaseResponse(error=False, success=True, msg="success", result=result)    
         except Exception as e:
@@ -137,23 +138,16 @@ class TransactionService:
     def all_transactions(self, user:User):
         try:
             # res = self.trans_repo.retrieve_limit_transaction(user)
-            result = self.dictifiy_transactions(self.trans_repo.retrieve_all_transaction(user))
+            result = utils.dictifiy_transactions(self.trans_repo.retrieve_all_transaction(user))
             # print (result)
             return BaseResponse(error=False, success=True, msg="success", result=result)    
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
     
-    def dictifiy_transactions(self, transactions:tuple):
-        # MKHC|2023-03-17|10|0|10|IPO-MKHCL-079/80|100.0|1
-        resultList = []
-        for item in transactions:
-            transaction = dict(scrip = item[0], transaction_date= convert_date_format(item[1]), credit_quantity = item[2], debit_quantity = item[3], after_balance = item[4], history_description =item[5], unit_price =item[6])
-            resultList.append(transaction)
-        return resultList
                
-    def get_transactions_by_scrip(self, user:User, scrip: str):
+    def get_all_transactions_by_scrip(self, user:User, scrip: str):
         try:
-            result= self.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))
+            result= utils.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))
             return BaseResponse(error=False, success=True, msg="success", result=result)
         except Exception as e:
             return BaseResponse(error=True, success=False, msg = str(e))
@@ -164,3 +158,21 @@ class TransactionService:
             return BaseResponse(error=False, success=True, msg="success", result=result)
         except Exception as e:
             return BaseResponse(error=True, success=False, msg = str(e))
+        
+    def company_transaction_stats(self, user:User, scrip:str):
+        total_invest_value = 0
+        total_sold_value = 0
+        total_credit_quantity = 0
+        total_debit_quantity = 0
+
+        transactions = utils.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))
+        for item in transactions:
+            total_credit_quantity = total_credit_quantity + item['credit_quantity']
+            total_debit_quantity = total_debit_quantity + item['debit_quantity']
+            
+            total_invest_value = total_invest_value + (item['credit_quantity'] * item['unit_price'])
+            total_sold_value = total_sold_value + (item['debit_quantity'] * item['unit_price'])
+
+        total_profitLoss_value = abs(total_sold_value - total_invest_value)
+        total_balance_quantity = total_credit_quantity - total_debit_quantity
+        return {"invest_value": total_invest_value, "profitLoss_value": total_profitLoss_value, "balance_quantity": total_balance_quantity}

@@ -1,16 +1,16 @@
 import requests
 from portfoliotracker.entities import BaseResponse
 from portfoliotracker.entities.stock import Stock
-from portfoliotracker.repo.api_repo import APIRepo
+from portfoliotracker.repo.stock_repo import StockRepo
 from portfoliotracker.entities.user import User
 from portfoliotracker.utils.methods import *
 
 
-class APIService:
+class StockService:
 
-    def __init__(self, api_repo: APIRepo):
+    def __init__(self, stock_repo: StockRepo):
         self.api_url = "https://www.nepalipaisa.com/api/GetTodaySharePrice"
-        self.api_repo = api_repo
+        self.stock_repo = stock_repo
 
     def get_stock_prices_from_api(self)-> BaseResponse:
         try:
@@ -30,14 +30,14 @@ class APIService:
             result = api_response.result
             for item in result['result']['stocks']:
                 stock = Stock(scrip=item['stockSymbol'], closing_price=item['closingPrice'], previous_closing=item['previousClosing'], trade_date=item['tradeDate'], difference_rs=item['differenceRs'], percent_change=item['percentChange'])
-                self.api_repo.update_stock_prices(stock)
+                self.stock_repo.update_stock_prices(stock)
             return BaseResponse(error=False, success=True, msg='Stock_prices updated into db!')
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
 
     def get_all_stock_prices(self)-> BaseResponse:
         try:
-            res= self.api_repo.select_all_stock_prices()
+            res= self.stock_repo.select_all_stock_prices()
             resultList = []
             for item in res:
                 stock_info = dict(scrip = item[0], previous_closing = item[1], trade_date= convert_date_format(item[2]),closing_price= item[3],difference_rs = item[4],percent_change=item[5] )

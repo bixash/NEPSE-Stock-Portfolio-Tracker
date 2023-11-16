@@ -10,13 +10,13 @@ from portfoliotracker.entities.auth import LoginRequest, SignupRequest
 
 from portfoliotracker.repo import TransactionRepo
 from portfoliotracker.repo.auth_repo import AuthRepo
-from portfoliotracker.repo.api_repo import APIRepo
+from portfoliotracker.repo.stock_repo import StockRepo
 from portfoliotracker.repo.company_repo import CompanyRepo
 
 from portfoliotracker.repo.db import get_db_connection
 
 from portfoliotracker.service.auth_service import AuthService
-from portfoliotracker.service.api_service import APIService
+from portfoliotracker.service.stock_service import StockService
 from portfoliotracker.service.transaction_service import TransactionService
 from portfoliotracker.service.company_service import CompanyService
 
@@ -38,8 +38,8 @@ auth_service = AuthService(auth_repo=auth_repo)
 trans_repo = TransactionRepo(db)
 trans_service = TransactionService(trans_repo=trans_repo)
 
-api_repo = APIRepo(db)
-api_service = APIService(api_repo=api_repo)
+stock_repo = StockRepo(db)
+stock_service = StockService(stock_repo=stock_repo)
 
 company_repo = CompanyRepo(db)
 company_service = CompanyService(company_repo=company_repo)
@@ -55,9 +55,9 @@ def portfolio(request: Request):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
    
-    if api_service.get_stock_prices_from_api().success:
-        if not api_service.is_tradeDate_same_db():
-            api_service.update_prices_todb()
+    if stock_service.get_stock_prices_from_api().success:
+        if not stock_service.is_tradeDate_same_db():
+            stock_service.update_prices_todb()
        
 
     if trans_service.check_user_transactions(user):

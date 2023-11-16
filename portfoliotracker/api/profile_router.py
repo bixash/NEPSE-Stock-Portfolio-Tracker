@@ -112,17 +112,14 @@ def delete_account(request: Request, password: str = Form()):
     
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    response = user_service.get_user(user.user_id).result
-    real_pass = response.password
-    typed_pass = password
+    real = user_service.get_user(user.user_id).result
 
-    if real_pass == typed_pass:
-        if user_service.delete_user(user.user_id).success:
+    if real.password == password:
+        if user_service.delete_user(user.user_id).success and trans_service.delete_transactions(user.user_id).success:
 
             return RedirectResponse(url=request.url_for("logout"), status_code=status.HTTP_303_SEE_OTHER)
-        
     else:
-        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username, "email": response.email, "msg": "Sorry password invalid!"})
+        return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username, "email": real.email, "msg": "Sorry password invalid!"})
 
 
 
