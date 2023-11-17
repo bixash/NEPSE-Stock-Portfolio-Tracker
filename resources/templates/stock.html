@@ -39,10 +39,10 @@
         <td class="cols"><span>{{row['previous_closing']}}</span></td>
         {% if row['difference_rs'] > 0 %}
         <td class="cols"><span class="text-green">{{row['difference_rs']}}</span></td>
-        <td class="cols"><span class="text-green">{{row['percent_change']}}</span></td>
+        <td class="cols"><span class="text-green">{{row['percent_change']}}%</span></td>
         {% else %}
         <td class="cols"><span class="text-red">{{row['difference_rs']}}</span></td>
-        <td class="cols"><span class="text-red">{{row['percent_change']}}</span></td>
+        <td class="cols"><span class="text-red">{{row['percent_change']}}%</span></td>
         {% endif%}
       
         <td class="cols"><span>{{row['trade_date']}}</span></td>

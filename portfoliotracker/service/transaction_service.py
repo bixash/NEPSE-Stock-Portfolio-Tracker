@@ -164,6 +164,8 @@ class TransactionService:
         total_sold_value = 0
         total_credit_quantity = 0
         total_debit_quantity = 0
+        profit_loss_percent = 0
+        total_profitLoss_value = 0
 
         transactions = utils.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))
         for item in transactions:
@@ -173,6 +175,9 @@ class TransactionService:
             total_invest_value = total_invest_value + (item['credit_quantity'] * item['unit_price'])
             total_sold_value = total_sold_value + (item['debit_quantity'] * item['unit_price'])
 
-        total_profitLoss_value = abs(total_sold_value - total_invest_value)
+        
         total_balance_quantity = total_credit_quantity - total_debit_quantity
-        return {"invest_value": total_invest_value, "profitLoss_value": total_profitLoss_value, "balance_quantity": total_balance_quantity}
+        total_profitLoss_value = total_sold_value - total_invest_value
+        profit_loss_percent = round((total_profitLoss_value / total_invest_value)*100, 2)
+        
+        return {"invest_value": total_invest_value, "sold_value": total_sold_value, "profitLoss_value": total_profitLoss_value, "credit": total_credit_quantity, "debit": total_debit_quantity, "balance_quantity": total_balance_quantity, "profit_loss_percent": profit_loss_percent }

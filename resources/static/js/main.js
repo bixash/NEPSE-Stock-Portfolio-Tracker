@@ -36,7 +36,7 @@ document.addEventListener("click", (event) => {
 function search_company(inputValue){
 
   if (inputValue) {
-    fetch("/search_company", {
+    fetch("/company/search", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

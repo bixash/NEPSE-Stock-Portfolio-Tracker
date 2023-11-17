@@ -5,6 +5,7 @@
   align-items: center;
   /* width: fit-content; */
   margin: 0 auto;
+  margin-bottom: 25px;
   width: 100%;
 }
 
@@ -29,7 +30,7 @@
 }
 
 .content-body {
-  padding: 0 25px;
+  padding: 25px;
   width: 70%;
   background-color: white;
 }

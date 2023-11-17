@@ -74,3 +74,12 @@ class StockService:
         else:
             return False
        
+    def get_stock_by_scrip(self, scrip: str):
+
+        try:
+            stock= self.stock_repo.fetch_stock_price(scrip)
+        
+            stock_info = dict(scrip = stock[0], previous_closing = stock[1], trade_date= convert_date_format(stock[2]),closing_price= stock[3],difference_rs = stock[4],percent_change=stock[5] )
+            return BaseResponse(error=False, success=True, msg='success', result= stock_info)
+        except Exception as e:
+            return BaseResponse(error=True, success=False, msg=str(e))

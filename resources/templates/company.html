@@ -15,39 +15,82 @@
     <span class="head-title">{{company_info['company_name']}}</span>
   </div>
   <div class="content-body">
-    <div class="company-details">
-      <div class="details-block">
-        <span class="details-title">Scrip :</span>
-        <span>{{company_info['scrip']}}</span>
+    <div class="upper-body">
+      <div class="company-details">
+        <div class="details-block">
+          <span class="details-title">Scrip :</span>
+          <span>{{company_info['scrip']}}</span>
+        </div>
+        <div class="details-block">
+          <span class="details-title">Company Name :</span>
+          <span>{{company_info['company_name']}}</span>
+        </div>
+        <div class="details-block">
+          <span class="details-title">Status :</span>
+          <span>{{company_info['status']}}</span>
+        </div>
+        <div class="details-block">
+          <span class="details-title">Sector :</span>
+          <span>{{company_info['sector']}}</span>
+        </div>
+        <div class="details-block">
+          <span class="details-title">Instrument :</span>
+          <span>{{company_info['instrument']}}</span>
+        </div>
+        <div class="details-block">
+          <span class="details-title">Email :</span>
+          <span>{{company_info['email']}}</span>
+        </div>
+        
+        <div class="details-block">
+          <span class="details-title">Url :</span>
+          <span>{{company_info['url']}}</span>
+        </div>
+  
+        
       </div>
-      <div class="details-block">
-        <span class="details-title">Company Name :</span>
-        <span>{{company_info['company_name']}}</span>
-      </div>
-      <div class="details-block">
-        <span class="details-title">Status :</span>
-        <span>{{company_info['status']}}</span>
-      </div>
-      <div class="details-block">
-        <span class="details-title">Sector :</span>
-        <span>{{company_info['sector']}}</span>
-      </div>
-      <div class="details-block">
-        <span class="details-title">Instrument :</span>
-        <span>{{company_info['instrument']}}</span>
-      </div>
-      <div class="details-block">
-        <span class="details-title">Email :</span>
-        <span>{{company_info['email']}}</span>
-      </div>
+      <div class="stock-price-details">
       
-      <div class="details-block">
-        <span class="details-title">Url :</span>
-        <span>{{company_info['url']}}</span>
+        <div class="details-block">
+          <span class="details-title">Trade date:</span>
+          <span>{{stock_info['trade_date']}}</span>
+        </div>
+
+        <div class="details-block">
+          <span class="details-title">Closing price :</span>
+          <span>{{stock_info['closing_price']}}</span>
+        </div>
+        <div class="details-block">
+          <span class="details-title">Previous closing :</span>
+          <span>{{stock_info['previous_closing']}}</span>
+        </div>
+
+        {% if stock_info['difference_rs'] > 0 %}
+        <div class="details-block">
+          <span class="details-title">P&L :</span>
+          <span class="text-green">{{stock_info['difference_rs']}}</span>
+        </div>
+        <div class="details-block">
+          <span class="details-title">Net change :</span>
+          <span class="text-green">{{stock_info['percent_change']}}%</span>
+        </div>
+        {% else %}
+        <div class="details-block">
+          <span class="details-title">P&L :</span>
+          <span class="text-red">{{stock_info['difference_rs']}}</span>
+        </div>
+        <div class="details-block">
+          <span class="details-title">Net change :</span>
+          <span class="text-red">{{stock_info['percent_change']}}%</span>
+        </div>
+
+        {% endif %}
+        
+        
+        
       </div>
-      
-      
     </div>
+    
     
     <div class="company-transactions">
       <div class="transactions-head">
@@ -91,12 +134,67 @@
     </div>
 
     <div class="company-stats">
-      
-      {{stats['invest_value']}}
-      {{stats['profitLoss_value']}} 
-      {{stats['balance_quantity']}} 
-      
+
+      <div class="stats-box">
+        <div class="stats-item">
+          <span class="stats-text">Investment</span>
+          <div class="stats-item-value">
+            <span class="text-large">{{stats['invest_value']}}</span>
+            <div class="text-small">{{stats['credit']}} unit(s)</div>
+          </div>
+        </div> 
+        
+        <div class="stats-item">
+          <span class="stats-text">Sold value</span>
+          <div class="stats-item-value">
+            <span class="text-large">{{stats['sold_value']}}</span>
+            <div class="text-small">{{stats['debit']}} unit(s)</div>
+          </div>
+        </div> 
+        <div class="stats-item">
+          <span class="stats-text">Current value</span>
+          <div class="stats-item-value text-large">
+            <span class="text-large">{{current_value}}</span>
+            <div class="text-small">{{stats['balance_quantity']}} unit(s)</div>
+             
+          </div>
+        </div> 
+        
+        <div class="stats-item">
+        
+          <span class="stats-text">Realized P&L</span>
+          <div class="stats-item-value profit">
+            {%if stats['profit_loss_percent'] >= 0%}
+            <span class="text-large text-green">{{stats['profitLoss_value']|abs}}</span>
+            <div class="text-small text-green">({{stats['profit_loss_percent']}}%)</div>
+            {% else%}
+            <span class="text-large text-red">{{stats['profitLoss_value']|abs}}</span>
+            <div class="text-small text-red">({{stats['profit_loss_percent']}}%)</div>
+            {%endif%}
+          </div>
+        </div> 
+        <div class="stats-item">
+        
+          <span class="stats-text">Overall P&L</span>
+          <div class="stats-item-value">
+            {%if overall_profit_loss >= 0%}
+            <span class="text-large text-green">{{overall_profit_loss|abs}}</span>
+            <div class="text-small text-green">({{overall_percent}}%)</div>
+            {% else%}
+            <span class="text-large text-red">{{overall_profit_loss|abs}}</span>
+            <div class="text-small text-red">({{overall_percent}}%)</div>
+            {%endif%}
+          </div>
+        </div> 
+        
+
+      </div>
+  
     </div>
+
+    <!-- <div class="company-price-info">
+       
+    </div> -->
   </div>
     
 </div>

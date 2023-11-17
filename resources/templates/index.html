@@ -51,13 +51,13 @@
           <ul id="navigation" class="menu">
             {% if request.session["token"]%}
             <li><a href="/portfolio">Dashboard</a></li>
-            <li><a href="/holdings">Holdings</a></li>
+            <li><a href="/transactions/holdings">Holdings</a></li>
             <li><a href="/transactions">History</a></li>
             <li><a href="/stock-prices">Stock Prices</a></li>
-            <li><a href="/companies">Companies</a></li>
+            <li><a href="/company/all">Companies</a></li>
             {% else %}
             <li><a href="/stock-prices">Stock Prices</a></li>
-            <li><a href="/companies">Companies</a></li>
+            <li><a href="/company/all">Companies</a></li>
             <li><a href="/auth/login">Login</a></li>
             <li><a href="/auth/signup">Signup</a></li>
             {% endif %}
@@ -79,7 +79,7 @@
             </span>
               <div class="profile-options" id ="profile-options">
                 <a href="/profile" class="account">My account</a>
-                <a href="/upload" class="upload">Upload</a>
+                <a href="/transactions/upload" class="upload">Upload</a>
                 <a href="/auth/logout" class="logout">Logout</a>
               </div>
               
