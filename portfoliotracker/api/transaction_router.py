@@ -71,7 +71,7 @@ def holdings(request: Request):
 
     return templates.TemplateResponse("holdings.html", { "request": request,  "username": user.username, "holdings": []})
 
-@router.get("transactions/upload")
+@router.get("/transactions/upload")
 def upload(request: Request):
     if not request.session["token"]:
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
@@ -79,7 +79,7 @@ def upload(request: Request):
     return templates.TemplateResponse("upload.html", {"request": request, "username": user.username})
 
 
-@router.post("transactions/upload")
+@router.post("/transactions/upload")
 def upload(request: Request, file: UploadFile):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 

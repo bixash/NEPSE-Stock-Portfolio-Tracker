@@ -1,37 +1,236 @@
+.settings{
+  margin: 20px auto;
+  width: 40%;
+  background-color: white;
+  padding: 20px 30px;
+}
+
+.form-title {
+  font-size: var(--global-title-size);
+  font-weight: 400;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--color-border-default);
+}
+
+
+
+.user-settings {
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--color-border-default);
+}
+.user-settings .user-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+
+}
+
+.user-detail {
+  display: flex;
+  margin-top: 20px;
+  /* justify-content: center; */
+  align-items: center;
+  width: 100%;
+  /* background-color: aqua; */
+
+}
+.user-detail .detail-group{
+  /* height: 30px; */
+  width: 200px;
+  /* background-color: black; */
+}
+
+.detail-group span{
+  display: block;
+}
+.detail-group .detail-head {
+  font-weight: 700;
+  /* color: red; */
+}
+
+.user-detail .edit-btn {
+  margin-left: 150px;
+  /* height: 30px; */
+
+  padding: 8px 18px;
+
+  
+  background-color: #6d6f78;
+  color: white;
+  border: none;
+  border-radius: 2px;
+}
+
+.edit-btn:hover {
+  background-color: var(--color-text-default);
+}
+
+.account-settings {
+  margin-top: 20px;
+}
+
+.account-btn-group{
+  margin-top: 20px;
+}
+.account-settings .delete-btn{
+  margin-right: 20px;
+  width: 150px;
+  padding: 8px 0;
+  border-radius: 2px;
+  border: none;
+}
+
+.delete-btn.data {
+  
+  background-color: #da373c;
+  border: 1px solid #da373c;
+  color: white;
+}
+
+.delete-btn.data:hover {
+  background-color: #a12828;
+}
+
+
+
+.delete-btn.account {
+  background-color: white;
+  border: 1px solid #da373c;
+  
+
+}
+.delete-btn.account:hover {
+  background-color: #da373c;
+  color: white;
+}
+
 .update-modal-block{
     
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  /* overflow: auto; Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
       
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-  }
+  background-color: #fefefe;
+  margin: 10% auto; /* 15% from the top and centered */
+  padding: 20px 20px;
+  border: 1px solid #888;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px 0 rgba(var(--color-border-5--rgb),.1);
+  width: 35%; /* Could be more or less, depending on screen size */
+}
+
+/* .modal-content .modal-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} */
+
+.modal-head-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width:100%;
+}
+.modal-head-text .modal-head-title {
+  font-size: var(--global-title-size);
+  font-weight: 400;
+  margin: 0 auto;
+  text-align: center;
+  /* background-color: #a12828; */
+}
+
+.modal-subtitle {
+  display: block;
+  /* background-color: #da373c; */
+  width:100%;
+  text-align: center;
+}
+
+.input-form{
+  display:flex;
+  flex-direction: column;
+  margin: 10px 0px;
+}
+.input-form .input-label{
+  font-weight: 500;
+  color:#6d6f78;
+  margin-bottom: 5px;
+}
+.input-form .form-control {
+  width: 100%;
+  background-color: #ebebeb;
+  border:none;
+  border-radius: 5px;
+  padding: 10px 10px;
+  color: var(--color-text-default)
+}
+
+.form-control:focus{
+    outline: none;
+}
+
+.button-group {
+  margin: 10px 0px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.button-group button {
+  border: none;
+  padding: 8px 18px;
+  border-radius: 2px;
+ 
+}
+
+.close-btn{
+  background-color: #6d6f78;
+  color: white;
+}
+.close-btn:hover{
+  background-color: var(--color-text-default);
   
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+}
+
+.button-group .submit-btn {
+  background-color: #5865f2;
+  margin-left: 10px;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #4752c4;
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  /* float: right; */
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+/* blue #5865f2 */
+
+/* <svg aria-hidden="true" role="img" width="18" height="18" viewBox="0 0 24 24">
+<path fill="currentColor" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path>
+</svg> */

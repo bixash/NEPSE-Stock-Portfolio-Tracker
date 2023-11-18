@@ -4,6 +4,10 @@ var modalSubtitle = document.getElementsByClassName("modal-subtitle")[0];
 var form = document.getElementById("update-form");
 var formGroup = document.getElementsByClassName("form-group")[0];
 var span = document.getElementById("close");
+var cancel = document.querySelector(".close-btn")
+cancel.onclick= function() {
+  modal.style.display = "none";
+}
 span.onclick = function () {
   modal.style.display = "none";
 };
@@ -74,8 +78,8 @@ function changePassword() {
 
 function deleteData() {
   modalTitle.innerText = "Delete Data";
-  modalSubtitle.innerText =
-    "Are you sure that you want to delete your data? This will immediately delete your transactions data but you can upload anytime.";
+  modalSubtitle.innerHTML =
+    "Are you sure that you want to delete your data? <br> This will immediately delete your transactions data but you can upload anytime.";
   form.action = "/transactions/delete-data";
   formGroup.innerHTML = `
     <div class="input-form">
@@ -87,8 +91,8 @@ function deleteData() {
 }
 function deleteAccount() {
   modalTitle.innerText = "Delete Account";
-  modalSubtitle.innerText =
-    "Are you sure that you want to delete your account? This will immediately log you out of your account and you will not be able to log in again.";
+  modalSubtitle.innerHTML=
+    "Are you sure that you want to delete your account? <br> This will immediately log you out of your account and you will not be able to log in again.";
 
   form.action = "/profile/delete-account";
   formGroup.innerHTML = `

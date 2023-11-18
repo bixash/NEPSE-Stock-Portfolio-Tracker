@@ -2,67 +2,94 @@
 {% block title %}Profile{% endblock %} 
 {% block link %}<link rel="stylesheet" href="../static/css/profile.css">{% endblock %}
 {% block content %}
-  
-    <h2 class="form-title">My Account</h2>
-    <span class="error">{{ msg }}</span>
 
-    <div class="user-profile">
+<div class="settings">
+  <h2 class="form-title">Account Settings</h2>
+  <span class="error">{{ msg }}</span>
+
+  <div class="user-profile">
+    
+    <div class="user-settings">
+      <div class="user-detail">
+        <div class="detail-group">
+          <span class="detail-head">Username</span>
+          <span class="detail-info">{{username}}</span>
+        </div>
       
-      <div class="user-info">
-        <div class="user-detail">
-          <div class="detail-group">
-            <span class="detail-head">Username</span>
-            <span class="detail-info">{{username}}</span>
-          </div>
           <button class="edit-btn" onclick="changeUsername('{{username}}')">Edit</button>
+        
+        
+        
+      </div>
+      <div class="user-detail">
+        <div class="detail-group">
+          <span class="detail-head">Email</span>
+          <span class="detail-info">{{email}}</span>
+        </div>
+      
+          <button class="edit-btn" onclick="changeEmail('{{email}}')">Edit</button>
+       
+        
+      </div>
+      <div class="user-detail">
+        <div class="detail-group">
+          <span class="detail-head">Password</span>
+          <span class="detail-info">*******</span>
+        </div>
+        
+          <button class="edit-btn" onclick="changePassword()">Edit</button>
+        
+      </div>
+      
+    </div>
+    <div class="account-settings">
+      <div class="detail-group">
+          <span class="detail-head">Account Removal</span>
+          <span class="detail-info">Deleting your account means you can't recover it after taking this action.</span>
+      </div>
+      <div class="account-btn-group">
+        <button class="delete-btn data" onclick="deleteData()">Delete Data</button>
+      <button class="delete-btn account"onclick="deleteAccount()">Delete Account</button>
+      </div>
+      
+    </div>
+
+  </div>
+  <div id="update-modal-block" class="update-modal-block">
+    
+    <div class="modal-content">
+  
+      <div class="modal-head">
+        <div class="modal-head-text">
+          <h2 class="modal-head-title"></h2>
+          <span class="close" id ="close">
+            <svg aria-hidden="true" role="img" width="18" height="18" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path>
+            </svg>
+          </span>
           
         </div>
-        <div class="user-detail">
-          <div class="detail-group">
-            <span class="detail-head">Email</span>
-            <span class="detail-info">{{email}}</span>
-          </div>
-          <button class="edit-btn" onclick="changeEmail('{{email}}')">Edit</button>
-        </div>
-        <div class="user-detail">
-          <div class="detail-group">
-            <span class="detail-head">Password</span>
-            <span class="detail-info">*******</span>
-          </div>
-          <button class="edit-btn" onclick="changePassword()">Edit</button>
-        </div>
+
+        <span class="modal-subtitle"></span>
         
       </div>
-      <div class="account-info">
-        <button onclick="deleteData()">Delete Data</button>
-        <button onclick="deleteAccount()">Delete Account</button>
-      </div>
-
-    </div>
-
-    <div id="update-modal-block" class="update-modal-block">
       
-      <div class="modal-content">
-
-        <div class="modal-head">
-          <h2 class="modal-head-title"></h2>
-          <span class="modal-subtitle"></span>
-          <span class="close" id ="close">X</span>
+      <form  id="update-form" action="" method="POST">
+  
+        <div class="form-group">
+         
         </div>
-        
-        <form  id="update-form" action="" method="POST">
-    
-          <div class="form-group">
-           
-          </div>
-          <div class="button-group">
-            <span class="close-btn">Cancel</span>
-            <button type="submit" class="btn-primary">Done</button>
-          </div>
-            
-        </form>
-        
-      </div>
+        <div class="button-group">
+          <button class="close-btn" type="reset">Cancel</button>
+          <button type="submit" class="submit-btn">Done</button>
+        </div>
+          
+      </form>
+      
     </div>
-    <script src="../static/js/profile.js"></script>
+  </div>
+</div>
+
+ 
+  <script src="../static/js/profile.js"></script>
 {% endblock %}
