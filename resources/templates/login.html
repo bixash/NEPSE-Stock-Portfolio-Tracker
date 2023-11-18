@@ -3,24 +3,36 @@
 {% block link %}<link rel="stylesheet" href="../static/css/login-sign.css">{% endblock %}
 {% block content%}
 
-<div class="form-container">
-  <h2 class="form-title">Login</h2>
-
-  <span class="error">{{ msg }}</span>
+<div class="wrapper-container">
   
-  <form action="/auth/login" method="post">
-    <div class="form-group">
-      <label>Email </label>
-      <input type="email" id ="email" name="email" class="form-control" required />
+  <div class="form-container">
+    <img class="dash-img" src="../static/images/dashboard.png" alt="dashboard">
+    <div class="form-block">
+      <span class="error">{{ msg }}</span>
+      <div class="form-head">
+        <h2 class="form-title">Login now</h2>
+        <span class="sub-title">Don't have an account? <a href="/auth/signup">Sign up</a> </span>
+      </div>
+  
+      
+      
+      <form action="/auth/login" method="post">
+        <div class="form-group">
+          <label>Email </label>
+          <input type="email" id ="email" name="email" class="form-control" required />
+        </div>
+        
+        <div class="form-group">
+          <label>Password </label>
+          <input type="password"  id="password" name="password" class="form-control" required/>
+        </div>
+        
+        <button type="submit" class="btn-primary">Submit</button>
+      </form>
     </div>
-    
-    <div class="form-group">
-      <label>Password </label>
-      <input type="password"  id="password" name="password" class="form-control" required/>
-    </div>
-    
-    <button type="submit" class="btn-primary">Submit</button>
-  </form>
+  </div>
+  
+
 </div>
 
 {% endblock %}

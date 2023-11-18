@@ -2,201 +2,204 @@
  {% block title %} Company {% endblock %}
  {% block link %} <link href="../static/css/company.css" rel="stylesheet" /> {% endblock %}
  {% block content %}
- <div class="content-block">
-  <div class="content-head">
-   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-      <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-      <path
-        d="M535 41c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l64 64c4.5 4.5 7 10.6 7 17s-2.5 12.5-7 17l-64 64c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l23-23L384 112c-13.3 0-24-10.7-24-24s10.7-24 24-24l174.1 0L535 41zM105 377l-23 23L256 400c13.3 0 24 10.7 24 24s-10.7 24-24 24L81.9 448l23 23c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L7 441c-4.5-4.5-7-10.6-7-17s2.5-12.5 7-17l64-64c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM96 64H337.9c-3.7 7.2-5.9 15.3-5.9 24c0 28.7 23.3 52 52 52l117.4 0c-4 17 .6 35.5 13.8 48.8c20.3 20.3 53.2 20.3 73.5 0L608 169.5V384c0 35.3-28.7 64-64 64H302.1c3.7-7.2 5.9-15.3 5.9-24c0-28.7-23.3-52-52-52l-117.4 0c4-17-.6-35.5-13.8-48.8c-20.3-20.3-53.2-20.3-73.5 0L32 342.5V128c0-35.3 28.7-64 64-64zm64 64H96v64c35.3 0 64-28.7 64-64zM544 320c-35.3 0-64 28.7-64 64h64V320zM320 352a96 96 0 1 0 0-192 96 96 0 1 0 0 192z"
-        fill="currentColor"
-      />
-    </svg>
-    <span class="head-title">{{company_info['company_name']}}</span>
-  </div>
-  <div class="content-body">
-    <div class="upper-body">
-      <div class="company-details">
-        <div class="details-block">
-          <span class="details-title">Scrip :</span>
-          <span>{{company_info['scrip']}}</span>
-        </div>
-        <div class="details-block">
-          <span class="details-title">Company Name :</span>
-          <span>{{company_info['company_name']}}</span>
-        </div>
-        <div class="details-block">
-          <span class="details-title">Status :</span>
-          <span>{{company_info['status']}}</span>
-        </div>
-        <div class="details-block">
-          <span class="details-title">Sector :</span>
-          <span>{{company_info['sector']}}</span>
-        </div>
-        <div class="details-block">
-          <span class="details-title">Instrument :</span>
-          <span>{{company_info['instrument']}}</span>
-        </div>
-        <div class="details-block">
-          <span class="details-title">Email :</span>
-          <span>{{company_info['email']}}</span>
-        </div>
-        
-        <div class="details-block">
-          <span class="details-title">Url :</span>
-          <span>{{company_info['url']}}</span>
-        </div>
-  
-        
-      </div>
-      <div class="stock-price-details">
-      
-        <div class="details-block">
-          <span class="details-title">Trade date:</span>
-          <span>{{stock_info['trade_date']}}</span>
-        </div>
-
-        <div class="details-block">
-          <span class="details-title">Closing price :</span>
-          <span>{{stock_info['closing_price']}}</span>
-        </div>
-        <div class="details-block">
-          <span class="details-title">Previous closing :</span>
-          <span>{{stock_info['previous_closing']}}</span>
-        </div>
-
-        {% if stock_info['difference_rs'] > 0 %}
-        <div class="details-block">
-          <span class="details-title">P&L :</span>
-          <span class="text-green">{{stock_info['difference_rs']}}</span>
-        </div>
-        <div class="details-block">
-          <span class="details-title">Net change :</span>
-          <span class="text-green">{{stock_info['percent_change']}}%</span>
-        </div>
-        {% else %}
-        <div class="details-block">
-          <span class="details-title">P&L :</span>
-          <span class="text-red">{{stock_info['difference_rs']}}</span>
-        </div>
-        <div class="details-block">
-          <span class="details-title">Net change :</span>
-          <span class="text-red">{{stock_info['percent_change']}}%</span>
-        </div>
-
-        {% endif %}
-        
-        
-        
-      </div>
+ <div class="wrapper-container">
+  <div class="content-block">
+    <div class="content-head">
+     
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+        <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+        <path
+          d="M535 41c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l64 64c4.5 4.5 7 10.6 7 17s-2.5 12.5-7 17l-64 64c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l23-23L384 112c-13.3 0-24-10.7-24-24s10.7-24 24-24l174.1 0L535 41zM105 377l-23 23L256 400c13.3 0 24 10.7 24 24s-10.7 24-24 24L81.9 448l23 23c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L7 441c-4.5-4.5-7-10.6-7-17s2.5-12.5 7-17l64-64c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM96 64H337.9c-3.7 7.2-5.9 15.3-5.9 24c0 28.7 23.3 52 52 52l117.4 0c-4 17 .6 35.5 13.8 48.8c20.3 20.3 53.2 20.3 73.5 0L608 169.5V384c0 35.3-28.7 64-64 64H302.1c3.7-7.2 5.9-15.3 5.9-24c0-28.7-23.3-52-52-52l-117.4 0c4-17-.6-35.5-13.8-48.8c-20.3-20.3-53.2-20.3-73.5 0L32 342.5V128c0-35.3 28.7-64 64-64zm64 64H96v64c35.3 0 64-28.7 64-64zM544 320c-35.3 0-64 28.7-64 64h64V320zM320 352a96 96 0 1 0 0-192 96 96 0 1 0 0 192z"
+          fill="currentColor"
+        />
+      </svg>
+      <span class="head-title">{{company_info['company_name']}}</span>
     </div>
-    
-    
-    <div class="company-transactions">
-      <div class="transactions-head">
-        <span class="transactions-title">Transactions</span>
-      </div>
-    
-      
-        <table class="table">
-          <tr class="table-head">
-            <th class="cols"><span>SN</span></th>
-            <th class="cols"><span>Scrip</span></th>
-            <th class="cols"><span>Quantity</span></th>
-            <th class="cols"><span>Unit Price</span></th>
-            <th class="cols"><span>Date</span></th>
-            <th class="cols"><span>Details</span></th>
-          </tr>
-      
-          {% for item in scrip_transactions%}
-          <tr class="table-row">
-              {% set quantity = item['credit_quantity']-item['debit_quantity'] %}
-            
-              <td class="cols"><span>{{loop.index}}</span></td>
-              
-              <td class="cols"><span>{{item['scrip']}}</span></td>
-              
-              {% if quantity > 0 %}
-              <td class="cols"><span class="text-green">{{quantity|abs}}</span></td>
-              {% else %}
-              <td class="cols"><span class="text-red">{{quantity|abs}}</span></td>
-              {% endif%}
-              <td class="cols"><span>{{item['unit_price']}}</span></td>
-              <td class="cols"><span>{{item['transaction_date']}}</span></td>
-              <td class="cols"><span>{{item['history_description']}}</span></td>
-              
-            </tr>
-            {% endfor%}
-      
+    <div class="content-body">
+      <div class="upper-body">
+        <div class="company-details">
+          <div class="details-block">
+            <span class="details-title">Scrip :</span>
+            <span>{{company_info['scrip']}}</span>
+          </div>
+          <div class="details-block">
+            <span class="details-title">Company Name :</span>
+            <span>{{company_info['company_name']}}</span>
+          </div>
+          <div class="details-block">
+            <span class="details-title">Status :</span>
+            <span>{{company_info['status']}}</span>
+          </div>
+          <div class="details-block">
+            <span class="details-title">Sector :</span>
+            <span>{{company_info['sector']}}</span>
+          </div>
+          <div class="details-block">
+            <span class="details-title">Instrument :</span>
+            <span>{{company_info['instrument']}}</span>
+          </div>
+          <div class="details-block">
+            <span class="details-title">Email :</span>
+            <span>{{company_info['email']}}</span>
+          </div>
           
-        </table>
+          <div class="details-block">
+            <span class="details-title">Url :</span>
+            <span>{{company_info['url']}}</span>
+          </div>
+    
+          
+        </div>
+        <div class="stock-price-details">
+        
+          <div class="details-block">
+            <span class="details-title">Trade date:</span>
+            <span>{{stock_info['trade_date']}}</span>
+          </div>
+  
+          <div class="details-block">
+            <span class="details-title">Closing price :</span>
+            <span>{{stock_info['closing_price']}}</span>
+          </div>
+          <div class="details-block">
+            <span class="details-title">Previous closing :</span>
+            <span>{{stock_info['previous_closing']}}</span>
+          </div>
+  
+          {% if stock_info['difference_rs'] > 0 %}
+          <div class="details-block">
+            <span class="details-title">P&L :</span>
+            <span class="text-green">{{stock_info['difference_rs']}}</span>
+          </div>
+          <div class="details-block">
+            <span class="details-title">Net change :</span>
+            <span class="text-green">{{stock_info['percent_change']}}%</span>
+          </div>
+          {% else %}
+          <div class="details-block">
+            <span class="details-title">P&L :</span>
+            <span class="text-red">{{stock_info['difference_rs']}}</span>
+          </div>
+          <div class="details-block">
+            <span class="details-title">Net change :</span>
+            <span class="text-red">{{stock_info['percent_change']}}%</span>
+          </div>
+  
+          {% endif %}
+          
+          
+          
+        </div>
+      </div>
       
-    </div>
-
-    <div class="company-stats">
-
-      <div class="stats-box">
-        <div class="stats-item">
-          <span class="stats-text">Investment</span>
-          <div class="stats-item-value">
-            <span class="text-large">{{stats['invest_value']}}</span>
-            <div class="text-small">{{stats['credit']}} unit(s)</div>
-          </div>
-        </div> 
+      
+      <div class="company-transactions">
+        <div class="transactions-head">
+          <span class="transactions-title">Transactions</span>
+        </div>
+      
         
-        <div class="stats-item">
-          <span class="stats-text">Sold value</span>
-          <div class="stats-item-value">
-            <span class="text-large">{{stats['sold_value']}}</span>
-            <div class="text-small">{{stats['debit']}} unit(s)</div>
-          </div>
-        </div> 
-        <div class="stats-item">
-          <span class="stats-text">Current value</span>
-          <div class="stats-item-value text-large">
-            <span class="text-large">{{current_value}}</span>
-            <div class="text-small">{{stats['balance_quantity']}} unit(s)</div>
-             
-          </div>
-        </div> 
+          <table class="table">
+            <tr class="table-head">
+              <th class="cols"><span>SN</span></th>
+              <th class="cols"><span>Scrip</span></th>
+              <th class="cols"><span>Quantity</span></th>
+              <th class="cols"><span>Unit Price</span></th>
+              <th class="cols"><span>Date</span></th>
+              <th class="cols"><span>Details</span></th>
+            </tr>
         
-        <div class="stats-item">
+            {% for item in scrip_transactions%}
+            <tr class="table-row">
+                {% set quantity = item['credit_quantity']-item['debit_quantity'] %}
+              
+                <td class="cols"><span>{{loop.index}}</span></td>
+                
+                <td class="cols"><span>{{item['scrip']}}</span></td>
+                
+                {% if quantity > 0 %}
+                <td class="cols"><span class="text-green">{{quantity|abs}}</span></td>
+                {% else %}
+                <td class="cols"><span class="text-red">{{quantity|abs}}</span></td>
+                {% endif%}
+                <td class="cols"><span>{{item['unit_price']}}</span></td>
+                <td class="cols"><span>{{item['transaction_date']}}</span></td>
+                <td class="cols"><span>{{item['history_description']}}</span></td>
+                
+              </tr>
+              {% endfor%}
         
-          <span class="stats-text">Realized P&L</span>
-          <div class="stats-item-value profit">
-            {%if stats['profit_loss_percent'] >= 0%}
-            <span class="text-large text-green">{{stats['profitLoss_value']|abs}}</span>
-            <div class="text-small text-green">({{stats['profit_loss_percent']}}%)</div>
-            {% else%}
-            <span class="text-large text-red">{{stats['profitLoss_value']|abs}}</span>
-            <div class="text-small text-red">({{stats['profit_loss_percent']}}%)</div>
-            {%endif%}
-          </div>
-        </div> 
-        <div class="stats-item">
+            
+          </table>
         
-          <span class="stats-text">Overall P&L</span>
-          <div class="stats-item-value">
-            {%if overall_profit_loss >= 0%}
-            <span class="text-large text-green">{{overall_profit_loss|abs}}</span>
-            <div class="text-small text-green">({{overall_percent}}%)</div>
-            {% else%}
-            <span class="text-large text-red">{{overall_profit_loss|abs}}</span>
-            <div class="text-small text-red">({{overall_percent}}%)</div>
-            {%endif%}
-          </div>
-        </div> 
-        
-
       </div>
   
-    </div>
-
-    <!-- <div class="company-price-info">
-       
-    </div> -->
-  </div>
+      <div class="company-stats">
+  
+        <div class="stats-box">
+          <div class="stats-item">
+            <span class="stats-text">Investment</span>
+            <div class="stats-item-value">
+              <span class="text-large">{{stats['invest_value']}}</span>
+              <div class="text-small">{{stats['credit']}} unit(s)</div>
+            </div>
+          </div> 
+          
+          <div class="stats-item">
+            <span class="stats-text">Sold value</span>
+            <div class="stats-item-value">
+              <span class="text-large">{{stats['sold_value']}}</span>
+              <div class="text-small">{{stats['debit']}} unit(s)</div>
+            </div>
+          </div> 
+          <div class="stats-item">
+            <span class="stats-text">Current value</span>
+            <div class="stats-item-value text-large">
+              <span class="text-large">{{current_value}}</span>
+              <div class="text-small">{{stats['balance_quantity']}} unit(s)</div>
+               
+            </div>
+          </div> 
+          
+          <div class="stats-item">
+          
+            <span class="stats-text">Realized P&L</span>
+            <div class="stats-item-value profit">
+              {%if stats['profit_loss_percent'] >= 0%}
+              <span class="text-large text-green">{{stats['profitLoss_value']|abs}}</span>
+              <div class="text-small text-green">({{stats['profit_loss_percent']}}%)</div>
+              {% else%}
+              <span class="text-large text-red">{{stats['profitLoss_value']|abs}}</span>
+              <div class="text-small text-red">({{stats['profit_loss_percent']}}%)</div>
+              {%endif%}
+            </div>
+          </div> 
+          <div class="stats-item">
+          
+            <span class="stats-text">Overall P&L</span>
+            <div class="stats-item-value">
+              {%if overall_profit_loss >= 0%}
+              <span class="text-large text-green">{{overall_profit_loss|abs}}</span>
+              <div class="text-small text-green">({{overall_percent}}%)</div>
+              {% else%}
+              <span class="text-large text-red">{{overall_profit_loss|abs}}</span>
+              <div class="text-small text-red">({{overall_percent}}%)</div>
+              {%endif%}
+            </div>
+          </div> 
+          
+  
+        </div>
     
-</div>
+      </div>
+  
+      <!-- <div class="company-price-info">
+         
+      </div> -->
+    </div>
+      
+  </div>
+ </div>
+ 
 
 {% endblock %}   

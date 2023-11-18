@@ -89,18 +89,17 @@
       </div>
     </header>
     {% block content %}
-    <div>
-      <h1> This is Stock Portolio Tracker!</h1>
-      <h2>Track all your stock at one place.</h2>
-      <p>We generate your portfolio status after reading your transactions. We shows the current market valuation. Which sectors you've invested and type of stocks you bought! Showing overall loss or profit you've made so far.</p>
+    <div class="main-content">
+      <div class="img-collage">
+        <img class="company-img" src="../static/images/company.png" alt="company">
+        <img class="dash-img" src="../static/images/dashboard.png" alt="dashboard">
+        <img class="account-img" src="../static/images/account.png" alt="account">
+      </div>
       
-      <p> Disclaimer: This application is made to fulfill the need for only academic project of 4th semester under BCA course, Tribhuwan University. The data used in this application may not be accurate, we only made assumptions that they were already available.</p>
-
-
-      <a href="/auth/login"> Login </a>
-      or
-      <a href="/auth/signup"> Sign Up </a>
-    </div>
+      <h1 class="main-title">Stock Portolio Tracker</h1>
+      <span class="subtext">Online platform to track your stocks, get insights and more</span>
+      <a class="main-link"href="/auth/signup"> Sign up now</a>
+      
     {% endblock%}
     <footer class="footer"></footer>
     <script src="../static/js/main.js"></script>

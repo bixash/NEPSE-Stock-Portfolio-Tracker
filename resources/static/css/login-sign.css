@@ -1,37 +1,48 @@
-body {
-    background-color: var(--color-border-default);;
-}
+/* body {
+    background-color: var(--color-border-default);
+} */
 
 .error {
     display: inline-block;
     margin-left: 20px;
 }
 .form-container{
+    display: flex;
     background-color: white;
-    width: fit-content;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
     margin: 0 auto;
-    margin-top: 20px;
-    max-height: 50vh;
-    padding: 20px 0;
-    box-shadow: 0 1px 5px 0 rgba(var(--color-border-5--rgb),.1);
+    /* margin-top: 20px; */
+    height: 80vh;
+    padding-top: 30px;
     box-sizing: border-box;
     border-radius: 5px;
 
 }
+.form-container .dash-img {
+    display: block;
+    margin: 0;
+    box-shadow: 0 2px 8px 0 rgba(var(--color-border-5--rgb),.1);
+    max-width: 500px;
+    height: fit-content;
 
+}
+/* 
+.form-block {
+    padding-left: 40px;
+    border-left: 2px solid var(--color-border-default);
+} */
 .form-title {
 
     font-size: var(--global-title-size);
-    font-weight: 400;
+    font-weight: 500;
     /* background-color: aqua; */
     margin: 0;
-    text-align: center;
+    /* text-align: center; */
 }
 
 
-.form-container form {
-    margin: 0 40px;
-}
 .form-container form label {
 
     display: inline-block;
@@ -39,7 +50,7 @@ body {
 }
 
 .form-group {
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .form-group .form-control{
@@ -50,6 +61,8 @@ body {
     border-radius: 3px;
    
 }
+
+/* */
 .form-group .form-control:focus {
 
     outline: none;
@@ -57,18 +70,14 @@ body {
 }
 
 .btn-primary{
-    /* border: 1.5px solid var(--color-border-default); */
     border: none;
-    border-radius: 2px;
-    /* background-color: white;
-    color: var(--color-text-8); */
+    border-radius: 5px;
+    margin-top: 20px;
     background-color: var(--color-text-8);
     color: white;
-    width: 80px;
-    height: 25px;
-    /* padding: 5px; */
-    font-size: 14px;
-
+    padding: 8px 20px;
+    font-size: 16px;
+   
 }
 .btn-primary:hover {
     cursor: pointer;
