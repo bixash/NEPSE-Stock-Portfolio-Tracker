@@ -1,7 +1,7 @@
 from portfoliotracker.repo.transaction_repo import TransactionRepo
 from portfoliotracker.utils import utils
 from portfoliotracker.utils.methods import stringToInt, date_format, convert_date_format, shorten_history
-from portfoliotracker.entities import User, Transaction, BaseResponse
+from portfoliotracker.entities import User, Transaction, BaseResponse, Stock
 
 
 
@@ -32,7 +32,7 @@ class TransactionService:
             return True
         return False
     
-    def get_distinct_stockSymbols(self, user:User) -> list:
+    def distinct_stockSymbols(self, user:User) -> list:
         stockSymbols = []
         for item in self.trans_repo.select_distinct_scrip(user):
             stockSymbols.append(item[0])
@@ -93,27 +93,97 @@ class TransactionService:
                 holds.append(item)
         return holds
     
-    def get_holdings_summary(self, holdings: list):
-        invest_value = 0
-        current_value = 0
-        previous_value = 0
-        profit_loss = 0
-        for item in holdings:
-            invest_value= invest_value + (item['unit_price']* item['balance'])
-            current_value= current_value + (item['closing_price'] * item['balance'])
-            previous_value = previous_value + (item['previous_price']* item['balance'])
-        profit_loss = round(current_value - invest_value, 2)
-        profit_loss_percent = round((profit_loss * 100)/invest_value, 2)
-        today_profit_loss = round(current_value - previous_value, 2)
-        today_PL_percent = round((today_profit_loss * 100)/ previous_value, 2)
+    def holdings_summary(self, holdings: list):
+        total_invest_value = 0
+        total_current_value = 0
+        total_previous_value = 0
+        total_sold_value = 0
+        total_profit_loss = 0
+        total_credit_quantity = 0
+        total_debit_quantity = 0
+        for stock in holdings:
+            total_credit_quantity = total_credit_quantity + stock['credit_quantity']
+            total_debit_quantity = total_debit_quantity + stock['debit_quantity']
+
+            total_invest_value=  total_invest_value + stock['invest_value']
+            total_sold_value = total_sold_value + stock['sold_value']
+
+            total_current_value= total_current_value + stock['current_value']
+            total_previous_value = total_previous_value + stock['previous_value']
+
+        total_balance_quantity = total_credit_quantity-total_debit_quantity
+        total_profit_loss = round(total_sold_value - total_invest_value, 2)
+        total_profit_loss_percent = round((total_profit_loss * 100)/total_invest_value, 2)
+        today_profit_loss = round(total_current_value - total_previous_value, 2)
+        today_profit_loss_percent = round((today_profit_loss * 100)/ total_previous_value, 2)
         
-        return {"invest_value": round(invest_value, 2), "current_value": round(current_value, 2), "profit_loss": profit_loss, "today_profit_loss": today_profit_loss,  "today_PL_percent": today_PL_percent, "profit_loss_percent":  profit_loss_percent}
+        return {"invest_value": round(total_invest_value, 2), "current_value": round(total_current_value, 2), "total_profit_loss": total_profit_loss, "today_profit_loss": today_profit_loss,  "today_profit_loss_percent": today_profit_loss_percent, "total_profit_loss_percent":  total_profit_loss_percent, "total_credit_quantity" : total_credit_quantity, 'total_debit_quantity':total_debit_quantity, 'total_balance_quantity': total_balance_quantity, "total_sold_value": total_sold_value }
+    
+    def holdings_stats(self, user:User):
+        holdings = []
+        trans_stock= self.distinct_stockSymbols(user)
+        for stockSymbol in trans_stock:
+            if self.transactions_stock_price(stockSymbol):
+                prices = self.transactions_stock_price(stockSymbol)
+                stats = self.stock_transaction_stats(user, stockSymbol)
+
+                current_value = stats['balance_quantity'] * prices.closing_price
+                previous_value = stats['balance_quantity'] * prices.previous_closing
+
+                holdings.append(dict(scrip=stockSymbol, credit_quantity= stats['credit'], debit_quantity= stats['debit'],balance_quantity=stats['balance_quantity'], closing_price = prices.closing_price, previous_closing = prices.previous_closing, difference_rs = prices.difference_rs, percent_change=prices.percent_change, invest_value = stats["invest_value"], sold_value=stats["sold_value"], current_value=current_value, previous_value = previous_value ))
+        return holdings  
+
+    def holdings_only(self, user:User) -> list:
+        holdingsOnly =[]
+        holdingsList = self.holdings_stats(user)
+        for stock in holdingsList:
+            if stock['balance_quantity'] > 0:
+                holdingsOnly.append(stock)
+        return holdingsOnly
+
+
+    def transactions_stock_price(self, scrip:str):
+        
+        if self.trans_repo.select_stock_by_scrip(scrip):
+            stock_res = self.trans_repo.select_stock_by_scrip(scrip)
+
+            stock = Stock(scrip=stock_res[0], previous_closing=stock_res[1], trade_date=stock_res[2], closing_price=stock_res[3], difference_rs=stock_res[4], percent_change=stock_res[5])
+
+            return stock
+
+   
+    def stock_transaction_stats(self, user:User, scrip:str):
+        total_invest_value = 0
+        total_sold_value = 0
+        total_credit_quantity = 0
+        total_debit_quantity = 0
+        total_profit_loss_percent = 0
+        total_profit_loss = 0
+        
+        prices = self.transactions_stock_price(scrip)
+        transactions = utils.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))
+        for item in transactions:
+            total_credit_quantity = total_credit_quantity + item['credit_quantity']
+            total_debit_quantity = total_debit_quantity + item['debit_quantity']
+            
+            total_invest_value = total_invest_value + (item['credit_quantity'] * item['unit_price'])
+            total_sold_value = total_sold_value + (item['debit_quantity'] * item['unit_price'])
+
+        
+        total_balance_quantity = total_credit_quantity - total_debit_quantity
+        total_profit_loss = total_sold_value - total_invest_value
+        total_profit_loss_percent = round((total_profit_loss / total_invest_value)*100, 2)
+        current_value = prices.closing_price * total_balance_quantity
+        overall_profit_loss = (total_sold_value + current_value) - total_invest_value
+        overall_percent =  round((overall_profit_loss / total_invest_value)*100, 2)
+
+        return {"stockSymbol": scrip, "invest_value": total_invest_value, "sold_value": total_sold_value, "total_profit_loss": total_profit_loss, "credit": total_credit_quantity, "debit": total_debit_quantity, "balance_quantity": total_balance_quantity, "total_profit_loss_percent": total_profit_loss_percent, "current_value": current_value, "overall_profit_loss": overall_profit_loss, "overall_percent": overall_percent}
 
     def get_joined_result(self, user:User)->BaseResponse:
         try:
             lock.acquire(True)
             transactionDict =[]
-            for stockSymbol in self.get_distinct_stockSymbols(user):
+            for stockSymbol in self.distinct_stockSymbols(user):
                 result = self.trans_repo.join_one_transaction_stock_company(user, stockSymbol)
                 for item in result:
                     """id|scrip|transaction_date|credit_quantity|debit_quantity|balance_after_transaction|history_description|unit_price|uid|previous_closing|trade_date|closing_price|difference_rs|percent_change|company_name|status|sector|instrument|email|url"""
@@ -159,25 +229,4 @@ class TransactionService:
         except Exception as e:
             return BaseResponse(error=True, success=False, msg = str(e))
         
-    def company_transaction_stats(self, user:User, scrip:str):
-        total_invest_value = 0
-        total_sold_value = 0
-        total_credit_quantity = 0
-        total_debit_quantity = 0
-        profit_loss_percent = 0
-        total_profitLoss_value = 0
-
-        transactions = utils.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))
-        for item in transactions:
-            total_credit_quantity = total_credit_quantity + item['credit_quantity']
-            total_debit_quantity = total_debit_quantity + item['debit_quantity']
-            
-            total_invest_value = total_invest_value + (item['credit_quantity'] * item['unit_price'])
-            total_sold_value = total_sold_value + (item['debit_quantity'] * item['unit_price'])
-
-        
-        total_balance_quantity = total_credit_quantity - total_debit_quantity
-        total_profitLoss_value = total_sold_value - total_invest_value
-        profit_loss_percent = round((total_profitLoss_value / total_invest_value)*100, 2)
-        
-        return {"invest_value": total_invest_value, "sold_value": total_sold_value, "profitLoss_value": total_profitLoss_value, "credit": total_credit_quantity, "debit": total_debit_quantity, "balance_quantity": total_balance_quantity, "profit_loss_percent": profit_loss_percent }
+   

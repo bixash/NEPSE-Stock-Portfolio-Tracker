@@ -62,12 +62,12 @@ def holdings(request: Request):
 
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    if trans_service.get_holdings(trans_service.get_joined_result(user).result):
-        holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
-        holdings_summary = trans_service.get_holdings_summary(holdings)
-        # print(holdings_summary)
+    if trans_service.holdings_stats(user):
+        holdings = trans_service.holdings_only(user)
+        holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
+        overall_summary = trans_service.holdings_summary(trans_service.holdings_stats(user))
 
-        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary})
+        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary, "overall_summary":overall_summary})
 
     return templates.TemplateResponse("holdings.html", { "request": request,  "username": user.username, "holdings": []})
 

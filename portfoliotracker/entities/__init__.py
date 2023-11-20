@@ -7,3 +7,4 @@ from .api_req_res import *
 from .auth import *
 from .user import *
 from .transaction import *
+from .stock import *

@@ -76,9 +76,10 @@
 }
 
 .dashboard-holdings-body .holdings-item {
-    margin-right: 80px;
-    /* background-color: blue; */
-    /* align-items: ; */
+  width: 200px;
+  padding-right: 80px;
+  /* background-color: blue; */
+  /* align-items: ; */
 }
 
 .holdings-text {

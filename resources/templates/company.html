@@ -154,8 +154,8 @@
           </div> 
           <div class="stats-item">
             <span class="stats-text">Current value</span>
-            <div class="stats-item-value text-large">
-              <span class="text-large">{{current_value}}</span>
+            <div class="stats-item-value">
+              <span class="text-large">{{stats['current_value']}}</span>
               <div class="text-small">{{stats['balance_quantity']}} unit(s)</div>
                
             </div>
@@ -165,12 +165,12 @@
           
             <span class="stats-text">Realized P&L</span>
             <div class="stats-item-value profit">
-              {%if stats['profit_loss_percent'] >= 0%}
-              <span class="text-large text-green">{{stats['profitLoss_value']|abs}}</span>
-              <div class="text-small text-green">({{stats['profit_loss_percent']}}%)</div>
+              {%if stats['total_profit_loss'] >= 0%}
+              <span class="text-large text-green">{{stats['total_profit_loss']|abs}}</span>
+              <div class="text-small text-green">({{stats['total_profit_loss_percent']}}%)</div>
               {% else%}
-              <span class="text-large text-red">{{stats['profitLoss_value']|abs}}</span>
-              <div class="text-small text-red">({{stats['profit_loss_percent']}}%)</div>
+              <span class="text-large text-red">{{stats['total_profit_loss']|abs}}</span>
+              <div class="text-small text-red">({{stats['total_profit_loss_percent']}}%)</div>
               {%endif%}
             </div>
           </div> 
@@ -178,12 +178,12 @@
           
             <span class="stats-text">Overall P&L</span>
             <div class="stats-item-value">
-              {%if overall_profit_loss >= 0%}
-              <span class="text-large text-green">{{overall_profit_loss|abs}}</span>
-              <div class="text-small text-green">({{overall_percent}}%)</div>
+              {%if stats['overall_profit_loss'] >= 0%}
+              <span class="text-large text-green">{{stats['overall_profit_loss']|abs}}</span>
+              <div class="text-small text-green">({{stats['overall_percent']}}%)</div>
               {% else%}
-              <span class="text-large text-red">{{overall_profit_loss|abs}}</span>
-              <div class="text-small text-red">({{overall_percent}}%)</div>
+              <span class="text-large text-red">{{stats['overall_profit_loss']|abs}}</span>
+              <div class="text-small text-red">({{stats['overall_percent']}}%)</div>
               {%endif%}
             </div>
           </div> 

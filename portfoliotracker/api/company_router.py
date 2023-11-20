@@ -55,16 +55,9 @@ def get_company(scrip, request:Request):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
     company_transactions = trans_service.get_all_transactions_by_scrip(user, scrip)
-
-    company_stats = trans_service.company_transaction_stats(user, scrip)
-
+    company_stats = trans_service.stock_transaction_stats(user, scrip)
     company_info = company_service.get_company_info(scrip)
-
     stock_info = stock_service.get_stock_by_scrip(scrip).result
 
-    current_value = stock_info['closing_price']* company_stats['balance_quantity']
-    
-    overall_profit_loss = (company_stats['sold_value']+ current_value)- company_stats['invest_value']
-    overall_percent =  round((overall_profit_loss / company_stats['invest_value'])*100, 2)
 
-    return  templates.TemplateResponse("company.html", {"request": request, "username": user.username, "scrip_transactions":company_transactions.result, "company_info":company_info.result, "stats":company_stats, "stock_info": stock_info, "current_value": current_value, "overall_profit_loss":overall_profit_loss, "overall_percent": overall_percent})
+    return  templates.TemplateResponse("company.html", {"request": request, "username": user.username, "scrip_transactions":company_transactions.result, "company_info":company_info.result, "stats":company_stats, "stock_info": stock_info})

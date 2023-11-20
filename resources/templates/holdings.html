@@ -12,14 +12,25 @@
     {% else %}
     <div class="holdings-block">
       <div class="dashboard-holdings-head">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-          <path
-            d="M176 56V96H336V56c0-4.4-3.6-8-8-8H184c-4.4 0-8 3.6-8 8zM128 96V56c0-30.9 25.1-56 56-56H328c30.9 0 56 25.1 56 56V96v32V480H128V128 96zM64 96H96V480H64c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64zM448 480H416V96h32c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64z"
-            fill="currentColor"
-          />
-        </svg>
-      <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
+        <div class="title-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+            <path
+              d="M176 56V96H336V56c0-4.4-3.6-8-8-8H184c-4.4 0-8 3.6-8 8zM128 96V56c0-30.9 25.1-56 56-56H328c30.9 0 56 25.1 56 56V96v32V480H128V128 96zM64 96H96V480H64c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64zM448 480H416V96h32c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64z"
+              fill="currentColor"
+            />
+          </svg>
+          <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
+        </div>
+        <!-- <select>
+          <option value="">All Sector</option>
+        </select>
+        <select>
+          <option value="">All Instrument</option>
+          <option value="">Equity</option>
+          <option value="">Debentures</option>
+          <option value="">Mutual funds</option>
+        </select> -->
     </div>
     {{ msg }}
       <div class="holdings-table">
@@ -39,9 +50,9 @@
 
           <tr class="table-row"> 
             <!-- <td>{{ loop.index }}</td> -->
-            <td><span><a class="holdings-scrip" href="/company/{{row['stockSymbol']}}">{{row['stockSymbol']}}</a></span></td>
-            <td><span>{{row['balance']}}</span></td>
-            <td><span>{{row['previous_price']}}</span></td>
+            <td><span><a class="holdings-scrip" href="/company/{{row['scrip']}}">{{row['scrip']}}</a></span></td>
+            <td><span>{{row['balance_quantity']}}</span></td>
+            <td><span>{{row['previous_closing']}}</span></td>
             <td><span>{{row['closing_price']}}</span></td>
             {%if row['difference_rs'] > 0%}
             <td><span class="text-green">{{row['difference_rs']}}</span></td>
@@ -67,18 +78,37 @@
           {% set invest_value =  holdings_summary['invest_value']%}
           {% set current_value =   holdings_summary['current_value']%}
           {% set today_profit_loss =   holdings_summary['today_profit_loss']%}
-          {% set profit_loss =   holdings_summary['profit_loss'] %}
-          {% set profit_loss_percent = holdings_summary['profit_loss_percent'] %}
-          {% set today_profit_loss_percent = 34 %}
+          {% set total_profit_loss =   holdings_summary['total_profit_loss'] %}
+          {% set total_profit_loss_percent = holdings_summary['total_profit_loss_percent'] %}
+          {% set today_profit_loss_percent =  holdings_summary['today_profit_loss_percent'] %}
+
+         
 
           <div class="holdings-stats-box">
             <div class="holdings-item">
               <span class="holdings-text">Investment</span>
-              <div class="holdings-item-value text-large">{{invest_value}}</div>
+              <div class="holdings-item-value">
+                
+                <span class="text-large">{{invest_value}}</span>
+                <div class="text-small">{{holdings_summary['total_credit_quantity']}} unit(s)</div>
+              </div>
+              
+            </div> 
+            <div class="holdings-item">
+            
+              <span class="holdings-text">Sold value</span>
+              <div class="holdings-item-value">
+                <span class="text-large">{{holdings_summary['total_sold_value']}}</span>
+                <div class="text-small">{{holdings_summary['total_debit_quantity']}} unit(s)</div>
+            
+              </div>
             </div> 
             <div class="holdings-item">
               <span class="holdings-text">Current value</span>
-              <div class="holdings-item-value text-large">{{current_value}}</div>
+              <div class="holdings-item-value">
+                <span class="text-large">{{current_value}}</span>
+                <div class="text-small">{{holdings_summary['total_balance_quantity']}} unit(s)</div>
+              </div>
             </div> 
             <div class="holdings-item">
             
@@ -89,7 +119,7 @@
                 <span class="text-large text-green">{{today_profit_loss}}</span>
                 <div class="text-small text-green">({{today_profit_loss_percent}}%)</div>
                 {% else%}
-                <span class="text-large text-red">{{today_profit_loss}}</span>
+                <span class="text-large text-red">{{today_profit_loss|abs}}</span>
                 <div class="text-small text-red">({{today_profit_loss_percent}}%)</div>
                 {%endif%}
               </div>
@@ -98,12 +128,12 @@
             
               <span class="holdings-text">Total P&L</span>
               <div class="holdings-item-value profit">
-                {%if profit_loss > 0%}
-                <span class="text-large text-green">{{ profit_loss}}</span>
-                <div class="text-small text-green">({{profit_loss_percent}}%)</div>
+                {%if total_profit_loss > 0%}
+                <span class="text-large text-green">{{total_profit_loss}}</span>
+                <div class="text-small text-green">({{total_profit_loss_percent}}%)</div>
                 {% else%}
-                <span class="text-large text-red">{{ profit_loss}}</span>
-                <div class="text-small text-red">({{profit_loss_percent}}%)</div>
+                <span class="text-large text-red">{{total_profit_loss|abs}}</span>
+                <div class="text-small text-red">({{total_profit_loss_percent}}%)</div>
                 {%endif%}
               </div>
             </div> 

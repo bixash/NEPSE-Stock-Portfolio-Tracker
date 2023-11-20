@@ -28,7 +28,7 @@
               />
             </svg>
          
-          <span class="dashboard-sector-title title"> Sectors </span>
+          <span class="dashboard-sector-title title">Sector-wise Distribution </span>
         </div>
         <div class="dashboard-sector-body">
 
@@ -97,19 +97,19 @@
           {% set invest_value =  holdings_summary['invest_value']%}
           {% set current_value =   holdings_summary['current_value']%}
           {% set today_profit_loss =   holdings_summary['today_profit_loss']%}
-          {% set profit_loss =   holdings_summary['profit_loss'] %}
-          {% set profit_loss_percent = holdings_summary['profit_loss_percent'] %}
+          {% set total_profit_loss =   holdings_summary['total_profit_loss'] %}
+          {% set total_profit_loss_percent = holdings_summary['total_profit_loss_percent'] %}
 
           <div class="holdings-stats-box">
             <div class="holdings-item">
             
               <div class="holdings-item-value profit">
-                {% if profit_loss > 0 %}
-                <span class="text-large text-green">{{ profit_loss}}</span>
-                <span class="text-small text-green">{{profit_loss_percent}}%</span>
+                {% if total_profit_loss > 0 %}
+                <span class="text-large text-green">{{total_profit_loss}}</span>
+                <span class="text-small text-green">{{total_profit_loss_percent}}%</span>
                 {% else%}
-                <span class="text-large text-red">{{ profit_loss}}</span>
-                <span class="text-small text-red">{{profit_loss_percent}}%</span>
+                <span class="text-large text-red">{{total_profit_loss}}</span>
+                <span class="text-small text-red">{{total_profit_loss_percent}}%</span>
                 {% endif%}
               </div>
               <span class="holdings-text">P&L</span>
