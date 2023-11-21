@@ -3,6 +3,10 @@ from portfoliotracker.utils import utils
 from portfoliotracker.utils.methods import stringToInt, date_format, convert_date_format, shorten_history
 from portfoliotracker.entities import User, Transaction, BaseResponse, Stock
 
+from portfoliotracker.repo.db import get_db_connection
+from portfoliotracker.repo.stock_repo import StockRepo
+from portfoliotracker.repo.company_repo import CompanyRepo
+
 
 
 import csv
@@ -10,6 +14,8 @@ import threading
 
 lock = threading.Lock()
 
+stock_repo = StockRepo(get_db_connection())
+company_repo = CompanyRepo(get_db_connection())
 
 class TransactionService:
     def __init__(self, trans_repo: TransactionRepo):
@@ -38,13 +44,14 @@ class TransactionService:
             stockSymbols.append(item[0])
         return stockSymbols
 
-    def get_sector_summary(self, trans:dict, sectorList: list )-> list:
+    def sector_summary(self, trans_company:dict )-> list:
         
+        sectorList = company_repo.select_all_distinct_sector
         sectorInfo = []
         for sector in sectorList:
             count = 0
             value = 0
-            for item in trans:
+            for item in trans_company:
                 if item['sector'] == sector[0]:
                     count = count + 1
                     value = value + item['closing_price'] * item['balance']
@@ -66,25 +73,19 @@ class TransactionService:
             resultArray.append([item['sector'], item['total_value']])
         return resultArray
 
-    def get_instrument_summary(self, trans:dict, instrument: list):
+    def instrument_summary(self, trans_company:dict):
+        instruments = company_repo.select_all_distinct_sector
         instrumentInfo = []
-        for ins in instrument:
+        for ins in instruments:
             count = 0
             value = 0
-            for item in trans:
+            for item in trans_company:
                 if item['instrument'] == ins[0]:
                     count = count + 1
                     value = value + item['closing_price'] * item['balance']
             instrumentInfo.append(dict(instrument= ins[0], no_of_scrip = count, total_value= round(value, 2)))
         return instrumentInfo
     
-
-    def get_statusActive_scrip(self, trans:dict):
-        temp = []
-        for item in trans:
-            if item['status'] == 'Active':
-                temp.append(item)
-        return temp
 
     def get_holdings(self, trans: dict):
         holds=[]
@@ -112,12 +113,13 @@ class TransactionService:
             total_previous_value = total_previous_value + stock['previous_value']
 
         total_balance_quantity = total_credit_quantity-total_debit_quantity
+        total_balance_percent = round((total_balance_quantity / total_credit_quantity)*100, 2)
         total_profit_loss = round(total_sold_value - total_invest_value, 2)
         total_profit_loss_percent = round((total_profit_loss * 100)/total_invest_value, 2)
         today_profit_loss = round(total_current_value - total_previous_value, 2)
         today_profit_loss_percent = round((today_profit_loss * 100)/ total_previous_value, 2)
         
-        return {"invest_value": round(total_invest_value, 2), "current_value": round(total_current_value, 2), "total_profit_loss": total_profit_loss, "today_profit_loss": today_profit_loss,  "today_profit_loss_percent": today_profit_loss_percent, "total_profit_loss_percent":  total_profit_loss_percent, "total_credit_quantity" : total_credit_quantity, 'total_debit_quantity':total_debit_quantity, 'total_balance_quantity': total_balance_quantity, "total_sold_value": total_sold_value }
+        return {"invest_value": round(total_invest_value, 2), "current_value": round(total_current_value, 2), "total_profit_loss": total_profit_loss, "today_profit_loss": today_profit_loss,  "today_profit_loss_percent": today_profit_loss_percent, "total_profit_loss_percent":  total_profit_loss_percent, "total_credit_quantity" : total_credit_quantity, 'total_debit_quantity':total_debit_quantity, 'total_balance_quantity': total_balance_quantity, "total_balance_percent":  total_balance_percent,  "total_sold_value": total_sold_value }
     
     def holdings_stats(self, user:User):
         holdings = []
@@ -141,17 +143,26 @@ class TransactionService:
                 holdingsOnly.append(stock)
         return holdingsOnly
 
-
     def transactions_stock_price(self, scrip:str):
         
-        if self.trans_repo.select_stock_by_scrip(scrip):
-            stock_res = self.trans_repo.select_stock_by_scrip(scrip)
+        if stock_repo.select_stock_by_scrip(scrip):
+            stock_res = stock_repo.select_stock_by_scrip(scrip)
 
             stock = Stock(scrip=stock_res[0], previous_closing=stock_res[1], trade_date=stock_res[2], closing_price=stock_res[3], difference_rs=stock_res[4], percent_change=stock_res[5])
 
             return stock
 
-   
+    def company_trans_price(self, holdings: list):
+        company_list = []
+        for item in holdings:
+            scrip = item['scrip']
+            company_res = company_repo.select_company_by_scrip(scrip)
+            print()
+
+            #too b
+
+            # company_list.append(dict(scrip = scrip, sector = company_res[]) )
+
     def stock_transaction_stats(self, user:User, scrip:str):
         total_invest_value = 0
         total_sold_value = 0
@@ -159,6 +170,8 @@ class TransactionService:
         total_debit_quantity = 0
         total_profit_loss_percent = 0
         total_profit_loss = 0
+        overall_percent = 0
+        overall_profit_loss = 0
         
         prices = self.transactions_stock_price(scrip)
         transactions = utils.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))
@@ -172,10 +185,12 @@ class TransactionService:
         
         total_balance_quantity = total_credit_quantity - total_debit_quantity
         total_profit_loss = total_sold_value - total_invest_value
-        total_profit_loss_percent = round((total_profit_loss / total_invest_value)*100, 2)
+        if total_invest_value > 0:
+            total_profit_loss_percent = round((total_profit_loss / total_invest_value)*100, 2)
+            overall_percent =  round((overall_profit_loss / total_invest_value)*100, 2)
         current_value = prices.closing_price * total_balance_quantity
         overall_profit_loss = (total_sold_value + current_value) - total_invest_value
-        overall_percent =  round((overall_profit_loss / total_invest_value)*100, 2)
+        
 
         return {"stockSymbol": scrip, "invest_value": total_invest_value, "sold_value": total_sold_value, "total_profit_loss": total_profit_loss, "credit": total_credit_quantity, "debit": total_debit_quantity, "balance_quantity": total_balance_quantity, "total_profit_loss_percent": total_profit_loss_percent, "current_value": current_value, "overall_profit_loss": overall_profit_loss, "overall_percent": overall_percent}
 

@@ -42,12 +42,12 @@
 .dashboard__left {
   border-right: 0.5px solid var(--color-border-default);
   margin: 0;
-  width: 60%;
+  width: 50%;
 }
 .dashboard__right {
   border-left: 0.5px solid var(--color-border-default);
   margin: 0;
-  width: 40%;
+  width: 50%;
 }
 .dashboard-instrument-body, .dashboard-sector-body{
   padding-left: 25px;
@@ -114,15 +114,26 @@
   border-bottom: 1px solid var(--color-border-default);
 }
 
+
+.dashboard-holdings-box {
+  padding: 0px 0 0 25px;
+  width: 50%;
+  border-right: 1px solid var(--color-border-default);
+  padding-right: 10px;
+}
+.dashboard-recent-box {
+  padding: 0 25px;
+  width: 50%;
+
+  /* background-color: greenyellow; */
+}
+
 .dashboard-holdings-head svg,
-.dashboard-recent-head svg {
+.dashboard-recent-head svg , .dashboard-portfolio-head svg{
   width: 16px;
   height: 15px;
   /* font-size: 16px; */
 }
-
-
-
 
 
 
@@ -142,32 +153,42 @@
   margin-left: 8px;
 }
 
+.dashboard-holdings-title a,
+.dashboard-recent-title a {
+  color: var(--color-text-default);
+  text-decoration: none;
+}
+
 .dashboard-holdings-body .holdings-stats-box{
   display: flex;
+  width: 100%;
   align-items: center;
   
 }
 .dashboard-holdings-body .holdings-divider{
-  margin-left: 30px;
+  margin-left: 50px;
   border-left: 1px solid var(--color-border-default);
-  padding-left: 30px;
+  padding-left: 50px;
  
 }
 .holdings-divider .holdings-item {
   margin-bottom: 15px;
 }
-.holdings-divider .holdings-text{
+.holdings-text{
   display: inline-block;
   width: 100px;
-}
-.holdings-text {
   color: var(--color-text-1);
 }
+
 .holdings-item-value.profit{
   /* display: block; */
   font-weight: 100;
   line-height: 1.3;
   color: var(--color-text-8);
+}
+.text-large{
+  font-size: 42px;
+  font-weight: 300;
 }
 
 .holdings-item-value.profit .text-large{
@@ -179,25 +200,16 @@
   font-size: 12px;
   
 }
-.dashboard-holdings-box {
-  padding: 0px 0 0 25px;
-  width: 45%;
-  border-right: 1px solid var(--color-border-default);
-  padding-right: 10px;
-}
+
 
 .holdings-chart-box .holdings-chart{
   /* border: 1px solid black; */
   width: 100%;
   height: 100px;
+  
 }
 
-.dashboard-recent-box {
-  padding: 0 25px;
-  width: 50%;
 
-  /* background-color: greenyellow; */
-}
 
 .dashboard-recent-body {
   
@@ -218,4 +230,60 @@
 .dashboard-recent-box table th span {
   color:var(--color-text-1);
   font-weight: 400;
+}
+.dashboard-portfolio-summary {
+  margin: 0 auto;
+  /* margin-top: 20px; */
+  padding: 20px 0;
+  
+  border-bottom: 1px solid var(--color-border-default);
+  box-shadow: 0 0 5px 0 rgba(var(--color-border-5--rgb),.1);
+
+}
+
+.dashboard-portfolio-box {
+  margin-left: 20px;
+  margin-bottom:  40px;
+}
+
+.dashboard-portfolio-head {
+  margin-bottom: 20px;
+}
+.dashboard-portfolio-body {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  
+  /* background-color: aqua; */
+}
+
+
+.dashboard-portfolio-body .portfolio-stats-box {
+  display: flex;
+  align-items: center;
+  margin-right: 90px;
+  
+}
+
+.dashboard-portfolio-body .portfolio-stats-box:first-child {
+  border-right: 1px solid var(--color-border-default);
+  padding-right: 100px;
+}
+.divider{
+  margin-left: 30px;
+  border-left: 1px solid var(--color-border-default);
+  padding-left: 30px;
+ 
+}
+
+
+.divider .portfolio-item {
+  margin-bottom: 15px;
+}
+
+.portfolio-text{
+  display: inline-block;
+  width: 100px;
+  color: var(--color-text-1);
 }

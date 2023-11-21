@@ -65,9 +65,8 @@ def holdings(request: Request):
     if trans_service.holdings_stats(user):
         holdings = trans_service.holdings_only(user)
         holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
-        overall_summary = trans_service.holdings_summary(trans_service.holdings_stats(user))
 
-        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary, "overall_summary":overall_summary})
+        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary,})
 
     return templates.TemplateResponse("holdings.html", { "request": request,  "username": user.username, "holdings": []})
 

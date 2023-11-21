@@ -1,5 +1,8 @@
 from portfoliotracker.repo.db import DBConnection
 from portfoliotracker.entities import Transaction,  User
+from portfoliotracker.repo.stock_repo import StockRepo
+from portfoliotracker.repo.company_repo import CompanyRepo
+
 
 class TransactionRepo:
     def __init__(self, db: DBConnection):
@@ -65,7 +68,3 @@ class TransactionRepo:
         cur.execute("SELECT * FROM transactions NATURAL JOIN stock WHERE uid = ? AND transactions.scrip = ? ORDER BY transaction_date desc limit 1",(user.user_id, stockSymbol,))
         return cur.fetchall()
     
-    def select_stock_by_scrip(self, stockSymbol:str):
-        cur = self.db.get_connection()
-        cur.execute("SELECT scrip, previous_closing, trade_date, closing_price, difference_rs, percent_change FROM stock WHERE scrip = ?", (stockSymbol,))
-        return cur.fetchone()

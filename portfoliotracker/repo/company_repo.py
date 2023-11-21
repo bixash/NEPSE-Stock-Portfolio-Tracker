@@ -36,6 +36,13 @@ class CompanyRepo:
         cur.execute("SELECT scrip, status, sector, instrument FROM company WHERE scrip = ?", (scrip,))
         return cur.fetchone()
     
+    def select_all_distinct_status(self):
+        cur = self.db.get_connection()
+        con = self.db._commit()
+        cur.execute("SELECT DISTINCT status FROM company")
+        return cur.fetchall()
+    
+        
     def select_all_distinct_sector(self):
         cur = self.db.get_connection()
         con = self.db._commit()
@@ -48,8 +55,8 @@ class CompanyRepo:
         cur.execute("SELECT DISTINCT instrument FROM company")
         return cur.fetchall()
     
-    def select_all_distinct_status(self):
+    def select_company_by_scrip(self, scrip: str):
         cur = self.db.get_connection()
         con = self.db._commit()
-        cur.execute("SELECT DISTINCT status FROM company")
+        cur.execute("SELECT scrip, sector, instrument, status FROM company WHERE scrip = ?", (scrip, ))
         return cur.fetchall()

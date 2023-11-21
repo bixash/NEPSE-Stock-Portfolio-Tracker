@@ -64,14 +64,15 @@ def portfolio(request: Request):
 
         # holdings = trans_service.holdings_stats(user)
         holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
-        # print(holdings)
+        portfolio_summary = trans_service.holdings_summary(trans_service.holdings_stats(user))
         recent_transactions = trans_service.recent_transactions(user).result
+        holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
         
-        holdings_summary = trans_service.holdings_summary(trans_service.holdings_stats(user))
         sector_summary = trans_service.get_sector_summary(holdings, company_service.get_all_sectors().result)
         instrument_summary = trans_service.get_instrument_summary(holdings, company_service.get_all_instrument().result)
+        holdings_length = len(trans_service.holdings_only(user))
     
-        return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings_summary": holdings_summary, "sector_summary":sector_summary, "instrument_summary": instrument_summary, "flag":False })
+        return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings_summary": holdings_summary,  "portfolio_summary":portfolio_summary, "sector_summary":sector_summary, "instrument_summary": instrument_summary, "holdings_length": holdings_length, "flag":False })
     
     return templates.TemplateResponse("portfolio.html", { "request": request,  "username": user.username, "flag": True})
 

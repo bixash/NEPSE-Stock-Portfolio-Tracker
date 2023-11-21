@@ -16,6 +16,76 @@
       <a href="/upload" class="upload">Upload to continue!</a>
     </div>
     {% else %}
+    <div class="dashboard-portfolio-summary">
+      <div class="dashboard-portfolio-box">
+        <div class="dashboard-portfolio-head">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z" fill="currentColor"/>
+          </svg>
+          <span class="dashboard-portfolio-title title">Portfolio Summary</span>
+        </div>
+        <div class="dashboard-portfolio-body">
+          <div class="portfolio-stats-box">
+            <div class="portfolio-item">
+            
+              <div class="portfolio-item-value profit">
+                {% if portfolio_summary['total_profit_loss'] > 0 %}
+                <span class="text-large text-green">{{portfolio_summary['total_profit_loss']}}</span>
+                <span class="text-small text-green">{{portfolio_summary['total_profit_loss_percent']}}%</span>
+                {% else%}
+                <span class="text-large text-red">{{portfolio_summary['total_profit_loss']}}</span>
+                <span class="text-small text-red">{{portfolio_summary['total_profit_loss_percent']}}%</span>
+                {% endif%}
+              </div>
+              <span class="portfolio-text"> Overall P&L</span>
+            </div> 
+            <div class="divider">
+              <div class="portfolio-item">
+                <span class="portfolio-text">Sold value</span>
+                <span class="portfolio-item-value">{{portfolio_summary['total_sold_value']}}</span>
+              </div> 
+              <div class="portfolio-item">
+                <span class="portfolio-text">Investment</span>
+                <span class="portfolio-item-value">{{portfolio_summary['invest_value']}}</span>
+              </div> 
+            </div>
+            
+    
+            
+          </div>
+          
+          <div class="portfolio-stats-box">
+            <div class="portfolio-item">
+            
+              <div class="portfolio-item-value profit">
+               
+                <span class="text-large text-green">{{portfolio_summary['total_balance_quantity']}}</span>
+                <span class="text-small text-green">{{portfolio_summary['total_balance_percent']}}%</span>
+              
+              </div>
+              <span class="holdings-text">Balance unit</span>
+            </div> 
+            <div class="divider">
+              <div class="portfolio-item">
+                <span class="portfolio-text">Sold unit</span>
+                <span class="portfolio-item-value">{{portfolio_summary['total_debit_quantity']}} unit(s)</span>
+              </div> 
+              <div class="portfolio-item">
+                <span class="portfolio-text">Total unit</span>
+                <span class="portfolio-item-value">{{portfolio_summary['total_credit_quantity']}} unit(s)</span>
+              </div> 
+
+            </div>
+           
+    
+            
+          </div>
+         
+        </div>
+      
+      </div>
+    </div>
+    
     <div class="dashboard-sector-instrument-box">
       <div class="dashboard__left">
         <div class="dashboard-sector-head">
@@ -28,7 +98,7 @@
               />
             </svg>
          
-          <span class="dashboard-sector-title title">Sector-wise Distribution </span>
+          <span class="dashboard-sector-title title">Sector-wise </span>
         </div>
         <div class="dashboard-sector-body">
 
@@ -83,13 +153,13 @@
       <div class="dashboard-holdings-box">
         <div class="dashboard-holdings-head">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+           
               <path
                 d="M176 56V96H336V56c0-4.4-3.6-8-8-8H184c-4.4 0-8 3.6-8 8zM128 96V56c0-30.9 25.1-56 56-56H328c30.9 0 56 25.1 56 56V96v32V480H128V128 96zM64 96H96V480H64c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64zM448 480H416V96h32c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64z"
                 fill="currentColor"
               />
             </svg>
-          <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
+          <span class="dashboard-holdings-title title"><a href="/transactions/holdings">Holdings ({{holdings_length}})</a></span>
         </div>
         <div class="dashboard-holdings-body">
           
@@ -108,7 +178,7 @@
                 <span class="text-large text-green">{{total_profit_loss}}</span>
                 <span class="text-small text-green">{{total_profit_loss_percent}}%</span>
                 {% else%}
-                <span class="text-large text-red">{{total_profit_loss}}</span>
+                <span class="text-large text-red">{{total_profit_loss|abs}}</span>
                 <span class="text-small text-red">{{total_profit_loss_percent}}%</span>
                 {% endif%}
               </div>
@@ -128,6 +198,9 @@
           </div>
           <div class="holdings-chart-box">
             <div class="holdings-chart">
+              <div class="investment-box"></div>
+              <div class="profit-box"></div>
+              <div class="current-box"></div>
 
             </div>
           </div>
@@ -139,14 +212,13 @@
         <div class="dashboard-recent-head">
           
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-              <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
                 d="M535 41c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l64 64c4.5 4.5 7 10.6 7 17s-2.5 12.5-7 17l-64 64c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l23-23L384 112c-13.3 0-24-10.7-24-24s10.7-24 24-24l174.1 0L535 41zM105 377l-23 23L256 400c13.3 0 24 10.7 24 24s-10.7 24-24 24L81.9 448l23 23c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L7 441c-4.5-4.5-7-10.6-7-17s2.5-12.5 7-17l64-64c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM96 64H337.9c-3.7 7.2-5.9 15.3-5.9 24c0 28.7 23.3 52 52 52l117.4 0c-4 17 .6 35.5 13.8 48.8c20.3 20.3 53.2 20.3 73.5 0L608 169.5V384c0 35.3-28.7 64-64 64H302.1c3.7-7.2 5.9-15.3 5.9-24c0-28.7-23.3-52-52-52l-117.4 0c4-17-.6-35.5-13.8-48.8c-20.3-20.3-53.2-20.3-73.5 0L32 342.5V128c0-35.3 28.7-64 64-64zm64 64H96v64c35.3 0 64-28.7 64-64zM544 320c-35.3 0-64 28.7-64 64h64V320zM320 352a96 96 0 1 0 0-192 96 96 0 1 0 0 192z"
                 fill="currentColor"
               />
             </svg>
           
-          <span class="dashboard-recent-title title"> Recent transactions </span>
+          <span class="dashboard-recent-title title"> <a href="/transactions">Recent transactions</a></span>
         </div>
 
         <div class="dashboard-recent-body">
@@ -181,6 +253,7 @@
         </div>
       </div>
     </div>
+    
     {% endif %}
     
   </div>

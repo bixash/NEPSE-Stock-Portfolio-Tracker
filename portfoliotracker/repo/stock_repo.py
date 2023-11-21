@@ -39,3 +39,8 @@ class StockRepo:
         cur.execute("SELECT * FROM stock")
         con.commit()
         return cur.fetchall()
+    
+    def select_stock_by_scrip(self, stockSymbol:str):
+        cur = self.db.get_connection()
+        cur.execute("SELECT scrip, previous_closing, trade_date, closing_price, difference_rs, percent_change FROM stock WHERE scrip = ?", (stockSymbol,))
+        return cur.fetchone()
