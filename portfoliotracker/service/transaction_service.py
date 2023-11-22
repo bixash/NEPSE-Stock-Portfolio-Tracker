@@ -46,7 +46,7 @@ class TransactionService:
 
     def sector_summary(self, trans_company:dict )-> list:
         
-        sectorList = company_repo.select_all_distinct_sector
+        sectorList = company_repo.select_all_distinct_sector()
         sectorInfo = []
         for sector in sectorList:
             count = 0
@@ -54,27 +54,23 @@ class TransactionService:
             for item in trans_company:
                 if item['sector'] == sector[0]:
                     count = count + 1
-                    value = value + item['closing_price'] * item['balance']
+                    value = value + item['current_value']
             sectorInfo.append(dict(sector= sector[0], no_of_scrip = count, total_value=  round(value, 2)))
         return sectorInfo     
 
-    def XYarray(self, sectorInfo:list):
+    def XYarray(self, stats:list):
         xarray = []
         yarray = []
-        for item in sectorInfo:
+        # if stats
+        for item in stats:
+
             if item['total_value'] > 0:
                 xarray.append(item['sector'])
                 yarray.append(item['total_value'])
         return {'xValues': xarray, 'yValues': yarray}
 
-    def sectorDicttoArray(self, arr:list)-> list:
-        resultArray = [['Sector', 'Total Value'],]
-        for item in arr:
-            resultArray.append([item['sector'], item['total_value']])
-        return resultArray
-
     def instrument_summary(self, trans_company:dict):
-        instruments = company_repo.select_all_distinct_sector
+        instruments = company_repo.select_all_distinct_instrument()
         instrumentInfo = []
         for ins in instruments:
             count = 0
@@ -82,17 +78,9 @@ class TransactionService:
             for item in trans_company:
                 if item['instrument'] == ins[0]:
                     count = count + 1
-                    value = value + item['closing_price'] * item['balance']
+                    value = value + item['current_value']
             instrumentInfo.append(dict(instrument= ins[0], no_of_scrip = count, total_value= round(value, 2)))
         return instrumentInfo
-    
-
-    def get_holdings(self, trans: dict):
-        holds=[]
-        for item in trans:
-            if item['balance'] > 0 and item['balance'] != None:
-                holds.append(item)
-        return holds
     
     def holdings_summary(self, holdings: list):
         total_invest_value = 0
@@ -132,7 +120,7 @@ class TransactionService:
                 current_value = stats['balance_quantity'] * prices.closing_price
                 previous_value = stats['balance_quantity'] * prices.previous_closing
 
-                holdings.append(dict(scrip=stockSymbol, credit_quantity= stats['credit'], debit_quantity= stats['debit'],balance_quantity=stats['balance_quantity'], closing_price = prices.closing_price, previous_closing = prices.previous_closing, difference_rs = prices.difference_rs, percent_change=prices.percent_change, invest_value = stats["invest_value"], sold_value=stats["sold_value"], current_value=current_value, previous_value = previous_value ))
+                holdings.append(dict(scrip=stockSymbol, credit_quantity= stats['credit'], debit_quantity= stats['debit'], balance_quantity=stats['balance_quantity'], closing_price = prices.closing_price, previous_closing = prices.previous_closing, difference_rs = prices.difference_rs, percent_change=prices.percent_change, invest_value = stats["invest_value"], sold_value=stats["sold_value"], current_value=current_value, previous_value = previous_value ))
         return holdings  
 
     def holdings_only(self, user:User) -> list:
@@ -152,16 +140,22 @@ class TransactionService:
 
             return stock
 
-    def company_trans_price(self, holdings: list):
-        company_list = []
-        for item in holdings:
-            scrip = item['scrip']
+    def company_stats(self, user:User) -> list:
+        company_stats_list = []
+        holdings = self.holdings_only(user)
+        for stock in holdings:
+            scrip = stock['scrip']
+            company_res = self.company_info(scrip)
+            
+            company_stats_list.append(dict(scrip = scrip, sector = company_res['sector'], instrument= company_res['instrument'], status = company_res['status'], balance_quantity = stock['balance_quantity'] ,current_value = stock['current_value'], invest_value = stock['invest_value'], sold_value = stock["sold_value"]))
+        return company_stats_list
+    
+    def company_info(self, scrip:str) -> list:
+        
+        if company_repo.select_company_by_scrip(scrip):
             company_res = company_repo.select_company_by_scrip(scrip)
-            print()
-
-            #too b
-
-            # company_list.append(dict(scrip = scrip, sector = company_res[]) )
+            company = dict(scrip = scrip, sector = company_res[0][1], instrument= company_res[0][2], status = company_res[0][3])
+        return company
 
     def stock_transaction_stats(self, user:User, scrip:str):
         total_invest_value = 0
@@ -228,8 +222,7 @@ class TransactionService:
             return BaseResponse(error=False, success=True, msg="success", result=result)    
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
-    
-               
+                
     def get_all_transactions_by_scrip(self, user:User, scrip: str):
         try:
             result= utils.dictifiy_transactions(self.trans_repo.retrieve_transaction_by_scrip(user, scrip))

@@ -65,6 +65,8 @@ def holdings(request: Request):
     if trans_service.holdings_stats(user):
         holdings = trans_service.holdings_only(user)
         holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
+        # holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
+        trans_service.company_stats(user)
 
         return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary,})
 
@@ -119,13 +121,13 @@ def delete_data(request: Request, password: str = Form()):
     else:
         return templates.TemplateResponse("profile.html", { "request": request,  "user_id": user.user_id, "username": user.username, "email": real.email, "msg": "Sorry password invalid!"})
     
-@router.get("/transactions/get_sector_stats")
+@router.get("/transactions/sector-stats")
 def get_sector_stats(request: Request):
 
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-    holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
-    sector_summary = trans_service.get_sector_summary(holdings, company_service.get_all_sectors().result)
-    instrument_summary = trans_service.get_instrument_summary(holdings, company_service.get_all_instrument().result)
+    # holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
+    sector_summary = trans_service.sector_summary(trans_service.company_stats(user))
+    # instrument_summary = trans_service.get_instrument_summary(holdings, company_service.get_all_instrument().result)
 
 
     return{"result": trans_service.XYarray(sector_summary)}

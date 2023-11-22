@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $.get("/transactions/get_sector_stats", function (response, status) {
+  $.get("/transactions/sector-stats", function (response, status) {
     array = response.result;
     
 
