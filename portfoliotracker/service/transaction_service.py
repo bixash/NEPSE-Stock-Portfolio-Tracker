@@ -131,6 +131,27 @@ class TransactionService:
                 holdingsOnly.append(stock)
         return holdingsOnly
 
+    def holdings_sector_instrument(self, user:User, sector:str, instrument:str):
+        resultList = []
+        company_stats = self.company_stats(user)
+        if sector == 'Sectors' and instrument == 'Stocks':
+                resultList = company_stats
+        elif (sector == 'Sectors' and instrument != 'Stocks'):
+            for stock in company_stats:
+                if instrument == stock['instrument']:
+                    resultList.append(stock)
+        elif (sector != 'Sectors' and instrument == 'Stocks'):
+            for stock in company_stats:
+                if sector == stock['sector']:
+                    resultList.append(stock)
+        else:
+            for stock in company_stats:
+                if sector == stock['sector'] and instrument == stock['instrument']:
+                    resultList.append(stock)
+        # print(resultList)
+        return resultList
+    
+
     def transactions_stock_price(self, scrip:str):
         
         if stock_repo.select_stock_by_scrip(scrip):
@@ -144,10 +165,11 @@ class TransactionService:
         company_stats_list = []
         holdings = self.holdings_only(user)
         for stock in holdings:
+            # print(stock)
             scrip = stock['scrip']
             company_res = self.company_info(scrip)
             
-            company_stats_list.append(dict(scrip = scrip, sector = company_res['sector'], instrument= company_res['instrument'], status = company_res['status'], balance_quantity = stock['balance_quantity'] ,current_value = stock['current_value'], invest_value = stock['invest_value'], sold_value = stock["sold_value"]))
+            company_stats_list.append(dict(scrip = scrip, sector = company_res['sector'], instrument= company_res['instrument'], status = company_res['status'], closing_price = stock['closing_price'], previous_closing = stock['previous_closing'], difference_rs = stock['difference_rs'], percent_change = stock['percent_change'], credit_quantity=stock['credit_quantity'], balance_quantity = stock['balance_quantity'], debit_quantity = stock['debit_quantity'], current_value = stock['current_value'], invest_value = stock['invest_value'], sold_value = stock["sold_value"], previous_value = stock['previous_value'] ))
         return company_stats_list
     
     def company_info(self, scrip:str) -> list:

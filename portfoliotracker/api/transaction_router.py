@@ -65,10 +65,31 @@ def holdings(request: Request):
     if trans_service.holdings_stats(user):
         holdings = trans_service.holdings_only(user)
         holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
-        # holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
-        trans_service.company_stats(user)
+       
+        sectorList = company_repo.select_all_distinct_sector()
+        instrumentList = company_repo.select_all_distinct_instrument()
 
-        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary,})
+        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary, "sectorList": sectorList, "instrumentList": instrumentList})
+
+    return templates.TemplateResponse("holdings.html", { "request": request,  "username": user.username, "holdings": []})
+
+@router.get("/holdings/{sector}-{instrument}")
+def select_holdings(sector:str, instrument: str, request: Request):
+    if not request.session["token"]:
+        return templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
+    token = request.session["token"]
+
+    user = User(username = request.session["username"], user_id = request.session['user_id'])
+
+    if trans_service.holdings_stats(user):
+        holdings = trans_service.holdings_sector_instrument(user, sector, instrument)
+        # holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
+       
+        sectorList = company_repo.select_all_distinct_sector()
+        instrumentList = company_repo.select_all_distinct_instrument()
+        holdings_summary = trans_service.holdings_summary(trans_service.holdings_sector_instrument(user, sector, instrument))
+
+        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary, "sectorList": sectorList, "instrumentList": instrumentList})
 
     return templates.TemplateResponse("holdings.html", { "request": request,  "username": user.username, "holdings": []})
 
@@ -125,9 +146,12 @@ def delete_data(request: Request, password: str = Form()):
 def get_sector_stats(request: Request):
 
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-    # holdings = trans_service.get_holdings(trans_service.get_joined_result(user).result)
     sector_summary = trans_service.sector_summary(trans_service.company_stats(user))
-    # instrument_summary = trans_service.get_instrument_summary(holdings, company_service.get_all_instrument().result)
-
-
+  
     return{"result": trans_service.XYarray(sector_summary)}
+
+@router.get("/transactions/instrument-stats")
+def get_instrument_stats(request: Request):
+    user = User(username = request.session["username"], user_id = request.session['user_id'])
+    instrument_summary = trans_service.instrument_summary(trans_service.company_stats(user))
+    return{"result": trans_service.XYarray(instrument_summary)}

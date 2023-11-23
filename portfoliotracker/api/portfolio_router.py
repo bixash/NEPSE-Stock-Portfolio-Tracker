@@ -54,26 +54,22 @@ def portfolio(request: Request):
    
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    # print(trans_service.holdings_stats(user))
     if stock_service.get_stock_prices_from_api().success:
         if not stock_service.is_tradeDate_same_db():
             stock_service.update_prices_todb()
        
 
     if trans_service.check_user_transactions(user):
-
-        # holdings = trans_service.holdings_stats(user)
         
         portfolio_summary = trans_service.holdings_summary(trans_service.holdings_stats(user))
         recent_transactions = trans_service.recent_transactions(user).result
         holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
-        # trans_service.company_trans_price(holdings_summary)
         
         sector_summary = trans_service.sector_summary(trans_service.company_stats(user))
         instrument_summary = trans_service.instrument_summary(trans_service.company_stats(user))
         holdings_length = len(trans_service.holdings_only(user))
     
-        return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings_summary": holdings_summary,  "portfolio_summary":portfolio_summary, "sector_summary":sector_summary, "instrument_summary": instrument_summary, "holdings_length": holdings_length, "flag":False })
+        return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings_summary": holdings_summary,  "portfolio_summary": portfolio_summary, "sector_summary":sector_summary, "instrument_summary": instrument_summary, "holdings_length": holdings_length, "flag":False })
     
     return templates.TemplateResponse("portfolio.html", { "request": request,  "username": user.username, "flag": True})
 

@@ -22,15 +22,22 @@
           </svg>
           <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
         </div>
-        <!-- <select>
-          <option value="">All Sector</option>
-        </select>
-        <select>
-          <option value="">All Instrument</option>
-          <option value="">Equity</option>
-          <option value="">Debentures</option>
-          <option value="">Mutual funds</option>
-        </select> -->
+        <div class="select-box"> 
+           <select id="sector-select" name="sector">
+            <option value="Sectors" selected> All sectors</option>
+            {% for item in sectorList %}
+              <option value="{{item[0]}}">{{item[0]}}</option>
+            {% endfor %}
+          </select>
+          <select id="instrument-select" name="instrument">
+            <option value="Stocks" selected>All stocks</option>
+            {% for item in instrumentList %}
+              <option value="{{item[0]}}">{{item[0]}}</option>
+            {% endfor %}
+          </select>
+
+        </div>
+       
     </div>
     {{ msg }}
       <div class="holdings-table">
@@ -154,6 +161,6 @@
     </div>
   {% endif %}
   </section>
-   
+  <script src="../static/js/holdings.js"></script>
   
 {% endblock %}   
