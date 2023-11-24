@@ -21,9 +21,27 @@
   padding: 10px 0px;
   /* margin: 10px 0; */
   display: flex;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--color-border-default);
+  /* background-color: aqua; */
   
+}
+
+.dashboard-holdings-head .select-box {
+  width: 55%;
+  
+  /* background-color: black; */
+}
+.select-box select {
+  color: var(--color-text-default)
+}
+.select-box select:focus {
+  outline: none;
+}
+.dashboard-holdings-head .title-box {
+  width: 40%;
+  /* background-color: blue; */
 }
 .dashboard-holdings-head svg {
   width: 18px;

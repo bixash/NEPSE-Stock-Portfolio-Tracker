@@ -37,6 +37,14 @@ var instrument = document.getElementById("instrument-select")
    
 // }
 
-// instrument.onchange = function(){
-//     alert("/transactions/holdings/"+sector.value+"&"+instrument.value)
-// }
+instrument.onchange = function(){
+    //  alert("hello");
+    location.replace("/holdings/"+`${sector.value}&${instrument.value}`)
+    // location.href("/holdings/"+`${sector.value}&${instrument.value}`)
+   
+
+}
+
+sector.onchange = function(){
+    location.replace("/holdings/"+`${sector.value}&${instrument.value}`)
+}

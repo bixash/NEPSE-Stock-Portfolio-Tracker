@@ -90,6 +90,12 @@ class TransactionService:
         total_profit_loss = 0
         total_credit_quantity = 0
         total_debit_quantity = 0
+        total_balance_quantity = 0 
+        total_balance_percent = 0
+        total_profit_loss = 0
+        total_profit_loss_percent = 0
+        today_profit_loss = 0
+        today_profit_loss_percent = 0
         for stock in holdings:
             total_credit_quantity = total_credit_quantity + stock['credit_quantity']
             total_debit_quantity = total_debit_quantity + stock['debit_quantity']
@@ -100,12 +106,13 @@ class TransactionService:
             total_current_value= total_current_value + stock['current_value']
             total_previous_value = total_previous_value + stock['previous_value']
 
-        total_balance_quantity = total_credit_quantity-total_debit_quantity
-        total_balance_percent = round((total_balance_quantity / total_credit_quantity)*100, 2)
-        total_profit_loss = round(total_sold_value - total_invest_value, 2)
-        total_profit_loss_percent = round((total_profit_loss * 100)/total_invest_value, 2)
-        today_profit_loss = round(total_current_value - total_previous_value, 2)
-        today_profit_loss_percent = round((today_profit_loss * 100)/ total_previous_value, 2)
+        if total_credit_quantity > 0:
+            total_balance_quantity = total_credit_quantity-total_debit_quantity
+            total_balance_percent = round((total_balance_quantity / total_credit_quantity)*100, 2)
+            total_profit_loss = round((total_sold_value + total_current_value) - total_invest_value, 2)
+            total_profit_loss_percent = round((total_profit_loss * 100)/total_invest_value, 2)
+            today_profit_loss = round(total_current_value - total_previous_value, 2)
+            today_profit_loss_percent = round((today_profit_loss * 100)/ total_previous_value, 2)
         
         return {"invest_value": round(total_invest_value, 2), "current_value": round(total_current_value, 2), "total_profit_loss": total_profit_loss, "today_profit_loss": today_profit_loss,  "today_profit_loss_percent": today_profit_loss_percent, "total_profit_loss_percent":  total_profit_loss_percent, "total_credit_quantity" : total_credit_quantity, 'total_debit_quantity':total_debit_quantity, 'total_balance_quantity': total_balance_quantity, "total_balance_percent":  total_balance_percent,  "total_sold_value": total_sold_value }
     
@@ -148,8 +155,21 @@ class TransactionService:
             for stock in company_stats:
                 if sector == stock['sector'] and instrument == stock['instrument']:
                     resultList.append(stock)
-        # print(resultList)
         return resultList
+    
+
+    def holdings_sector_instrument_list(self,  holdings:list) -> dict:
+        sectors =[]
+        instruments = []
+        # print(holdings)
+        for item in holdings:
+            # sector = item['sector']
+            # instrument = item['instrument']
+            if item['sector'] not in sectors:
+                sectors.append(item['sector'])
+            if item['instrument'] not in instruments:
+                instruments.append(item['instrument'])
+        return dict(sectors=sectors, instruments = instruments)
     
 
     def transactions_stock_price(self, scrip:str):
@@ -200,12 +220,16 @@ class TransactionService:
 
         
         total_balance_quantity = total_credit_quantity - total_debit_quantity
-        total_profit_loss = total_sold_value - total_invest_value
+        current_value = prices.closing_price * total_balance_quantity
+        overall_profit_loss = (total_sold_value + current_value) - total_invest_value
+        if total_sold_value != 0:
+            total_profit_loss = total_sold_value - total_invest_value
+            
         if total_invest_value > 0:
             total_profit_loss_percent = round((total_profit_loss / total_invest_value)*100, 2)
             overall_percent =  round((overall_profit_loss / total_invest_value)*100, 2)
-        current_value = prices.closing_price * total_balance_quantity
-        overall_profit_loss = (total_sold_value + current_value) - total_invest_value
+        
+       
         
 
         return {"stockSymbol": scrip, "invest_value": total_invest_value, "sold_value": total_sold_value, "total_profit_loss": total_profit_loss, "credit": total_credit_quantity, "debit": total_debit_quantity, "balance_quantity": total_balance_quantity, "total_profit_loss_percent": total_profit_loss_percent, "current_value": current_value, "overall_profit_loss": overall_profit_loss, "overall_percent": overall_percent}

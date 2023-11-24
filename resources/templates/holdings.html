@@ -4,12 +4,6 @@
 
  {% block content %}
   <section class="section-holdings">
-    {% if not holdings%}
-    <div class="warning-msg">
-      <span>Oops! Can't find the transactions!</span>
-      <a href="/upload" class="upload">Upload to continue!</a>
-    </div>
-    {% else %}
     <div class="holdings-block">
       <div class="dashboard-holdings-head">
         <div class="title-box">
@@ -24,22 +18,52 @@
         </div>
         <div class="select-box"> 
            <select id="sector-select" name="sector">
-            <option value="Sectors" selected> All sectors</option>
-            {% for item in sectorList %}
-              <option value="{{item[0]}}">{{item[0]}}</option>
-            {% endfor %}
+            {% if sector == "Sectors" %}
+              <option value="Sectors" selected> All sectors</option>
+              {% for item in sector_instrumentList['sectors']%}
+                <option value="{{item}}">{{item}}</option>
+              {% endfor %}
+            {%else%}
+              <option value="Sectors"> All sectors</option>
+              {% for item in sector_instrumentList['sectors']%}
+                {% if sector == item %}
+                  <option value="{{item}}" selected>{{item}}</option>
+                {%else%}
+                  <option value="{{item}}">{{item}}</option>
+                {%endif%}
+              {% endfor %}
+            {%endif%}
           </select>
           <select id="instrument-select" name="instrument">
-            <option value="Stocks" selected>All stocks</option>
-            {% for item in instrumentList %}
-              <option value="{{item[0]}}">{{item[0]}}</option>
-            {% endfor %}
+            {% if instrument == "Stocks" %}
+              <option value="Stocks" selected> All stocks</option>
+              {% for item in sector_instrumentList['instruments']%}
+                <option value="{{item}}">{{item}}</option>
+              {% endfor %}
+            {%else%}
+              <option value="Stocks"> All stocks</option>
+              {% for item in sector_instrumentList['instruments']%}
+                {% if instrument == item %}
+                  <option value="{{item}}" selected>{{item}}</option>
+                {%else%}
+                <option value="{{item}}">{{item}}</option>
+                {%endif%}
+              
+              {% endfor %}
+            {%endif%}
           </select>
 
         </div>
+        <!-- <button type="button" onclick="()">Search</button> -->
        
     </div>
     {{ msg }}
+    {% if not holdings%}
+    <div class="warning-msg">
+      <span>Oops! Can't find the transactions!</span>
+      <a href="/upload" class="upload">Upload to continue!</a>
+    </div>
+    {%else%}
       <div class="holdings-table">
         <table class="table">
           <tr class="table-head">
@@ -93,7 +117,7 @@
 
           <div class="holdings-stats-box">
             <div class="holdings-item">
-              <span class="holdings-text">Investment</span>
+              <span class="holdings-text">Total Investment</span>
               <div class="holdings-item-value">
                 
                 <span class="text-large">{{invest_value}}</span>
@@ -101,7 +125,7 @@
               </div>
               
             </div> 
-            <div class="holdings-item">
+            <!-- <div class="holdings-item">
             
               <span class="holdings-text">Sold value</span>
               <div class="holdings-item-value">
@@ -109,7 +133,7 @@
                 <div class="text-small">{{holdings_summary['total_debit_quantity']}} unit(s)</div>
             
               </div>
-            </div> 
+            </div>  -->
             <div class="holdings-item">
               <span class="holdings-text">Current value</span>
               <div class="holdings-item-value">
@@ -158,8 +182,9 @@
     
 
       </div>
+      {% endif %}
     </div>
-  {% endif %}
+
   </section>
   <script src="../static/js/holdings.js"></script>
   

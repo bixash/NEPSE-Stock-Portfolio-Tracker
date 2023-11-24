@@ -73,7 +73,7 @@ def holdings(request: Request):
 
     return templates.TemplateResponse("holdings.html", { "request": request,  "username": user.username, "holdings": []})
 
-@router.get("/holdings/{sector}-{instrument}")
+@router.get("/holdings/{sector}&{instrument}")
 def select_holdings(sector:str, instrument: str, request: Request):
     if not request.session["token"]:
         return templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
@@ -85,11 +85,11 @@ def select_holdings(sector:str, instrument: str, request: Request):
         holdings = trans_service.holdings_sector_instrument(user, sector, instrument)
         # holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
        
-        sectorList = company_repo.select_all_distinct_sector()
-        instrumentList = company_repo.select_all_distinct_instrument()
         holdings_summary = trans_service.holdings_summary(trans_service.holdings_sector_instrument(user, sector, instrument))
 
-        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary, "sectorList": sectorList, "instrumentList": instrumentList})
+        sector_instrumentList = trans_service.holdings_sector_instrument_list(trans_service.company_stats(user))
+
+        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary, "sector_instrumentList":  sector_instrumentList, 'sector':sector, 'instrument': instrument})
 
     return templates.TemplateResponse("holdings.html", { "request": request,  "username": user.username, "holdings": []})
 
