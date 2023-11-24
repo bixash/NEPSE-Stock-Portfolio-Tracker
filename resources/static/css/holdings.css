@@ -14,6 +14,7 @@
   margin: 0 auto;
   margin-top: 20px;
   width: 80%;
+  box-shadow: 0 1px 5px 0 rgba(var(--color-border-5--rgb),.1);
 }
 
 .dashboard-holdings-head {
@@ -21,28 +22,34 @@
   padding: 10px 0px;
   /* margin: 10px 0; */
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   border-bottom: 1px solid var(--color-border-default);
   /* background-color: aqua; */
   
 }
+.dashboard-holdings-head .title-box {
+  width: 280px;
 
+}
 .dashboard-holdings-head .select-box {
-  width: 55%;
-  
-  /* background-color: black; */
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.select-box select {
-  color: var(--color-text-default)
+.select-box select{
+  color: var(--color-text-default);
+  /* background-color: saddlebrown; */
+  padding: 2px 4px;
+
 }
+
+
 .select-box select:focus {
   outline: none;
 }
-.dashboard-holdings-head .title-box {
-  width: 40%;
-  /* background-color: blue; */
-}
+
 .dashboard-holdings-head svg {
   width: 18px;
   height: 17px;
@@ -58,6 +65,7 @@
   width: 100%;
   /* background-color: white; */
   border-top: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-default);
 }
 
 .holdings-table table {

@@ -51,7 +51,6 @@ def get_transaction(request: Request):
     
     return templates.TemplateResponse("history.html", { "request": request, "username": user.username, "all_transactions": all_transactions})
 
-
 @router.get("/transactions/holdings")
 def holdings(request: Request):
     if not request.session["token"]:
@@ -98,8 +97,9 @@ def upload(request: Request):
     if not request.session["token"]:
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-    return templates.TemplateResponse("upload.html", {"request": request, "username": user.username})
-
+    if trans_service.check_user_transactions(user):
+        return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "msg":"Looks like you have already uploaded transactions details! So, if you upload new transactions, your old transactions will be deleted!", "uploaded": True})
+    return templates.TemplateResponse("upload.html", {"request": request, "username": user.username, "uploaded": False})
 
 @router.post("/transactions/upload")
 def upload(request: Request, file: UploadFile):
@@ -125,7 +125,6 @@ def upload(request: Request, file: UploadFile):
     if response.error:
         return templates.TemplateResponse("upload.html",{ "request": request, "msg": response.msg, "username": user.username})
     return RedirectResponse(url=request.url_for("portfolio"), status_code=status.HTTP_303_SEE_OTHER)
-
 
 @router.post('/transactions/delete-data')
 def delete_data(request: Request, password: str = Form()):

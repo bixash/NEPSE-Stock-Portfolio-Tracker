@@ -98,8 +98,11 @@
       
       <h1 class="main-title">Stock Portolio Tracker</h1>
       <span class="subtext">Online platform to track your stocks, get insights and more</span>
+      {% if request.session["token"]%}
+      <a class="main-link"href="/portfolio">Goto Dashboard</a>
+      {%else%}
       <a class="main-link"href="/auth/signup"> Sign up now</a>
-      
+      {% endif %}
     {% endblock%}
     <footer class="footer"></footer>
     <script src="../static/js/main.js"></script>
