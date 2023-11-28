@@ -69,10 +69,12 @@
           <tr class="table-head">
             <th class="cols"><span>Scrip</span></th>
             <th class="cols"><span>Qty</span></th>
+            <th class="cols"><span>Avg. cost</span></th>
             <th class="cols"><span>LTP</span></th>
-            <th class="cols"><span>Closing</span></th>
+            <th class="cols"><span>Current</span></th>
             <th class="cols"><span>P&L</span></th>
             <th class="cols"><span>Net chg.</span></th>
+            <th class="cols"><span>Day chg.</span></th>
           </tr>
           
           
@@ -83,12 +85,18 @@
             <!-- <td>{{ loop.index }}</td> -->
             <td><span><a class="holdings-scrip" href="/company/{{row['scrip']}}">{{row['scrip']}}</a></span></td>
             <td><span>{{row['balance_quantity']}}</span></td>
-            <td><span>{{row['previous_closing']}}</span></td>
+            <td><span>{{row['average_cost']}}</span></td>
             <td><span>{{row['closing_price']}}</span></td>
-            {%if row['difference_rs'] > 0%}
-            <td><span class="text-green">{{row['difference_rs']}}</span></td>
+            <td><span>{{row['current_value']}}</span></td>
+            {%if row['profit_loss'] > 0%}
+            <td><span class="text-green">{{row['profit_loss']}}</span></td>
+            {%else%}
+            <td><span class="text-red">{{row['profit_loss']}}</span></td>
+            {%endif%}
+            {%if row['net_change'] > 0%}
+            <td><span class="text-green">{{row['net_change']}}%</span></td>
             {% else%}
-            <td><span class="text-red">{{row['difference_rs']}}</span></td>
+            <td><span class="text-red">{{row['net_change']}}%</span></td>
             {%endif%}
             {%if row['percent_change'] > 0%}
             <td><span class="text-green">{{row['percent_change']}}%</span></td>
@@ -120,8 +128,8 @@
               <span class="holdings-text">Total Investment</span>
               <div class="holdings-item-value">
                 
-                <span class="text-large">{{invest_value}}</span>
-                <div class="text-small">{{holdings_summary['total_credit_quantity']}} unit(s)</div>
+                <span class="text-large">{{holdings_summary['avg_invest_value']}}</span>
+                <!-- <div class="text-small">{{holdings_summary['total_credit_quantity']}} unit(s)</div> -->
               </div>
               
             </div> 

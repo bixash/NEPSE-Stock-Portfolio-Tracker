@@ -215,6 +215,12 @@
   
   background-color: white;
 }
+
+.dashboard-recent-body a{
+  color: var(--color-text-default);
+
+}
+
 .dashboard-recent-box table {
   width: 100%;
   border-collapse: collapse;

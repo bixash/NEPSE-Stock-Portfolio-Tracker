@@ -52,7 +52,9 @@ figure {
 img {
   max-width: 100%;
 }
-
+a {
+  text-decoration: none;
+}
 .site-logo img {
   width: 50px;
   height: auto;

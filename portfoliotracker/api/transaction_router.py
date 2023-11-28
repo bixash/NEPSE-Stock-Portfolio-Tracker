@@ -38,7 +38,7 @@ company_service = CompanyService(company_repo=company_repo)
 
 templates = Jinja2Templates(directory=get_templates_directory())
 
-@router.get("/transactions")
+@router.get("/transactions/all")
 def get_transaction(request: Request):
     if not request.session["token"]:
         return templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
@@ -63,12 +63,12 @@ def holdings(request: Request):
 
     if trans_service.holdings_stats(user):
         holdings = trans_service.holdings_only(user)
+        # print(holdings)
         holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
        
-        sectorList = company_repo.select_all_distinct_sector()
-        instrumentList = company_repo.select_all_distinct_instrument()
+        sector_instrumentList = trans_service.holdings_sector_instrument_list(trans_service.company_stats(user))
 
-        return templates.TemplateResponse("holdings.html", { "request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary, "sectorList": sectorList, "instrumentList": instrumentList})
+        return templates.TemplateResponse("holdings.html", {"request": request, "username": user.username, "holdings": holdings, 'holdings_summary': holdings_summary, "sector_instrumentList":  sector_instrumentList})
 
     return templates.TemplateResponse("holdings.html", { "request": request,  "username": user.username, "holdings": []})
 

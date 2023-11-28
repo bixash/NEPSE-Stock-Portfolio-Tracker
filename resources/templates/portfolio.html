@@ -46,7 +46,7 @@
               </div> 
               <div class="portfolio-item">
                 <span class="portfolio-text">Investment</span>
-                <span class="portfolio-item-value">{{portfolio_summary['invest_value']}}</span>
+                <span class="portfolio-item-value">{{portfolio_summary['total_invest_value']}}</span>
               </div> 
             </div>
             
@@ -164,7 +164,7 @@
         <div class="dashboard-holdings-body">
           
             
-          {% set invest_value =  holdings_summary['invest_value']%}
+          {% set invest_value =  holdings_summary['avg_invest_value']%}
           {% set current_value =   holdings_summary['current_value']%}
           {% set today_profit_loss =   holdings_summary['today_profit_loss']%}
           {% set total_profit_loss =   holdings_summary['total_profit_loss'] %}
@@ -249,7 +249,7 @@
             {% endfor%}
             
           </table>
-          <a href="/transactions" class="transactions">View all</a>
+          <a href="/transactions/all" class="view-btn">View all</a>
         </div>
       </div>
     </div>

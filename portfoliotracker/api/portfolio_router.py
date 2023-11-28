@@ -61,7 +61,7 @@ def portfolio(request: Request):
 
     if trans_service.check_user_transactions(user):
         
-        portfolio_summary = trans_service.holdings_summary(trans_service.holdings_stats(user))
+        portfolio_summary = trans_service.portfolio_summary(trans_service.holdings_stats(user))
         recent_transactions = trans_service.recent_transactions(user).result
         holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(user))
         
