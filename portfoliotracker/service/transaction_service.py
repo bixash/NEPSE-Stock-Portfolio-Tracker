@@ -122,7 +122,6 @@ class TransactionService:
         
         return {"invest_value": round(total_invest_value, 2), "current_value": round(total_current_value, 2), "total_profit_loss": total_profit_loss, "today_profit_loss": today_profit_loss,  "today_profit_loss_percent": today_profit_loss_percent, "total_profit_loss_percent":  total_profit_loss_percent, "total_credit_quantity" : total_credit_quantity, 'total_debit_quantity':total_debit_quantity, 'total_balance_quantity': total_balance_quantity, "total_balance_percent":  total_balance_percent,  "total_sold_value": total_sold_value, "avg_invest_value": avg_invest_value }
     
-
     def portfolio_summary(self, holdings: list):
         total_invest_value = 0
         total_current_value= 0
@@ -164,17 +163,15 @@ class TransactionService:
                 holdings.append(dict(scrip=stockSymbol, credit_quantity= stats['credit'], debit_quantity= stats['debit'], balance_quantity=stats['balance_quantity'], closing_price = prices.closing_price, previous_closing = prices.previous_closing, difference_rs = prices.difference_rs, percent_change=prices.percent_change, invest_value = stats["invest_value"], sold_value=stats["sold_value"], current_value=current_value, previous_value = previous_value, avg_invest_value=stats['avg_invest_value'], average_cost = stats['average_cost'], profit_loss = stats['profit_loss'], net_change = stats['net_change'] ))
         return holdings    
 
-    def holdings_only(self, user:User) -> list:
+    def holdings_only(self, holdingsList:list) -> list:
         holdingsOnly =[]
-        holdingsList = self.holdings_stats(user)
         for stock in holdingsList:
             if stock['balance_quantity'] > 0:
                 holdingsOnly.append(stock)
         return holdingsOnly
 
-    def holdings_sector_instrument(self, user:User, sector:str, instrument:str):
+    def holdings_sector_instrument(self, company_stats: list, sector:str, instrument:str):
         resultList = []
-        company_stats = self.company_stats(user)
         if sector == 'Sectors' and instrument == 'Stocks':
                 resultList = company_stats
         elif (sector == 'Sectors' and instrument != 'Stocks'):
@@ -213,9 +210,8 @@ class TransactionService:
 
             return stock
 
-    def company_stats(self, user:User) -> list:
+    def company_stats(self, holdings: list) -> list:
         company_stats_list = []
-        holdings = self.holdings_only(user)
         for stock in holdings:
             scrip = stock['scrip']
             company_res = self.company_info(scrip)

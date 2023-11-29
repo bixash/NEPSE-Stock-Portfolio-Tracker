@@ -5,6 +5,9 @@ from portfoliotracker.repo.stock_repo import StockRepo
 from portfoliotracker.entities.user import User
 from portfoliotracker.utils.methods import *
 
+from portfoliotracker.repo import TransactionRepo
+from portfoliotracker.repo.db import get_db_connection
+trans_repo = TransactionRepo(get_db_connection())
 
 class StockService:
 
@@ -16,7 +19,7 @@ class StockService:
         try:
             response = requests.get(self.api_url)
             result = response.json()
-            return BaseResponse(error=False, success=True, msg='Got prices from api!', result= result)
+            return BaseResponse(error=False, success=True, msg='Got prices from api!', result=result)
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
         
@@ -61,13 +64,7 @@ class StockService:
             # con.commit()
         return result
 
-    def is_tradeDate_same_db(self):
-        from portfoliotracker.repo import TransactionRepo
-        from portfoliotracker.repo.db import get_db_connection
-        db = get_db_connection()
-
-        trans_repo = TransactionRepo(db)
-        api_date = self.get_stock_prices_from_api().result['result']['stocks'][1]['tradeDate']
+    def is_tradeDate_same_db(self, api_date: str):
         db_date = trans_repo.get_stock_tradeDate()
         if api_date == db_date[0]:
             return True

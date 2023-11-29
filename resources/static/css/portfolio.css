@@ -221,6 +221,17 @@
 
 }
 
+
+.dashboard-recent-body .view-btn {
+  display: block;
+  width: fit-content;
+  margin-top: 20px;
+  border-radius: 3px;
+  background-color: #5865f2;
+  color: white;
+  padding: 5px 8px;
+}
+
 .dashboard-recent-box table {
   width: 100%;
   border-collapse: collapse;

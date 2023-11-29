@@ -3,6 +3,8 @@ from portfoliotracker.entities import Transaction,  User
 from portfoliotracker.repo.stock_repo import StockRepo
 from portfoliotracker.repo.company_repo import CompanyRepo
 
+import threading 
+lock = threading.Lock()
 
 class TransactionRepo:
     def __init__(self, db: DBConnection):
@@ -24,17 +26,17 @@ class TransactionRepo:
                
     def retrieve_all_transaction(self, user: User):
         cur = self.db.get_connection()
-        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction,  history_description, unit_price from transactions where uid = ? ",(user.user_id,))
+        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction,  history_description, unit_price, id from transactions where uid = ? ",(user.user_id,))
         return cur.fetchall()
     
     def retrieve_transaction_by_scrip(self, user: User, stock: str):
         cur = self.db.get_connection()
-        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction,  history_description, unit_price FROM transactions WHERE scrip = ? and uid = ? ORDER BY transaction_date desc",(stock, user.user_id,))
+        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction,  history_description, unit_price, id FROM transactions WHERE scrip = ? and uid = ? ORDER BY transaction_date desc",(stock, user.user_id,))
         return cur.fetchall()
     
     def retrieve_limit_transaction(self, user: User):
         cur = self.db.get_connection()
-        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, unit_price  from transactions where uid = ? ORDER BY transaction_date desc limit 7",(user.user_id,))
+        cur.execute("SELECT scrip, transaction_date, credit_quantity, debit_quantity, balance_after_transaction, history_description, unit_price, id  from transactions where uid = ? ORDER BY transaction_date desc limit 7",(user.user_id,))
         return cur.fetchall()
     
     def transaction_join_all_stock(self, user: User):
@@ -54,10 +56,15 @@ class TransactionRepo:
 
 
     def get_stock_tradeDate(self):
-        cur = self.db.get_connection()
-        cur.execute("SELECT trade_date FROM stock limit 1")
-        return cur.fetchone()
-    
+        try:
+            
+            cur = self.db.get_connection()
+            lock.acquire(True)
+            cur.execute("SELECT trade_date FROM stock limit 1")
+            return cur.fetchone()
+        finally:
+            lock.release()
+            
     def join_one_transaction_stock_company(self, user: User, stockSymbol: str):
         cur = self.db.get_connection()
         cur.execute("SELECT * FROM transactions NATURAL JOIN stock  NATURAL JOIN company  WHERE uid = ? AND transactions.scrip = ? ORDER BY transaction_date desc limit 1",(user.user_id, stockSymbol,))

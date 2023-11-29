@@ -54,6 +54,6 @@ def dictifiy_transactions(transactions:tuple):
         # MKHC|2023-03-17|10|0|10|IPO-MKHCL-079/80|100.0|1
         resultList = []
         for item in transactions:
-            transaction = dict(scrip = item[0], transaction_date= convert_date_format(item[1]), credit_quantity = item[2], debit_quantity = item[3], after_balance = item[4], history_description =item[5], unit_price =item[6])
+            transaction = dict(scrip = item[0], transaction_date= convert_date_format(item[1]), credit_quantity = item[2], debit_quantity = item[3], after_balance = item[4], history_description =item[5], unit_price =item[6],tid = item[7])
             resultList.append(transaction)
         return resultList
