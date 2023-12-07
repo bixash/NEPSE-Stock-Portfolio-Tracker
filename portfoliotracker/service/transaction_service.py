@@ -40,7 +40,8 @@ class TransactionService:
     
     def distinct_stockSymbols(self, user:User) -> list:
         stockSymbols = []
-        for item in self.trans_repo.select_distinct_scrip(user):
+        distinct = self.trans_repo.select_distinct_scrip(user)
+        for item in distinct:
             stockSymbols.append(item[0])
         return stockSymbols
 
@@ -100,11 +101,9 @@ class TransactionService:
         for stock in holdings:
             total_credit_quantity = total_credit_quantity + stock['credit_quantity']
             total_debit_quantity = total_debit_quantity + stock['debit_quantity']
-
             total_invest_value=  total_invest_value + stock['invest_value']
             avg_invest_value = avg_invest_value+ stock['avg_invest_value']
             total_sold_value = total_sold_value + stock['sold_value']
-
             total_current_value= total_current_value + stock['current_value']
             total_previous_value = total_previous_value + stock['previous_value']
 
@@ -116,10 +115,8 @@ class TransactionService:
             total_profit_loss = round(total_current_value - avg_invest_value, 2)
             # total_profit_loss_percent = round((total_profit_loss * 100)/total_invest_value, 2)
             total_profit_loss_percent = round((total_profit_loss * 100)/avg_invest_value, 2)
-
             today_profit_loss = round(total_current_value - total_previous_value, 2)
             today_profit_loss_percent = round((today_profit_loss * 100)/ total_previous_value, 2)
-        
         return {"invest_value": round(total_invest_value, 2), "current_value": round(total_current_value, 2), "total_profit_loss": total_profit_loss, "today_profit_loss": today_profit_loss,  "today_profit_loss_percent": today_profit_loss_percent, "total_profit_loss_percent":  total_profit_loss_percent, "total_credit_quantity" : total_credit_quantity, 'total_debit_quantity':total_debit_quantity, 'total_balance_quantity': total_balance_quantity, "total_balance_percent":  total_balance_percent,  "total_sold_value": total_sold_value, "avg_invest_value": avg_invest_value }
     
     def portfolio_summary(self, holdings: list):
@@ -148,9 +145,8 @@ class TransactionService:
         
         return {"total_invest_value": round(total_invest_value, 2), "total_profit_loss": total_profit_loss, "total_profit_loss_percent":  total_profit_loss_percent, "total_credit_quantity" : total_credit_quantity, 'total_debit_quantity':total_debit_quantity, 'total_balance_quantity': total_balance_quantity, "total_balance_percent":  total_balance_percent,  "total_sold_value": total_sold_value,}
 
-    def holdings_stats(self, user:User):
+    def holdings_stats(self, user:User, trans_stock:list):
         holdings = []
-        trans_stock= self.distinct_stockSymbols(user)
         for stockSymbol in trans_stock:
             if self.transactions_stock_price(stockSymbol):
                 prices = self.transactions_stock_price(stockSymbol)
@@ -160,7 +156,7 @@ class TransactionService:
                 previous_value = stats['balance_quantity'] * prices.previous_closing
                 
 
-                holdings.append(dict(scrip=stockSymbol, credit_quantity= stats['credit'], debit_quantity= stats['debit'], balance_quantity=stats['balance_quantity'], closing_price = prices.closing_price, previous_closing = prices.previous_closing, difference_rs = prices.difference_rs, percent_change=prices.percent_change, invest_value = stats["invest_value"], sold_value=stats["sold_value"], current_value=current_value, previous_value = previous_value, avg_invest_value=stats['avg_invest_value'], average_cost = stats['average_cost'], profit_loss = stats['profit_loss'], net_change = stats['net_change'] ))
+                holdings.append(dict(scrip=stockSymbol, credit_quantity= stats['credit'], debit_quantity= stats['debit'], balance_quantity=stats['balance_quantity'], closing_price = prices.closing_price, previous_closing = prices.previous_closing, difference_rs = prices.difference_rs, percent_change=prices.percent_change, invest_value = stats["invest_value"], sold_value=stats["sold_value"], current_value=round(current_value, 2), previous_value = previous_value, avg_invest_value=stats['avg_invest_value'], average_cost = stats['average_cost'], profit_loss = stats['profit_loss'], net_change = stats['net_change'] ))
         return holdings    
 
     def holdings_only(self, holdingsList:list) -> list:
@@ -274,24 +270,24 @@ class TransactionService:
             total_profit_loss_percent = round((total_profit_loss / total_invest_value)*100, 2)
             overall_percent =  round((overall_profit_loss / total_invest_value)*100, 2)
 
-        return {"stockSymbol": scrip, "invest_value": total_invest_value, "sold_value": total_sold_value, "total_profit_loss": total_profit_loss, "credit": total_credit_quantity, "debit": total_debit_quantity, "balance_quantity": total_balance_quantity, "total_profit_loss_percent": total_profit_loss_percent, "current_value": current_value, "overall_profit_loss": overall_profit_loss, "overall_percent": overall_percent, "average_cost": average_cost, "net_change":  net_change, "profit_loss": profit_loss, "avg_invest_value": avg_invest_value}
+        return {"stockSymbol": scrip, "invest_value": total_invest_value, "sold_value": total_sold_value, "total_profit_loss": round(total_profit_loss, 2), "credit": total_credit_quantity, "debit": total_debit_quantity, "balance_quantity": total_balance_quantity, "total_profit_loss_percent": total_profit_loss_percent, "current_value": current_value, "overall_profit_loss": round(overall_profit_loss, 2), "overall_percent": round(overall_percent,2), "average_cost": round(average_cost, 2), "net_change":  net_change, "profit_loss": round(profit_loss, 2), "avg_invest_value": avg_invest_value}
 
-    def get_joined_result(self, user:User)->BaseResponse:
-        try:
-            lock.acquire(True)
-            transactionDict =[]
-            for stockSymbol in self.distinct_stockSymbols(user):
-                result = self.trans_repo.join_one_transaction_stock_company(user, stockSymbol)
-                for item in result:
-                    """id|scrip|transaction_date|credit_quantity|debit_quantity|balance_after_transaction|history_description|unit_price|uid|previous_closing|trade_date|closing_price|difference_rs|percent_change|company_name|status|sector|instrument|email|url"""
+    # def get_joined_result(self, user:User)->BaseResponse:
+    #     try:
+    #         lock.acquire(True)
+    #         transactionDict =[]
+    #         for stockSymbol in self.distinct_stockSymbols(user):
+    #             result = self.trans_repo.join_one_transaction_stock_company(user, stockSymbol)
+    #             for item in result:
+    #                 """id|scrip|transaction_date|credit_quantity|debit_quantity|balance_after_transaction|history_description|unit_price|uid|previous_closing|trade_date|closing_price|difference_rs|percent_change|company_name|status|sector|instrument|email|url"""
 
-                    stock = dict(stockSymbol = item[1], transaction_date = item[2], credit = item[3], debit =item[4], balance = item[5], unit_price=item[7], previous_price=item[9], trade_date=item[10], closing_price=item[11], difference_rs = item[12], percent_change = item[13], company_name = item[14], status= item[15], sector = item[16], instrument = item[17] )
-                    transactionDict.append(stock)
-            return BaseResponse(error=False, success=True, msg="success", result=transactionDict)    
-        except Exception as e:
-            return BaseResponse(error=True, success=False, msg=str(e))
-        finally:
-            lock.release()
+    #                 stock = dict(stockSymbol = item[1], transaction_date = item[2], credit = item[3], debit =item[4], balance = item[5], unit_price=item[7], previous_price=item[9], trade_date=item[10], closing_price=item[11], difference_rs = item[12], percent_change = item[13], company_name = item[14], status= item[15], sector = item[16], instrument = item[17] )
+    #                 transactionDict.append(stock)
+    #         return BaseResponse(error=False, success=True, msg="success", result=transactionDict)    
+    #     except Exception as e:
+    #         return BaseResponse(error=True, success=False, msg=str(e))
+    #     finally:
+    #         lock.release()
 
     def recent_transactions(self, user:User):
         try:

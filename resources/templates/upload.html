@@ -2,34 +2,43 @@
 {% block title %} Upload {% endblock %}
 {% block link %}<link rel="stylesheet" href="../static/css/upload.css">{% endblock %}
 {% block content %}
-
-<div class="wrapper-container">
-    <div class="upload-container">
-        <h2 class="title"> Upload transactions</h2>
-        <span class="warning">{{msg}}</span>
-        <form action="/transactions/upload" method="POST" enctype="multipart/form-data">
-            <div class="upload-instructions">
-                <span class="text-title">Read these instructions before uploading:</span>
-                <ul>
-                    <li>Make sure file is in CSV format.</li>
-                    <li>For accurate report, download transaction history csv file from Meroshare.</li>
-                    <ul>
-                        <li>Step 1: Goto <a href="https://https://meroshare.cdsc.com.np/"> Meroshare</a></li>
-                        <li>Step 2: Login to your account</li>
-                        <li>Step 3: Click "My transaction history" option</li>
-                        <li>Step 4: Select Filter By "date" option instead of "scrip" </li>
-                        <li>Step 5: Click "csv" option, shown in top right</li>
-                    </ul>
-                    <li>After downloading, the "Unit Price" column must be added and for each transactions you should add per unit price as well.</li>
-                    <!-- <li>If you edit the downloaded file, make sure it has same table format as  Meroshare file.</li> -->
-                </ul>
-                
+<section class="upload-section">
+    <div class="wrapper-container">
+        <div class="upload-img-block">
+            <img src="../static/images/upload-lady.jpg" alt="upload" srcset="">
+            <div class="upload-container">
+                <h2 class="title"> Upload transactions</h2>
+    
+                <span class="warning">{{msg}}</span>
+                <form action="/transactions/upload" method="POST" enctype="multipart/form-data">
+                    <div class="upload-instructions">
+                        <span class="text-title">Read these instructions before uploading:</span>
+                        <ul>
+                            <li>Make sure file is in CSV format.</li>
+                            <li>For accurate report, download transaction history csv file from Meroshare.</li>
+                            <ul>
+                                <li>Step 1: Goto <a href="https://https://meroshare.cdsc.com.np/"> Meroshare</a></li>
+                                <li>Step 2: Login to your account</li>
+                                <li>Step 3: Click "My transaction history" option</li>
+                                <li>Step 4: Select Filter By "date" option instead of "scrip" </li>
+                                <li>Step 5: Click "csv" option, shown in top right</li>
+                            </ul>
+                            <li>After downloading, the "Unit Price" column must be added and for each transactions you should add per unit price as well.</li>
+                            <!-- <li>If you edit the downloaded file, make sure it has same table format as  Meroshare file.</li> -->
+                        </ul>
+                        
+                    </div>
+                    
+                    <input type="file" name="file" class="input-control" id="choose-btn" accept=".csv"/>
+                    <button type="submit" class="submit-btn">Done</button>
+                </form>
             </div>
-            
-            <input type="file" name="file" class="input-control" id="choose-btn" accept=".csv"/>
-            <button type="submit" class="submit-btn">Done</button>
-        </form>
+      
+           
+        </div>
     </div>
-</div>
+
+</section>
+
 
 {% endblock %}

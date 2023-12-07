@@ -7,7 +7,7 @@ class UserRepo:
         self.db = db
 
     def get_user_by_id(self, user_id: int) -> User:
-        cur = self.db.get_connection()
+        cur = self.db.get_cursor()
         cur.execute("SELECT username, email, password FROM `user` where id = ?", (user_id, ))
         result = cur.fetchone()
         if result:
@@ -15,7 +15,7 @@ class UserRepo:
         return None
 
     def get_user_password(self, user_id: int)->bool:
-        cur = self.db.get_connection()
+        cur = self.db.get_cursor()
         cur.execute("SELECT password FROM `user` where id = ?", (user_id, ))
         result = cur.fetchone()
         if result:
@@ -23,37 +23,37 @@ class UserRepo:
         return None
     
     def update_user_by_id(self, user:User) -> bool:
-        cur = self.db.get_connection()
-        con = self.db._commit()
+        cur = self.db.get_cursor()
+        con = self.db.get_connection()
         cur.execute("UPDATE `user` set username = ?, email = ?, password = ? WHERE id = ? ", (user.username, user.email, user.password, user.user_id,  ))
         con.commit()
         return True
     
     def update_user_username(self, username:str, user_id:int) -> bool:
-        cur = self.db.get_connection()
-        con = self.db._commit()
+        cur = self.db.get_cursor()
+        con = self.db.get_connection()
         cur.execute("UPDATE `user` set username = ? WHERE id = ? ", (username, user_id,))
         con.commit()
         return True
     
     def update_user_password(self, password:str, user_id:int) -> bool:
-        cur = self.db.get_connection()
-        con = self.db._commit()
+        cur = self.db.get_cursor()
+        con = self.db.get_connection()
         cur.execute("UPDATE `user` set password = ? WHERE id = ? ", (password, user_id, ))
         con.commit()
         return True
 
     def update_user_email(self, email:str, user_id:int) -> bool:
-        cur = self.db.get_connection()
-        con = self.db._commit()
+        cur = self.db.get_cursor()
+        con = self.db.get_connection()
         cur.execute("UPDATE `user` set email = ? WHERE id = ? ", (email, user_id,  ))
         con.commit()
         return True
     
 
     def delete_user(self, user_id:int) -> bool:
-        cur = self.db.get_connection()
-        con = self.db._commit()
+        cur = self.db.get_cursor()
+        con = self.db.get_connection()
         cur.execute("DELETE FROM `user` WHERE id = ? ", ( user_id,  ))
         con.commit()
         return True

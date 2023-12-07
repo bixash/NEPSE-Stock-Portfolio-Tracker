@@ -27,13 +27,19 @@ router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
-db = get_db_connection()
-user_repo = UserRepo(db)
+user_db = get_db_connection()
+trans_db = get_db_connection()
+
+company_db = get_db_connection()
+
+user_repo = UserRepo(user_db)
 user_service = UserService(user_repo=user_repo)
-trans_repo = TransactionRepo(db)
+
+trans_repo = TransactionRepo(trans_db)
 trans_service = TransactionService(trans_repo=trans_repo)
 
-company_repo = CompanyRepo(db)
+
+company_repo = CompanyRepo(company_db)
 company_service = CompanyService(company_repo=company_repo)
 
 templates = Jinja2Templates(directory=get_templates_directory())
@@ -61,8 +67,9 @@ def holdings(request: Request):
 
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    if trans_service.holdings_stats(user):
-        holdings_stats = trans_service.holdings_stats(user)
+    distinctSymbol = trans_service.distinct_stockSymbols(user)
+    if trans_service.holdings_stats(user, distinctSymbol):
+        holdings_stats = trans_service.holdings_stats(user, distinctSymbol)
         holdings = trans_service.holdings_only(holdings_stats)
         company_stats = trans_service.company_stats(holdings_stats)
 
@@ -81,13 +88,14 @@ def select_holdings(sector:str, instrument: str, request: Request):
 
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    if trans_service.holdings_stats(user):
-        holdings_stats = trans_service.holdings_stats(user)
+    distinctSymbol = trans_service.distinct_stockSymbols(user)
+    if trans_service.holdings_stats(user, distinctSymbol):
+        holdings_stats = trans_service.holdings_stats(user, distinctSymbol)
         holdings_only = trans_service.holdings_only(holdings_stats)
         company_stats = trans_service.company_stats(holdings_only)
         holdings = trans_service.holdings_sector_instrument(company_stats, sector, instrument)
        
-        holdings_summary = trans_service.holdings_summary(trans_service.holdings_sector_instrument(company_stats, sector, instrument))
+        holdings_summary = trans_service.holdings_summary(holdings)
 
         sector_instrumentList = trans_service.holdings_sector_instrument_list(company_stats)
 
@@ -147,7 +155,8 @@ def delete_data(request: Request, password: str = Form()):
 @router.get("/transactions/sector-stats")
 def get_sector_stats(request: Request):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-    holdings_stats = trans_service.holdings_stats(user)
+    distinctSymbol = trans_service.distinct_stockSymbols(user)
+    holdings_stats = trans_service.holdings_stats(user, distinctSymbol)
     company_stats = trans_service.company_stats(holdings_stats)
     sector_summary = trans_service.sector_summary(company_stats)
   
@@ -156,7 +165,8 @@ def get_sector_stats(request: Request):
 @router.get("/transactions/instrument-stats")
 def get_instrument_stats(request: Request):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-    holdings_stats = trans_service.holdings_stats(user)
+    distinctSymbol = trans_service.distinct_stockSymbols(user)
+    holdings_stats = trans_service.holdings_stats(user, distinctSymbol)
     company_stats = trans_service.company_stats(holdings_stats)
     instrument_summary = trans_service.instrument_summary(company_stats)
     return{"result": trans_service.XYarray(instrument_summary)}

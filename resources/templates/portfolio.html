@@ -5,22 +5,31 @@
 
 <section class="dashboard-section">
   <div class="wrapper-container">
+    
+    {% if flag %}
+    <div class="upload-block">
+      <img src="../static/images/data-report.png" alt="upload-img">
+      <!-- <img src="../static/images/upload-lady.jpg" alt="upload-img"> -->
+
+      <div class="upload-msg">
+        <span class="text-medium-large">Looks like you haven't uploaded transactions data!</span>
+        <!-- <span>Let's Upload</span>  -->
+        <!-- <span>Oops! Can't find the transactions!</span> -->
+        <a href="/transactions/upload" class="upload-btn">Upload to continue!</a>
+      </div>
+      
+    </div>
+    {% else %}
     <header class="greet-textbox">
       <h1 class="greet-big-title">
         Hi, <span id="nickname">{{username}}</span>
       </h1>
     </header>
-    {% if flag %}
-    <div class="warning-msg">
-      <span>Oops! Can't find the transactions!</span>
-      <a href="/transactions/upload" class="upload">Upload to continue!</a>
-    </div>
-    {% else %}
     <div class="dashboard-portfolio-summary">
       <div class="dashboard-portfolio-box">
         <div class="dashboard-portfolio-head">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z" fill="currentColor"/>
+            <path d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z" fill="currentColor"/>
           </svg>
           <span class="dashboard-portfolio-title title">Portfolio Summary</span>
         </div>
@@ -63,7 +72,7 @@
                 <span class="text-small text-green">{{portfolio_summary['total_balance_percent']}}%</span>
               
               </div>
-              <span class="holdings-text">Balance unit</span>
+              <span class="holdings-text">Available unit</span>
             </div> 
             <div class="divider">
               <div class="portfolio-item">

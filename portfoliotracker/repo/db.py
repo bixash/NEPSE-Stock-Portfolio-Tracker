@@ -12,10 +12,18 @@ class DBConnection(abc.ABC):
         self.cur = self.con.cursor()
 
     def get_connection(self):
-        return self.cur
-
-    def _commit(self):
         return self.con
+    
+    def get_cursor(self):
+        return self.cur
+        
+
+    def commit(self):
+        self.con.commit()
+
+    def close(self):
+        self.con.close()
+        
 
     def __exit__(self):
         self.con.commit()

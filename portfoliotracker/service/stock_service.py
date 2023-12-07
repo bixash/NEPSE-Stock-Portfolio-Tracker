@@ -64,8 +64,7 @@ class StockService:
             # con.commit()
         return result
 
-    def is_tradeDate_same_db(self, api_date: str):
-        db_date = trans_repo.get_stock_tradeDate()
+    def is_tradeDate_same_db(self, api_date: str, db_date:str):
         if api_date == db_date[0]:
             return True
         else:

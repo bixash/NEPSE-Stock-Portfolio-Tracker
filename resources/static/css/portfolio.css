@@ -6,6 +6,7 @@
 
 .dashboard-section {
   background-color: white;
+  /* padding: 20px 0; */
 }
 .dashboard-section .greet-textbox {
   margin: 0;
@@ -309,4 +310,37 @@
   display: inline-block;
   width: 100px;
   color: var(--color-text-1);
+}
+
+/* .upload-block {
+
+  box-shadow: 0 0 5px 0 rgba(var(--color-border-5--rgb),.1);
+} */
+
+.upload-block .upload-msg{
+  margin: auto 20px;
+}
+.upload-msg span{
+  display: block;
+  text-align: center;
+}
+.upload-block img {
+  display: block;
+  margin: 0 auto;
+  width: 30%;
+  /* border: 1px solid saddlebrown; */
+}
+
+.upload-block .upload-btn{
+  text-decoration: none;
+  margin: 25px auto;
+  display: block;
+  /* text-align: center; */
+  background-color: #387ed1;
+  color:white;
+  width: fit-content; 
+  font-size: 19.2px;
+  font-weight: 500;
+  padding: 10px 30px;
+  border-radius: 3px;
 }

@@ -1,8 +1,26 @@
+.upload-section {
+  background-color: white;
+
+}
+.upload-img-block {
+  
+  display:flex;
+  width: 100%;
+  padding-bottom: 20px;
+  
+  /* height: 100vh; */
+}
+
+.upload-img-block  img {
+  box-shadow: 0 1px 5px 0 rgba(var(--color-border-5--rgb),.1);
+  margin: 20px auto;
+  width: 450px;
+}
 .upload-container {
   width: 50%;
   margin: 20px auto;
   background-color: white;
-  box-shadow: 0 1px 5px 0 rgba(var(--color-border-5--rgb),.1);
+  
   padding: 10px 20px;
     /* var(--color-bg-body)  */
 }
@@ -62,3 +80,4 @@ input[type=file]::file-selector-button:hover {
   background: #0d45a5;
   color:white;
 }
+

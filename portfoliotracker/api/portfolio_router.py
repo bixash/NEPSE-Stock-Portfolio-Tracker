@@ -31,17 +31,20 @@ router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
-db = get_db_connection()
-auth_repo = AuthRepo(db)
+auth_db = get_db_connection()
+trans_db = get_db_connection()
+stock_db = get_db_connection()
+company_db = get_db_connection()
+auth_repo = AuthRepo(auth_db)
 auth_service = AuthService(auth_repo=auth_repo)
 
-trans_repo = TransactionRepo(db)
+trans_repo = TransactionRepo(trans_db)
 trans_service = TransactionService(trans_repo=trans_repo)
 
-stock_repo = StockRepo(db)
+stock_repo = StockRepo(stock_db)
 stock_service = StockService(stock_repo=stock_repo)
 
-company_repo = CompanyRepo(db)
+company_repo = CompanyRepo(company_db)
 company_service = CompanyService(company_repo=company_repo)
 
 templates_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "resources", "templates")
@@ -55,22 +58,27 @@ def portfolio(request: Request):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
     if stock_service.get_stock_prices_from_api().success:
-        api_date = stock_service.get_stock_prices_from_api().result['result']['stocks'][1]['tradeDate']
-        if not stock_service.is_tradeDate_same_db(api_date):
-            stock_service.update_prices_todb()
+        stock_service.update_prices_todb()
+        # api_date = stock_service.get_stock_prices_from_api().result['result']['stocks'][1]['tradeDate']
+        # db_date = stock_repo.get_stock_tradeDate()
+
+        # if not stock_service.is_tradeDate_same_db(api_date, db_date):
+        #     stock_service.update_prices_todb()
        
 
     if trans_service.check_user_transactions(user):
-        holdings_stats = trans_service.holdings_stats(user)
+        distinctSymbol = trans_service.distinct_stockSymbols(user)
+        holdings_stats = trans_service.holdings_stats(user, distinctSymbol)
         portfolio_summary = trans_service.portfolio_summary(holdings_stats)
         recent_transactions = trans_service.recent_transactions(user).result
-        holdings_summary = trans_service.holdings_summary(trans_service.holdings_only(holdings_stats))
-        
-        sector_summary = trans_service.sector_summary(trans_service.company_stats(holdings_stats))
-        instrument_summary = trans_service.instrument_summary(trans_service.company_stats(holdings_stats))
+        holdings_only = trans_service.holdings_only(holdings_stats)
+
+        holdings_summary = trans_service.holdings_summary(holdings_only)
+        # sector_summary = trans_service.sector_summary(trans_service.company_stats(holdings_only))
+        instrument_summary = trans_service.instrument_summary(trans_service.company_stats(holdings_only))
         holdings_length = len(trans_service.holdings_only(holdings_stats))
     
-        return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings_summary": holdings_summary,  "portfolio_summary": portfolio_summary, "sector_summary":sector_summary, "instrument_summary": instrument_summary, "holdings_length": holdings_length, "flag":False })
+        return templates.TemplateResponse("portfolio.html", { "request": request,  "recent_transactions": recent_transactions,"username": user.username, "holdings_summary": holdings_summary,  "portfolio_summary": portfolio_summary, "instrument_summary": instrument_summary, "holdings_length": holdings_length, "flag":False })
     
     return templates.TemplateResponse("portfolio.html", { "request": request,  "username": user.username, "flag": True})
 

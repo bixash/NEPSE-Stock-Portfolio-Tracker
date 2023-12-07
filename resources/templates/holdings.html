@@ -4,195 +4,209 @@
 
  {% block content %}
   <section class="section-holdings">
-    <div class="holdings-block">
-      <div class="dashboard-holdings-head">
-        <div class="title-box">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-            <path
-              d="M176 56V96H336V56c0-4.4-3.6-8-8-8H184c-4.4 0-8 3.6-8 8zM128 96V56c0-30.9 25.1-56 56-56H328c30.9 0 56 25.1 56 56V96v32V480H128V128 96zM64 96H96V480H64c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64zM448 480H416V96h32c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64z"
-              fill="currentColor"
-            />
-          </svg>
-          <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
-        </div>
-        <div class="select-box"> 
-           <select id="sector-select" name="sector">
-            {% if sector == "Sectors" %}
-              <option value="Sectors" selected> All sectors</option>
-              {% for item in sector_instrumentList['sectors']%}
-                <option value="{{item}}">{{item}}</option>
-              {% endfor %}
-            {%else%}
-              <option value="Sectors"> All sectors</option>
-              {% for item in sector_instrumentList['sectors']%}
-                {% if sector == item %}
-                  <option value="{{item}}" selected>{{item}}</option>
-                {%else%}
-                  <option value="{{item}}">{{item}}</option>
-                {%endif%}
-              {% endfor %}
-            {%endif%}
-          </select>
-          <select id="instrument-select" name="instrument">
-            {% if instrument == "Stocks" %}
-              <option value="Stocks" selected> All stocks</option>
-              {% for item in sector_instrumentList['instruments']%}
-                <option value="{{item}}">{{item}}</option>
-              {% endfor %}
-            {%else%}
-              <option value="Stocks"> All stocks</option>
-              {% for item in sector_instrumentList['instruments']%}
-                {% if instrument == item %}
-                  <option value="{{item}}" selected>{{item}}</option>
-                {%else%}
-                <option value="{{item}}">{{item}}</option>
-                {%endif%}
-              
-              {% endfor %}
-            {%endif%}
-          </select>
-
-        </div>
-        <!-- <button type="button" onclick="()">Search</button> -->
-       
-    </div>
-    {{ msg }}
-    {% if not holdings%}
-    <div class="warning-msg">
-      <span>Oops! Can't find the transactions!</span>
-      <a href="/upload" class="upload">Upload to continue!</a>
-    </div>
-    {%else%}
-      <div class="holdings-table">
-        <table class="table">
-          <tr class="table-head">
-            <th class="cols"><span>Scrip</span></th>
-            <th class="cols"><span>Qty</span></th>
-            <th class="cols"><span>Avg. cost</span></th>
-            <th class="cols"><span>LTP</span></th>
-            <th class="cols"><span>Current</span></th>
-            <th class="cols"><span>P&L</span></th>
-            <th class="cols"><span>Net chg.</span></th>
-            <th class="cols"><span>Day chg.</span></th>
-          </tr>
-          
-          
-          
-          {% for row in holdings%}
-
-          <tr class="table-row"> 
-            <!-- <td>{{ loop.index }}</td> -->
-            <td><span><a class="holdings-scrip" href="/company/{{row['scrip']}}">{{row['scrip']}}</a></span></td>
-            <td><span>{{row['balance_quantity']}}</span></td>
-            <td><span>{{row['average_cost']}}</span></td>
-            <td><span>{{row['closing_price']}}</span></td>
-            <td><span>{{row['current_value']}}</span></td>
-            {%if row['profit_loss'] > 0%}
-            <td><span class="text-green">{{row['profit_loss']}}</span></td>
-            {%else%}
-            <td><span class="text-red">{{row['profit_loss']}}</span></td>
-            {%endif%}
-            {%if row['net_change'] > 0%}
-            <td><span class="text-green">{{row['net_change']}}%</span></td>
-            {% else%}
-            <td><span class="text-red">{{row['net_change']}}%</span></td>
-            {%endif%}
-            {%if row['percent_change'] > 0%}
-            <td><span class="text-green">{{row['percent_change']}}%</span></td>
-            {% else%}
-            <td><span class="text-red">{{row['percent_change']}}%</span></td>
-            {%endif%}
-          </tr>
-          {% endfor %}
-    
-        </table>
-      </div>
-   
-      <div class="dashboard-holdings-box">
-        
-        <div class="dashboard-holdings-body">
-          
-            
-          {% set invest_value =  holdings_summary['invest_value']%}
-          {% set current_value =   holdings_summary['current_value']%}
-          {% set today_profit_loss =   holdings_summary['today_profit_loss']%}
-          {% set total_profit_loss =   holdings_summary['total_profit_loss'] %}
-          {% set total_profit_loss_percent = holdings_summary['total_profit_loss_percent'] %}
-          {% set today_profit_loss_percent =  holdings_summary['today_profit_loss_percent'] %}
-
-         
-
-          <div class="holdings-stats-box">
-            <div class="holdings-item">
-              <span class="holdings-text">Total Investment</span>
-              <div class="holdings-item-value">
-                
-                <span class="text-large">{{holdings_summary['avg_invest_value']}}</span>
-                <!-- <div class="text-small">{{holdings_summary['total_credit_quantity']}} unit(s)</div> -->
-              </div>
-              
-            </div> 
-            <!-- <div class="holdings-item">
-            
-              <span class="holdings-text">Sold value</span>
-              <div class="holdings-item-value">
-                <span class="text-large">{{holdings_summary['total_sold_value']}}</span>
-                <div class="text-small">{{holdings_summary['total_debit_quantity']}} unit(s)</div>
-            
-              </div>
-            </div>  -->
-            <div class="holdings-item">
-              <span class="holdings-text">Current value</span>
-              <div class="holdings-item-value">
-                <span class="text-large">{{current_value}}</span>
-                <div class="text-small">{{holdings_summary['total_balance_quantity']}} unit(s)</div>
-              </div>
-            </div> 
-            <div class="holdings-item">
-            
-              <span class="holdings-text">Day's P&L</span>
-              <div class="holdings-item-value profit">
-
-                {%if today_profit_loss > 0%}
-                <span class="text-large text-green">{{today_profit_loss}}</span>
-                <div class="text-small text-green">({{today_profit_loss_percent}}%)</div>
-                {% else%}
-                <span class="text-large text-red">{{today_profit_loss|abs}}</span>
-                <div class="text-small text-red">({{today_profit_loss_percent}}%)</div>
-                {%endif%}
-              </div>
-            </div> 
-            <div class="holdings-item">
-            
-              <span class="holdings-text">Total P&L</span>
-              <div class="holdings-item-value profit">
-                {%if total_profit_loss > 0%}
-                <span class="text-large text-green">{{total_profit_loss}}</span>
-                <div class="text-small text-green">({{total_profit_loss_percent}}%)</div>
-                {% else%}
-                <span class="text-large text-red">{{total_profit_loss|abs}}</span>
-                <div class="text-small text-red">({{total_profit_loss_percent}}%)</div>
-                {%endif%}
-              </div>
-            </div> 
-
-  
-          </div>
-          <div class="holdings-chart-box">
-            <div class="holdings-chart">
-              
-            </div>
-          </div>
-        
-        </div>
+    <div class="wrapper-container">
       
+      
+      
+      <div class="holdings-block">
+        <div class="dashboard-holdings-head">
+          {{ msg }}
+          <div class="title-box">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M176 56V96H336V56c0-4.4-3.6-8-8-8H184c-4.4 0-8 3.6-8 8zM128 96V56c0-30.9 25.1-56 56-56H328c30.9 0 56 25.1 56 56V96v32V480H128V128 96zM64 96H96V480H64c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64zM448 480H416V96h32c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64z"
+                fill="currentColor"
+              />
+            </svg>
+            <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
+          </div>
+          <div class="select-box"> 
+            <select id="sector-select" name="sector">
+              {% if sector == "Sectors" %}
+                <option value="Sectors" selected> All sectors</option>
+                {% for item in sector_instrumentList['sectors']%}
+                  <option value="{{item}}">{{item}}</option>
+                {% endfor %}
+              {%else%}
+                <option value="Sectors">All sectors</option>
+                {% for item in sector_instrumentList['sectors']%}
+                  {% if sector == item %}
+                    <option value="{{item}}" selected>{{item}}</option>
+                  {%else%}
+                    <option value="{{item}}">{{item}}</option>
+                  {%endif%}
+                {% endfor %}
+              {%endif%}
+            </select>
+            <select id="instrument-select" name="instrument">
+              {% if instrument == "Stocks" %}
+                <option value="Stocks" selected> All stocks</option>
+                {% for item in sector_instrumentList['instruments']%}
+                  <option value="{{item}}">{{item}}</option>
+                {% endfor %}
+              {%else%}
+                <option value="Stocks"> All stocks</option>
+                {% for item in sector_instrumentList['instruments']%}
+                  {% if instrument == item %}
+                    <option value="{{item}}" selected>{{item}}</option>
+                  {%else%}
+                  <option value="{{item}}">{{item}}</option>
+                  {%endif%}
+                
+                {% endfor %}
+              {%endif%}
+            </select>
+
+          </div>
+          <!-- <button type="button" onclick="()">Search</button> -->
+        
+        </div>
+        
+        
+        {% if not holdings%}
+        <div class="upload-block">
+          <img src="../static/images/data-report.png" alt="upload-img">
+          <!-- <img src="../static/images/upload-lady.jpg" alt="upload-img"> -->
+  
+          <div class="upload-msg">
+            <span class="text-medium-large">Looks like you have no transactions having {{sector}} & {{instrument}}!</span>
+            <!-- <span>Let's Upload</span>  -->
+            <!-- <span>Oops! Can't find the transactions!</span> -->
+            <a href="/transactions/upload" class="upload-btn">Add transaction</a>
+          </div>
+          
+        </div>
+        {%else%}
+        <div class="holdings-table">
+          <table class="table">
+            <tr class="table-head">
+              <th class="cols"><span>Scrip</span></th>
+              <th class="cols"><span>Qty</span></th>
+              <th class="cols"><span>Avg. cost</span></th>
+              <th class="cols"><span>LTP</span></th>
+              <th class="cols"><span>Current</span></th>
+              <th class="cols"><span>P&L</span></th>
+              <th class="cols"><span>Net chg.</span></th>
+              <th class="cols"><span>Day chg.</span></th>
+            </tr>
+            
+            
+            
+            {% for row in holdings%}
+
+            <tr class="table-row"> 
+              <!-- <td>{{ loop.index }}</td> -->
+              <td><span><a class="holdings-scrip" href="/company/{{row['scrip']}}">{{row['scrip']}}</a></span></td>
+              <td><span>{{row['balance_quantity']}}</span></td>
+              <td><span>{{row['average_cost']}}</span></td>
+              <td><span>{{row['closing_price']}}</span></td>
+              <td><span>{{row['current_value']}}</span></td>
+              {%if row['profit_loss'] > 0%}
+              <td><span class="text-green">{{row['profit_loss']}}</span></td>
+              {%else%}
+              <td><span class="text-red">{{row['profit_loss']}}</span></td>
+              {%endif%}
+              {%if row['net_change'] > 0%}
+              <td><span class="text-green">{{row['net_change']}}%</span></td>
+              {% else%}
+              <td><span class="text-red">{{row['net_change']}}%</span></td>
+              {%endif%}
+              {%if row['percent_change'] > 0%}
+              <td><span class="text-green">{{row['percent_change']}}%</span></td>
+              {% else%}
+              <td><span class="text-red">{{row['percent_change']}}%</span></td>
+              {%endif%}
+            </tr>
+            {% endfor %}
+      
+          </table>
+        </div>
+        {% endif %}
+        <div class="dashboard-holdings-box">
+          
+          <div class="dashboard-holdings-body">
+            
+              
+            {% set invest_value =  holdings_summary['invest_value']%}
+            {% set current_value =   holdings_summary['current_value']%}
+            {% set today_profit_loss =   holdings_summary['today_profit_loss']%}
+            {% set total_profit_loss =   holdings_summary['total_profit_loss'] %}
+            {% set total_profit_loss_percent = holdings_summary['total_profit_loss_percent'] %}
+            {% set today_profit_loss_percent =  holdings_summary['today_profit_loss_percent'] %}
+
+          
+
+            <div class="holdings-stats-box">
+              <div class="holdings-item">
+                <span class="holdings-text">Total Investment</span>
+                <div class="holdings-item-value">
+                  
+                  <span class="text-large">{{holdings_summary['avg_invest_value']}}</span>
+                  <!-- <div class="text-small">{{holdings_summary['total_credit_quantity']}} unit(s)</div> -->
+                </div>
+                
+              </div> 
+              <!-- <div class="holdings-item">
+              
+                <span class="holdings-text">Sold value</span>
+                <div class="holdings-item-value">
+                  <span class="text-large">{{holdings_summary['total_sold_value']}}</span>
+                  <div class="text-small">{{holdings_summary['total_debit_quantity']}} unit(s)</div>
+              
+                </div>
+              </div>  -->
+              <div class="holdings-item">
+                <span class="holdings-text">Current value</span>
+                <div class="holdings-item-value">
+                  <span class="text-large">{{current_value}}</span>
+                  <div class="text-small">{{holdings_summary['total_balance_quantity']}} unit(s)</div>
+                </div>
+              </div> 
+              <div class="holdings-item">
+              
+                <span class="holdings-text">Day's P&L</span>
+                <div class="holdings-item-value profit">
+
+                  {%if today_profit_loss > 0%}
+                  <span class="text-large text-green">{{today_profit_loss}}</span>
+                  <div class="text-small text-green">({{today_profit_loss_percent}}%)</div>
+                  {% else%}
+                  <span class="text-large text-red">{{today_profit_loss|abs}}</span>
+                  <div class="text-small text-red">({{today_profit_loss_percent}}%)</div>
+                  {%endif%}
+                </div>
+              </div> 
+              <div class="holdings-item">
+              
+                <span class="holdings-text">Total P&L</span>
+                <div class="holdings-item-value profit">
+                  {%if total_profit_loss > 0%}
+                  <span class="text-large text-green">{{total_profit_loss}}</span>
+                  <div class="text-small text-green">({{total_profit_loss_percent}}%)</div>
+                  {% else%}
+                  <span class="text-large text-red">{{total_profit_loss|abs}}</span>
+                  <div class="text-small text-red">({{total_profit_loss_percent}}%)</div>
+                  {%endif%}
+                </div>
+              </div> 
+
     
+            </div>
+            <div class="holdings-chart-box">
+              <div class="holdings-chart">
+                
+              </div>
+            </div>
+          
+          </div>
+        
+      
 
+        </div>
+        
       </div>
-      {% endif %}
     </div>
-
   </section>
   <script src="../static/js/holdings.js"></script>
   

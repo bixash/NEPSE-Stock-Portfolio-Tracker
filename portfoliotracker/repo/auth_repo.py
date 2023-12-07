@@ -11,7 +11,7 @@ class AuthRepo:
         self.db = db
 
     def get_user_by_email(self, email: str) -> User:
-        cur = self.db.get_connection()
+        cur = self.db.get_cursor()
         cur.execute("SELECT id, username, email FROM `user` where email= ?", (email, ))
         result = cur.fetchone()
         if result:
@@ -19,7 +19,7 @@ class AuthRepo:
         return None
 
     def login(self, email: str, password: str) -> bool:
-        cur = self.db.get_connection()
+        cur = self.db.get_cursor()
         cur.execute("SELECT id, username FROM `user` where email= ? and password = ?", (email, password, ))
         result = cur.fetchone()
         if result:
@@ -27,8 +27,7 @@ class AuthRepo:
         return False
 
     def save_user(self, signup_user) -> bool:
-        cur = self.db.get_connection()
-        con = self.db._commit()
+        cur = self.db.get_cursor()
         cur.execute("INSERT INTO `user` (username, email, password) VALUES (?, ?, ?)", (signup_user.username, signup_user.email, signup_user.password, ))
-        con.commit()
+        self.db.commit()
         return True
