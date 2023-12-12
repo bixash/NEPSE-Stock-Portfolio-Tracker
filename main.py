@@ -6,9 +6,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from portfoliotracker.api import auth_router, stock_router, transaction_router, portfolio_router, company_router, profile_router
-from portfoliotracker.entities import BaseResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(title="Stock Portfolio Tracker")
