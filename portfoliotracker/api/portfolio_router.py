@@ -57,13 +57,14 @@ def portfolio(request: Request):
    
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
-    if stock_service.get_stock_prices_from_api().success:
-        stock_service.update_prices_todb()
-        # api_date = stock_service.get_stock_prices_from_api().result['result']['stocks'][1]['tradeDate']
-        # db_date = stock_repo.get_stock_tradeDate()
+    # if stock_service.get_stock_prices_from_api().success:
+    #     api_date = stock_service.get_stock_prices_from_api().result['result']['stocks'][1]['tradeDate']
+    #     db_date = stock_repo.get_stock_tradeDate()
 
-        # if not stock_service.is_tradeDate_same_db(api_date, db_date):
-        #     stock_service.update_prices_todb()
+    #     if not stock_service.is_tradeDate_same_db(api_date, db_date):
+    #         stock_service.update_prices_todb()
+    #         print(stock_service.update_prices_todb().msg)
+
        
 
     if trans_service.check_user_transactions(user):

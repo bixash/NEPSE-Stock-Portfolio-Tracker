@@ -17,14 +17,12 @@ class DBConnection(abc.ABC):
     def get_cursor(self):
         return self.cur
         
-
     def commit(self):
         self.con.commit()
 
     def close(self):
         self.con.close()
         
-
     def __exit__(self):
         self.con.commit()
         self.con.close()
@@ -32,14 +30,12 @@ class DBConnection(abc.ABC):
 
 DB_CONNECTION: Optional[DBConnection] = None
 
-
 def _build_db_connection() -> DBConnection:
     global DB_CONNECTION
     try:
         DB_CONNECTION = DBConnection()
     except Exception as e:
         traceback.print_exc()
-
 
 def get_db_connection() -> DBConnection:
     if DB_CONNECTION is None:

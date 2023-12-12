@@ -30,19 +30,6 @@ class CompanyRepo:
         cur.execute("SELECT scrip, company_name FROM company WHERE scrip LIKE ? or company_name LIKE ?  limit 8",(scrip, scrip, ))
         return cur.fetchall()
     
-    def select_status_sector_instrument(self, scrip: str) -> bool:
-        cur = self.db.get_cursor()
-        con = self.db.get_connection()
-        cur.execute("SELECT scrip, status, sector, instrument FROM company WHERE scrip = ?", (scrip,))
-        return cur.fetchone()
-    
-    def select_all_distinct_status(self):
-        cur = self.db.get_cursor()
-        con = self.db.get_connection()
-        cur.execute("SELECT DISTINCT status FROM company")
-        return cur.fetchall()
-    
-        
     def select_all_distinct_sector(self):
         cur = self.db.get_cursor()
         con = self.db.get_connection()
@@ -57,6 +44,17 @@ class CompanyRepo:
     
     def select_company_by_scrip(self, scrip: str):
         cur = self.db.get_cursor()
-        con = self.db.get_connection()
         cur.execute("SELECT scrip, sector, instrument, status FROM company WHERE scrip = ?", (scrip, ))
         return cur.fetchall()
+    
+    # def select_status_sector_instrument(self, scrip: str) -> bool:
+    #     cur = self.db.get_cursor()
+    #     con = self.db.get_connection()
+    #     cur.execute("SELECT scrip, status, sector, instrument FROM company WHERE scrip = ?", (scrip,))
+    #     return cur.fetchone()
+    
+    # def select_all_distinct_status(self):
+    #     cur = self.db.get_cursor()
+    #     con = self.db.get_connection()
+    #     cur.execute("SELECT DISTINCT status FROM company")
+    #     return cur.fetchall()
