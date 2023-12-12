@@ -21,6 +21,7 @@
             </svg>
             <span class="dashboard-holdings-title title"> Holdings ({{holdings|length}})</span>
           </div>
+          {%if sector_instrumentList%}
           <div class="select-box"> 
             <select id="sector-select" name="sector">
               {% if sector == "Sectors" %}
@@ -59,6 +60,7 @@
             </select>
 
           </div>
+          {%endif%}
           <!-- <button type="button" onclick="()">Search</button> -->
         
         </div>
@@ -73,7 +75,7 @@
             <span class="text-medium-large">Looks like you have no transactions having {{sector}} & {{instrument}}!</span>
             <!-- <span>Let's Upload</span>  -->
             <!-- <span>Oops! Can't find the transactions!</span> -->
-            <a href="/transactions/upload" class="upload-btn">Add transaction</a>
+            <a href="/transactions/upload" class="upload-btn">Upload transactions</a>
           </div>
           
         </div>
@@ -122,7 +124,7 @@
       
           </table>
         </div>
-        {% endif %}
+        
         <div class="dashboard-holdings-box">
           
           <div class="dashboard-holdings-body">
@@ -204,7 +206,7 @@
       
 
         </div>
-        
+        {% endif %}
       </div>
     </div>
   </section>

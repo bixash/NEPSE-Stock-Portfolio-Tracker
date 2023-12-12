@@ -1,12 +1,11 @@
 
 import logging
 
-from fastapi import APIRouter, Request, Form, status
-from fastapi.responses import RedirectResponse
+from fastapi import APIRouter, Request
 
 
-from portfoliotracker.entities import BaseResponse, User
-from portfoliotracker.entities.auth import LoginRequest, SignupRequest
+from portfoliotracker.entities import User
+
 
 from portfoliotracker.repo import TransactionRepo
 from portfoliotracker.repo.auth_repo import AuthRepo
@@ -23,8 +22,7 @@ from portfoliotracker.service.company_service import CompanyService
 
 
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
+
 import os
 
 router = APIRouter()
@@ -57,6 +55,9 @@ def portfolio(request: Request):
    
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
+
+    '''update the database prices if only database trade-date is different'''
+
     # if stock_service.get_stock_prices_from_api().success:
     #     api_date = stock_service.get_stock_prices_from_api().result['result']['stocks'][1]['tradeDate']
     #     db_date = stock_repo.get_stock_tradeDate()
@@ -75,7 +76,6 @@ def portfolio(request: Request):
         holdings_only = trans_service.holdings_only(holdings_stats)
 
         holdings_summary = trans_service.holdings_summary(holdings_only)
-        # sector_summary = trans_service.sector_summary(trans_service.company_stats(holdings_only))
         instrument_summary = trans_service.instrument_summary(trans_service.company_stats(holdings_only))
         holdings_length = len(trans_service.holdings_only(holdings_stats))
     
