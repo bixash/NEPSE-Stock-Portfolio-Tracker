@@ -1,6 +1,6 @@
 # stock-portfolio-tracker
 
-Nepse Stock tracker using Python Flask
+Nepse Stock tracker using Python FastAPI
 
 ## Dependencies
 
