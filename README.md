@@ -7,3 +7,9 @@ Nepse Stock tracker using Python FastAPI
 ```bash 
 pip install -r requirements.txt
 ```
+
+## Run Command:
+
+```bash
+python -m uvicorn main:app --reload
+```
