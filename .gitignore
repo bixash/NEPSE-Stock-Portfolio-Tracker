@@ -2,6 +2,5 @@
 __pycache__/
 todo.md
 uploads/
-jquery.min.js
-chart.js
 profile_update.html
+database.db
