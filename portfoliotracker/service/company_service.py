@@ -33,10 +33,12 @@ class CompanyService:
         try:
             result = self.company_repo.retrieve_companyInfo_all_limit(limit)
             infoList = []
-            for item in result:
-                company_info = dict(scrip = item[0], company_name= item[1], status = item[2], sector= item[3], instrument=item[4], email = item[5], url = item[6])
-                infoList.append(company_info)
-            return BaseResponse(error=False, success=True, msg="success", result=infoList)
+            if result:
+                for item in result:
+                    company_info = dict(scrip = item[0], company_name= item[1], status = item[2], sector= item[3], instrument=item[4], email = item[5], url = item[6])
+                    infoList.append(company_info)
+                return BaseResponse(error=False, success=True, msg="success", result=infoList)
+            return BaseResponse(error=True, success=False, msg="no company available!")
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
     

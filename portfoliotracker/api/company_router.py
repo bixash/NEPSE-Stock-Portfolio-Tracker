@@ -38,11 +38,18 @@ def getCompany(request: Request):
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     
     user = User(username = request.session["username"], user_id = request.session['user_id'])
+    
+    if not company_repo.retrieve_companyInfo_all_limit(limit=1):
+        company_service.upload_company_csv()
     limit_company = company_service.get_company_info_limit(limit=600)
     return templates.TemplateResponse("companies.html", {"request": request, "limit_company": limit_company.result, "username": user.username})
+ 
+        
 
 @router.post("/company/search")
 def search_company(company: Company):
+    if not company_repo.retrieve_companyInfo_all_limit(limit=1):
+        company_service.upload_company_csv()
     script = company.scrip + "%"
     result = company_service.company_like(script)
     return {"companyList": result.result}
@@ -53,7 +60,8 @@ def get_company(scrip, request:Request):
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     
     user = User(username = request.session["username"], user_id = request.session['user_id'])
-
+    if not company_repo.retrieve_companyInfo_all_limit(limit=1):
+        company_service.upload_company_csv()
     company_transactions = trans_service.get_all_transactions_by_scrip(user, scrip)
     company_stats = trans_service.stock_transaction_stats(user, scrip)
     company_info = company_service.get_company_info(scrip)
