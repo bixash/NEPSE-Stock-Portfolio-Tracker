@@ -29,5 +29,8 @@ def today_prices(request: Request):
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     user = User(username = request.session["username"], user_id = request.session['user_id'])
     all_stock = stock_service.get_all_stock_prices()
-    trade_date = all_stock.result[0]['trade_date']
-    return templates.TemplateResponse("stock.html", {"request": request, "stock_prices": all_stock.result, "trade_date": trade_date, "username": user.username})
+    if not all_stock.error:
+        trade_date = all_stock.result[0]['trade_date']
+        return templates.TemplateResponse("stock.html", {"request": request, "stock_prices": all_stock.result, "trade_date": trade_date, "username": user.username})
+    else:
+        return "No stocks available!"

@@ -56,17 +56,18 @@ def portfolio(request: Request):
     user = User(username = request.session["username"], user_id = request.session['user_id'])
 
 
-    '''update the database prices if only database trade-date is different'''
+    '''update the database prices if only database trading-date is different'''
 
-    # if stock_service.get_stock_prices_from_api().success:
-    #     api_date = stock_service.get_stock_prices_from_api().result['result']['stocks'][1]['tradeDate']
-    #     db_date = stock_repo.get_stock_tradeDate()
-
-    #     if not stock_service.is_tradeDate_same_db(api_date, db_date):
-    #         stock_service.update_prices_todb()
-    #         print(stock_service.update_prices_todb().msg)
-
-       
+    if stock_service.get_stock_prices_from_api().success:
+        if stock_repo.select_all_stock_prices():
+            api_date = stock_service.get_stock_prices_from_api().result['result']['stocks'][1]['tradeDate']
+            if stock_repo.check_tradeDate():
+                db_date = stock_repo.get_stock_tradeDate()
+                if not stock_service.is_tradeDate_same_db(api_date, db_date):
+                    stock_service.update_prices_todb()  
+        else:
+            stock_service.insert_prices_todb()
+                    
 
     if trans_service.check_user_transactions(user):
         distinctSymbol = trans_service.distinct_stockSymbols(user)

@@ -35,13 +35,25 @@ class StockRepo:
         cur = self.db.get_cursor()
         cur.execute("SELECT * FROM stock")
         return cur.fetchall()
+    
+    def check_stock_prices(self, stock:Stock) ->bool:
+        cur = self.db.get_cursor()
+        cur.execute("SELECT * FROM stock WHERE scrip = ?", (stock.scrip, ))
+        return cur.fetchone()
        
     def select_stock_by_scrip(self, stockSymbol:str):
-        con = self.db.get_connection()
+        con = self.db.get_connection() 
         cur = con.cursor()
         cur.execute("SELECT scrip, previous_closing, trade_date, closing_price, difference_rs, percent_change FROM stock WHERE scrip = ?", (stockSymbol, ))
         return cur.fetchone()
-       
+    
+    def check_tradeDate(self):
+        cur = self.db.get_cursor()
+        cur.execute("SELECT trade_date FROM stock limit 1")
+        row = cur.fetchone()
+        if row == None: 
+            return False
+        return True
     def get_stock_tradeDate(self):
         cur = self.db.get_cursor()
         cur.execute("SELECT trade_date FROM stock limit 1")

@@ -31,21 +31,40 @@ class StockService:
             if not api_response.success:
                 raise Exception("Could not update a stock_prices!")
             result = api_response.result
+
             for item in result['result']['stocks']:
                 stock = Stock(scrip=item['stockSymbol'], closing_price=item['closingPrice'], previous_closing=item['previousClosing'], trade_date=item['tradeDate'], difference_rs=item['differenceRs'], percent_change=item['percentChange'])
                 self.stock_repo.update_stock_prices(stock)
             return BaseResponse(error=False, success=True, msg='Stock_prices updated into db!')
+            
+        except Exception as e:
+            return BaseResponse(error=True, success=False, msg=str(e))
+    def insert_prices_todb(self) -> BaseResponse:
+
+        try:
+            api_response = self.get_stock_prices_from_api()
+           
+            if not api_response.success:
+                raise Exception("Could not insert a stock_prices!")
+            result = api_response.result
+
+            for item in result['result']['stocks']:
+                stock = Stock(scrip=item['stockSymbol'], closing_price=item['closingPrice'], previous_closing=item['previousClosing'], trade_date=item['tradeDate'], difference_rs=item['differenceRs'], percent_change=item['percentChange'])
+                self.stock_repo.insert_stock_prices(stock)
+            return BaseResponse(error=False, success=True, msg='Stock_prices inserted into db!')
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
 
     def get_all_stock_prices(self)-> BaseResponse:
         try:
             res= self.stock_repo.select_all_stock_prices()
-            resultList = []
-            for item in res:
-                stock_info = dict(scrip = item[0], previous_closing = item[1], trade_date= convert_date_format(item[2]),closing_price= item[3],difference_rs = item[4],percent_change=item[5] )
-                resultList.append(stock_info)
-            return BaseResponse(error=False, success=True, msg='success', result= resultList)
+            if res:
+                resultList = []
+                for item in res:
+                    stock_info = dict(scrip = item[0], previous_closing = item[1], trade_date= convert_date_format(item[2]),closing_price= item[3],difference_rs = item[4],percent_change=item[5] )
+                    resultList.append(stock_info)
+                return BaseResponse(error=False, success=True, msg='success', result= resultList)
+            return BaseResponse(error=True, success=False, msg="no stocks")
         except Exception as e:
             return BaseResponse(error=True, success=False, msg=str(e))
                 
