@@ -10,7 +10,7 @@ class CompanyService:
 
     def __init__(self, company_repo : CompanyRepo):
         self.company_repo = company_repo
-        self.file_location = f"{os.path.join(Settings.CSV_UPLOAD_PATH)}/company-info.csv"
+        self.file_location = f"{os.path.join(Settings.COMPANY_INFO_PATH)}/company-info.csv"
         
     def upload_company_csv(self):
         with open(self.file_location, newline='') as csvfile:
