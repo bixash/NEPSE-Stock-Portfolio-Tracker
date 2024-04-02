@@ -13,7 +13,7 @@ Stock Portfolio Tracker is a portfolio tracking web tool designed for NEPSE that
 Python 3.8+
 - [FastAPI](https://fastapi.tiangolo.com/) web framework
 - Uvicorn ASGI web server
-- Starllete for rendering templates
+- Starlette for rendering templates
 - Pydantic for data parts
 
 SQLite3
