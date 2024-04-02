@@ -57,6 +57,6 @@ INFO:     Application startup complete.
   ![Screenshot 2024-04-02 141012](https://github.com/bixash/NEPSE-Stock-Portfolio-Tracker/assets/83506059/1c699f3c-1088-4a62-b3de-ee1c420ab4bb)
   
 ## Contributors
-[Bixash](https://github.com/bixash)
-[Ashok Kumar Pant](https://github.com/ashokpant)
+- [Bikash Shrestha](https://github.com/bixash)  
+- [Ashok Kumar Pant](https://github.com/ashokpant)
 
