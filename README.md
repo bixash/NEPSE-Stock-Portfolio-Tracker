@@ -10,14 +10,13 @@ Stock Portfolio Tracker is a portfolio tracking web tool designed for NEPSE that
 - Update personal credentials anytime.
   
 ## Requirements
-Python 3.8+
+- Python 3.8+
 - [FastAPI](https://fastapi.tiangolo.com/) web framework
 - Uvicorn ASGI web server
 - Starlette for rendering templates
 - Pydantic for data parts
-- Download [jquery.min.js](https://code.jquery.com/jquery-3.7.1.min.js) and [Chart.js](https://cdn.jsdelivr.net/npm/chart.js), place it inside ```resources/static/js``` directory
-
-SQLite3
+- SQLite3 as a database
+- Download [Chart.js](https://cdn.jsdelivr.net/npm/chart.js) and [jquery.min.js](https://code.jquery.com/jquery-3.7.1.min.js), place it inside ```resources/static/js``` directory to make it work offline. 
   
 ## Getting started
 - Download zip or clone this project and open the project folder in IDE.
