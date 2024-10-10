@@ -34,7 +34,7 @@ templates = Jinja2Templates(directory=get_templates_directory())
 
 @router.get("/company/all")
 def getCompany(request: Request):
-    if not request.session["token"]:
+    if not request.session:
         return  templates.TemplateResponse("login.html", { "request": request, "msg":"Please login to continue!"})
     
     user = User(username = request.session["username"], user_id = request.session['user_id'])

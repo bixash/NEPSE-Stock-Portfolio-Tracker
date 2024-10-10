@@ -36,7 +36,7 @@ templates = Jinja2Templates(directory=templates_directory)
 @app.get("/")
 async def root(request: Request):
     from portfoliotracker.entities import User
-    if not request.session["token"]:
+    if not request.session:
         return templates.TemplateResponse("index.html",{ "request": request})
     user = User(username = request.session["username"], user_id = request.session['user_id'])
     return templates.TemplateResponse("index.html",{ "request": request, "username": user.username})
