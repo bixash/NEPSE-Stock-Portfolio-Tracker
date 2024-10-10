@@ -2,5 +2,3 @@ pydantic
 fastapi
 uvicorn
 starlette
-jquery.min.js
-chart.js

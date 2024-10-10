@@ -15,6 +15,7 @@ Python 3.8+
 - Uvicorn ASGI web server
 - Starlette for rendering templates
 - Pydantic for data parts
+- Download [jquery.min.js](https://code.jquery.com/jquery-3.7.1.min.js) and [Chart.js](https://cdn.jsdelivr.net/npm/chart.js), place it inside ```resources/static/js``` directory
 
 SQLite3
   
